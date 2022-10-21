@@ -1,17 +1,24 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@section('title', 'Madjou | Dashboard')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    You're logged in!
-                </div>
+<x-app-layout>
+    <div class="page-content">
+        <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+          <div>
+            <h4 class="mb-3 mb-md-0">Welcome to Dashboard</h4>
+          </div>
+          <div class="d-flex align-items-center flex-wrap text-nowrap">
+            <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
+              <span class="input-group-text input-group-addon bg-transparent border-primary" data-toggle><i data-feather="calendar" class="text-primary"></i></span>
+              <input type="text" class="form-control bg-transparent border-primary" placeholder="Select date" data-input />
             </div>
+            <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
+              <i class="btn-icon-prepend" data-feather="printer"></i>
+              Print
+            </button>
+            <button type="button" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+              <i class="btn-icon-prepend" data-feather="download-cloud"></i>
+              Download Report
+            </button>
+          </div>
         </div>
-    </div>
 </x-app-layout>
