@@ -124,7 +124,7 @@ class TagController extends Controller
 
         if ($data->fails()) {
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'errors' => $data->getMessageBag()->toArray()
             ]);
         }
