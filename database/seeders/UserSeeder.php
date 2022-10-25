@@ -23,6 +23,14 @@ class UserSeeder extends Seeder
             "password"  => Hash::make("admin123"),
         ]);
 
-        $superAdmin->attachRole('superadministrator');
+        $superAdmin->attachRole('superadmin');
+
+        $dev = User::create([
+            "name"      => "dev",
+            "email"     => "dev@test.com",
+            "password"  => Hash::make("dev@test.com"),
+        ]);
+
+        $dev->attachRole('dev');
     }
 }

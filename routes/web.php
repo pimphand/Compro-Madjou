@@ -21,11 +21,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['middleware' => 'auth'], function(){
-    Route::resource('/dashboard', DashboardController::class);
-    Route::resource('/roles', RoleController::class);
-    Route::resource('/tags', TagController::class);
-    Route::resource('/user', MasterUserController::class);
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::middleware(['role:superadmin|dev'])->group(function () {
+        Route::resource('/dashboard', DashboardController::class);
+        Route::resource('/roles', RoleController::class);
+        Route::resource('/tags', TagController::class);
+        Route::resource('/user', MasterUserController::class);
+    });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
