@@ -17,7 +17,6 @@ class CategoryTeamController extends Controller
     public function index()
     {
         $dataCategoryTeam = TeamCategory::latest()->paginate(10);
-
         return response()->json([
             'success'   => true,
             'message'   => 'Data kategori team berhasil ditampilkan',
@@ -55,7 +54,7 @@ class CategoryTeamController extends Controller
             'success'   => true,
             'message'   => 'Data kategori team berhasil ditambah!',
             'data'      => new CategoryTeamResource($dataCategoryTeam),
-            ], 200);
+        ], 200);
     }
 
     /**
