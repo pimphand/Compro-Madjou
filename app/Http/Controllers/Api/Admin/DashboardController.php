@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Blog;
-use App\Models\Dashboard;
+use App\Models\Notification as ModelsNotification;
+use App\Models\Subscribe;
+use App\Notifications\SubscribeNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class DashboardController extends Controller
 {
@@ -16,6 +18,13 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        $users = Subscribe::whereStatus(1)->get(); // User::all();
+        $message = [
+            "body" => "test"
+        ];
+        foreach ($users as $user) {
+            Notification::route('mail', $user->email)->notify(new SubscribeNotification($message)); // test notification
+        }
         return view('dashboard');
     }
 
