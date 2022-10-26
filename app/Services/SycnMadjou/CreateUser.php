@@ -4,15 +4,16 @@ namespace App\Services\SycnMadjou;
 
 class CreateUser extends BaseApi
 {
-    public function create($data)
+    public function create($product, $users)
     {
         $params = [
-            'name' => $data->name,
-            'username' => $data->username,
-            'password' => $data->password,
-            'expired' => $data->expired,
-            'status' => $data->status,
+            'name' => $users->name,
+            'username' => $users->username,
+            'password' => $users->password,
+            'expired' => $users->expired,
+            'status' => $users->status,
+            'code' => $product->code
         ];
-        return $this->request('POST', $data->url, ['form_params' => $params]);
+        return $this->request('POST', $product->url, ['form_params' => $params]);
     }
 }
