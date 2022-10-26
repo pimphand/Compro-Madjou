@@ -7,6 +7,8 @@ use App\Http\Resources\TagsResource;
 use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 
 class TagController extends Controller
 {
@@ -17,9 +19,13 @@ class TagController extends Controller
      */
     public function index(Request $request)
     {
-        $dataTag    = Tag::latest()->paginate(10);
-
-        return view('pages.tags.index')->with('tags', $dataTag);
+        if ($request->ajax()) {
+            $dataTag    = Tag::latest()->get();
+            return DataTables::of($dataTag)
+                ->addIndexColumn()
+                ->make(true);
+        }
+        return view('pages.tags.index')->with('tags');
     }
 
     /**
@@ -40,9 +46,13 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $data = Validator::make($request->all(), [
             'type'  => 'required|string',
             'name'  => 'required|string|unique:tags'
+        ], [
+            'name.required' => 'Nama tidak boleh kosong',
+            'name.unique' => 'Nama sudah ada',
+            'type.required' => 'Tipe tidak boleh kosong',
         ]);
 
         if ($data->fails()) {
@@ -52,26 +62,18 @@ class TagController extends Controller
             ]);
         }
 
-        if($data->fails())
-        {
-            return response()->json([
-                'status'    => false,
-                'errors'    => $data->getMessageBag()->toArray()
-            ]);
-        }
-
         $tag    = Tag::create([
             'type'      => $request->type,
             'name'      => $request->name,
         ]);
 
-        $request->session()->flash('message' , 'Data tag berhasil ditambahkan!');
+        // $request->session()->flash('message' , 'Data tag berhasil ditambahkan!');
 
-        return response()->json([
+        return [
             'success'   => true,
-            'message'   => 'Data tag berhasil ditambahkan',
+            'message'   => 'Data tag berhasil ditambahkan!',
             'data'      => new TagsResource($tag)
-        ], 200);
+        ];
     }
 
     /**
@@ -111,10 +113,21 @@ class TagController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $data = Validator::make($request->all(), [
             'type'  => 'required|string',
-            'name'  => 'required|string|unique'
+            'name'  => 'required|string|unique:tags,id,' . $id
+        ], [
+            'name.required' => 'Nama tidak boleh kosong',
+            'name.unique' => 'Nama sudah ada',
+            'type.required' => 'Tipe tidak boleh kosong',
         ]);
+
+        if ($data->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $data->getMessageBag()->toArray()
+            ]);
+        }
 
         $tag = Tag::findOrFail($id);
         $tag->update([
@@ -140,9 +153,9 @@ class TagController extends Controller
         $tag = Tag::findOrFail($id);
         $tag->delete();
 
-        return response()->json([
+        return [
             'success'   => true,
             'message'   => 'Data tag berhasil dihapus',
-        ], 200);
+        ];
     }
 }
