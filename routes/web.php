@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\MasterUserController;
 use App\Http\Controllers\Api\Admin\RoleController;
 use App\Http\Controllers\Api\Admin\TagController;
+use App\Http\Controllers\Sync\XenditController;
 use Illuminate\Support\Facades\Route;
 
 /*
