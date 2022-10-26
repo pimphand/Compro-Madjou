@@ -12,7 +12,7 @@ return [
     'truncate_tables' => true,
 
     'roles_structure' => [
-        'superadministrator' => [
+        'dev' => [
             'users' => 'c,r,u,d',
             'blogs' => 'c,r,u,d',
             'tags' => 'c,r,u,d',
@@ -25,11 +25,27 @@ return [
             'employee_registrations' => 'c,r,u,d',
             'profile' => 'r,u'
         ],
-        'administrator' => [
+        'superadmin' => [
+            'users' => 'c,r,u,d',
+            'blogs' => 'c,r,u,d',
+            'tags' => 'c,r,u,d',
+            'settings' => 'c,r,u,d',
+            'messages' => 'c,r,u,d',
+            'teams' => 'c,r,u,d',
+            'services' => 'c,r,u,d',
+            'projects' => 'c,r,u,d',
+            'notifications' => 'c,r,u,d',
+            'employee_registrations' => 'c,r,u,d',
+            'profile' => 'r,u'
+        ],
+        'admin' => [
             'users' => 'c,r,u,d',
             'profile' => 'r,u'
         ],
         'user' => [
+            'profile' => 'r,u',
+        ],
+        'customer' => [
             'profile' => 'r,u',
         ],
     ],
