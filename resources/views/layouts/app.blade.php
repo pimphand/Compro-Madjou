@@ -34,9 +34,6 @@
     <!-- End layout styles -->
 
     <link rel="shortcut icon" href="/template/assets/images/favicon.png" />
-
-    <link rel="stylesheet" href="/template/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <style>
         .size-18 {
             width: 14px;
@@ -64,7 +61,6 @@
         </main>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <!-- core:js -->
     <script src="template/assets/vendors/core/core.js"></script>
     <!-- endinject -->
@@ -88,59 +84,11 @@
     <script src="/template/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.js"></script>
     <!-- End plugin js for this page -->
 
-    {{-- sweet alert --}}
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    {{-- end sweet alert --}}
-
-    @stack('js')
-    {{-- <script src="js/addTag.js"></script> --}}
-    {{-- <script src="js/jquery.js"></script> --}}
+    <script src="js/addTag.js"></script>
+    <script src="js/jquery.js"></script>
 
     <script>
         feather.replace()
-    </script>
-
-    <script>
-        $('.modal-form #btn-save').on('click', function () {
-            var form = $('#modalFormData')[0];
-            var formData = new FormData(form);
-            $.ajax({
-                url: form.action,
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                   if (data.success == true) {
-                        // sweetalert
-                        $('.modal-form').modal('hide');
-                        Swal.fire({
-                            title: 'Berhasil',
-                            text: data.message,
-                            icon: 'success',
-                            confirmButtonText: 'Ok'
-                        }).then((result) => {
-                            if (result.value) {
-                                // show data
-                            }
-                        });
-                        showData.ajax.reload();
-                    }else{
-                        $.each(data.errors, function (key, value) {
-                            //   show errors
-                            console.log(key);
-                            $('#' + key).addClass('is-invalid');
-                            $('#' +'error-' + key ).html(value);
-                            // hide error
-                            $('#' + key).on('keyup', function () {
-                                $('#' + key).removeClass('is-invalid');
-                                $('#' +'error-' + key ).html('');
-                            });
-                        });
-                    }
-                }
-            });
-        })
     </script>
 </body>
 

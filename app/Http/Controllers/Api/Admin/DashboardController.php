@@ -7,7 +7,6 @@ use App\Models\Notification as ModelsNotification;
 use App\Models\Subscribe;
 use App\Notifications\SubscribeNotification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Notification;
 
 class DashboardController extends Controller
 {
