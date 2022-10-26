@@ -12,7 +12,7 @@ class Permission extends LaratrustPermission
         'name','display_name','description'
     ];
 
-    public function getRole(){
-        return $this->belongsTo(Role::class, 'role_id', 'id');
+    public function Role(){
+        return $this->hasMany(Permission::class, 'permission_id', 'id');
     }
 }

@@ -7,6 +7,9 @@ use App\Http\Resources\MasterUserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 
 class MasterUserController extends Controller
 {
@@ -17,9 +20,19 @@ class MasterUserController extends Controller
      */
     public function index()
     {
-        $dataUser = User::latest()->paginate(10);
 
-        return view('pages.roles.index')->with('users', $dataUser);
+        if(request()->ajax())
+        {
+            if(request()->ajax())
+            {
+                $dataUser = User::latest()->get();
+                return DataTables::of($dataUser)
+                    ->addIndexColumn()
+                    ->make(true);
+            }
+        }
+
+        return view('pages.users.index')->with('users');
     }
 
     /**
@@ -40,11 +53,25 @@ class MasterUserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $data = Validator::make($request->all(),[
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required','min:8'],
+        ],[
+            'name.required' => 'Nama tidak boleh kosong',
+            'email.unique'   => 'Email sudah digunakan',
+            'email.required'    => 'Email tidak boleh kosong',
+            'password.required' => 'Password tidak boleh kosong',
         ]);
+
+        if($data->fails())
+        {
+            return response()->json([
+                'status'    => false,
+                'errors'    => $data->getMessageBag()->toArray()
+            ]);
+        }
+
 
         $user = User::create([
             'name' => $request->name,
@@ -90,7 +117,38 @@ class MasterUserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = Validator::make($request->all(),[
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users, id,' . $id],
+            'password' => ['required','min:8'],
+        ],[
+            'name.required' => 'Nama tidak boleh kosong',
+            'email.unique'   => 'Email sudah digunakan',
+            'email.required'    => 'Email tidak boleh kosong',
+            'password.required' => 'Password tidak boleh kosong',
+        ]);
+
+        if($data->fails())
+        {
+            return response()->json([
+                'status'    => false,
+                'errors'    => $data->getMessageBag()->toArray()
+            ]);
+        }
+
+
+        $user = User::findOrFail($id);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return response()->json([
+            'success'   => true,
+            'message'   => 'Data user berhasil ditambah!',
+            'data'      => new MasterUserResource($user)
+        ], 200);
     }
 
     /**

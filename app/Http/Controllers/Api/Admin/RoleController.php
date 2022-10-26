@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Yajra\DataTables\Facades\DataTables;
 
 class RoleController extends Controller
 {
@@ -16,9 +18,17 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $dataRole = Role::latest()->paginate(5);
+        if(request()->ajax())
+        {
+            if (request()->ajax()) {
+                $dataRole = Role::latest()->get();
+                return DataTables::of($dataRole)
+                    ->addIndexColumn()
+                    ->make(true);
+            }
+        }
 
-        return view('pages.roles.index')->with('roles', $dataRole);
+        return view('pages.roles.index')->with('roles','Permission');
     }
 
     /**

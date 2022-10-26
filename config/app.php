@@ -186,6 +186,7 @@ return [
          * Package Service Providers...
          */
         Laravolt\Indonesia\ServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -211,6 +212,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Indonesia' => Laravolt\Indonesia\Facade::class,
+        'Datatables' => Yajra\Datatables\Datatables::class,
     ])->toArray(),
 
 ];

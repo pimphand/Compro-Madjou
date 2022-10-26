@@ -26,14 +26,13 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         $this->call([
+            LaratrustSeeder::class,
             ProvincesSeeder::class,
             CitiesSeeder::class,
             DistrictsSeeder::class,
             VillagesSeeder::class,
             UserSeeder::class,
         ]);
-
-        $this->call(LaratrustSeeder::class);
 
     }
 }

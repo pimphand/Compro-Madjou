@@ -1,4 +1,4 @@
-@section('title', 'Madjou | Roles & Permission')
+@section('title', 'Madjou | Users')
 <x-app-layout>
     <div class="page-content">
         <div class="row">
@@ -18,7 +18,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel Role</h4>
+                            <h4 class="card-title">Tabel User</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
                                 Tambah Data
@@ -30,8 +30,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Name</th>
-                                        <th>Display name</th>
-                                        <th>Description</th>
+                                        <th>E-mail</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -61,29 +60,29 @@
                                             @csrf
                                             <div id="put"></div>
                                             <div class="mb-3">
-                                                <label for="name" class="form-label">Name </label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Input name role..." value="">
+                                                <label for="name" class="form-label">Nama  </label>
+                                                <input type="name" class="form-control" id="name" name="name"
+                                                    placeholder="Input name..." value="">
                                                 <div class="text-danger" id="error-name"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="display_name" class="form-label">Display name </label>
-                                                <input type="text" class="form-control" id="display_name" name="display_name"
-                                                    placeholder="Input display name role..." value="">
-                                                <div class="text-danger" id="error-display_name"></div>
+                                                <label for="email" class="form-label">E-mail </label>
+                                                <input type="email" class="form-control" id="email" name="email"
+                                                    placeholder="Input email..." value="">
+                                                <div class="text-danger" id="error-email"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="description" class="form-label">Description </label>
-                                                <input type="text" class="form-control" id="description" name="description"
-                                                    placeholder="Input description role..." value="">
-                                                <div class="text-danger" id="error-description"></div>
+                                                <label for="password" class="form-label">Password </label>
+                                                <input type="password" class="form-control" id="password" name="password"
+                                                    placeholder="Input password..." value="">
+                                                <div class="text-danger" id="error-password"></div>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-inverse-primary" id="btn-save"
                                             value="add">Simpan data</button>
-                                        <input type="hidden" id="tag_id" name="id" value="0">
+                                        <input type="hidden" id="user_id" name="id" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -101,13 +100,14 @@
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Tambah data role");
+                $("#title").html("Tambah data user");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('roles.store') }}");
+                $("#modalFormData").attr('action', "{{ route('user.store') }}");
             });
+            
             // datatable
             showData = $('.table-data').DataTable({
                 processing: true,
@@ -142,12 +142,9 @@
                     data: 'name',
                     name: 'name',
                 }, {
-                    data: 'display_name',
-                    name: 'display_name',
+                    data: 'email',
+                    name: 'email',
                 }, {
-                    data: 'description',
-                    name: 'description',
-                },{
                     data: 'id',
                     name: 'id',
                     render: (id, type, row) => {
@@ -181,20 +178,21 @@
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('tags.update',':id') }}"
+                let url = "{{ route('user.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
                 $("#title").html("Edit "+ row.name);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
-                $("#type").val(row.type);
                 $("#name").val(row.name);
+                $("#email").val(row.email);
+                $("#password").val(row.password);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
-            // Delete
+            // // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('tags.destroy',':id') }}"
+                let url = "{{ route('user.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({
