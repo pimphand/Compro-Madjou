@@ -1,4 +1,4 @@
-@section('title', 'Madjou | Tags')
+@section('title', 'Madjou | Team')
 <x-app-layout>
     <div class="page-content">
         <div class="row">
@@ -18,10 +18,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel Tags</h4>
+                            <h4 class="card-title">Table team</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
                                 <i data-feather="plus"></i>
-                                Tambah Data
+                                Add Data
                             </button>
                         </div>
                         <div class="table-responsive">
@@ -29,8 +29,10 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Type</th>
+                                        <th>Category Team</th>
                                         <th>Name</th>
+                                        <th>Position</th>
+                                        <th>Image</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -60,23 +62,43 @@
                                             @csrf
                                             <div id="put"></div>
                                             <div class="mb-3">
-                                                <label for="type" class="form-label">Type </label>
-                                                <input type="text" class="form-control" id="type" name="type"
-                                                    placeholder="Input type tag..." value="">
-                                                <div class="text-danger" id="error-type"></div>
+                                                <label for="category" class="form-label">Category Team </label>
+                                                    
+                                                    <select class="form-select form-control-lg form-control-solid" name="category_team_id" id="category_team_id">
+                                                        <option value="" disabled selected>Select category team</option>
+
+                                                        @foreach ($data as $catTeam)
+                                                        <option value="{{$catTeam->id}}">
+                                                            {{$catTeam->name}}
+                                                        </option> 
+                                                        @endforeach
+                                                    </select>
+                                                
+                                                <div class="text-danger" id="error-category_team_id"></div>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">Name </label>
                                                 <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Input name tag..." value="">
+                                                    placeholder="Input name..." value="">
                                                 <div class="text-danger" id="error-name"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="position" class="form-label">Position </label>
+                                                <input type="text" class="form-control" id="position" name="position"
+                                                    placeholder="Input position team..." value="">
+                                                <div class="text-danger" id="error-position"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="image" class="form-label">Image </label>
+                                                <input type="file" name="image" id="image" class="form-control" value="">
+                                                <div class="text-danger" id="error-image"></div>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-inverse-primary" id="btn-save"
                                             value="add">Simpan data</button>
-                                        <input type="hidden" id="tag_id" name="id" value="0">
+                                        <input type="hidden" id="team_id" name="id" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -94,13 +116,15 @@
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Tambah data tag");
+                $("#title").html("Tambah data team");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('tags.store') }}");
+                $("#modalFormData").attr('action', "{{ route('teams.store') }}");
             });
+
+
             // datatable
             showData = $('.table-data').DataTable({
                 processing: true,
@@ -113,7 +137,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 3],
+                        targets: [0, 4],
                         className: 'text-center'
                     },
                     {
@@ -132,11 +156,17 @@
                         return DT_RowIndex + '.';
                     }
                 }, {
-                    data: 'type',
-                    name: 'type',
+                    data: 'getTeam',
+                    name: 'getTeam',
                 }, {
                     data: 'name',
                     name: 'name',
+                }, {
+                    data: 'position',
+                    name: 'position',
+                }, {
+                    data: 'image',
+                    name: 'image',
                 }, {
                     data: 'id',
                     name: 'id',
@@ -170,21 +200,24 @@
             })
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
+                
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('tags.update',':id') }}"
+                let url = "{{ route('teams.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
                 $("#title").html("Edit "+ row.name);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
-                $("#type").val(row.type);
                 $("#name").val(row.name);
+                $("#position").val(row.position);
+                $("#category_team_id").val(row.category_team_id);
+                // $("#image").val(row.image)
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('tags.destroy',':id') }}"
+                let url = "{{ route('teams.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({

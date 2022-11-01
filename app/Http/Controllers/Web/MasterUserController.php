@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MasterUserResource;
@@ -120,12 +120,10 @@ class MasterUserController extends Controller
         $data = Validator::make($request->all(),[
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users, id,' . $id],
-            'password' => ['required','min:8'],
         ],[
             'name.required' => 'Nama tidak boleh kosong',
             'email.unique'   => 'Email sudah digunakan',
             'email.required'    => 'Email tidak boleh kosong',
-            'password.required' => 'Password tidak boleh kosong',
         ]);
 
         if($data->fails())
@@ -136,12 +134,10 @@ class MasterUserController extends Controller
             ]);
         }
 
-
         $user = User::findOrFail($id);
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
         ]);
 
         return response()->json([

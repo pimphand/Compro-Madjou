@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Notification as ModelsNotification;
-use App\Models\Subscribe;
-use App\Notifications\SubscribeNotification;
+use App\Http\Resources\RoleResource;
+use App\Models\Role;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Notification;
+use Carbon\Carbon;
+use Yajra\DataTables\Facades\DataTables;
 
-class DashboardController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,14 +18,17 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $users = Subscribe::whereStatus(1)->get(); // User::all();
-        $message = [
-            "body" => "test"
-        ];
-        foreach ($users as $user) {
-            Notification::route('mail', $user->email)->notify(new SubscribeNotification($message)); // test notification
+        if(request()->ajax())
+        {
+            if (request()->ajax()) {
+                $dataRole = Role::latest()->get();
+                return DataTables::of($dataRole)
+                    ->addIndexColumn()
+                    ->make(true);
+            }
         }
-        return view('dashboard');
+
+        return view('pages.roles.index')->with('roles','Permission');
     }
 
     /**
