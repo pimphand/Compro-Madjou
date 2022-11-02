@@ -94,6 +94,9 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     {{-- end sweet alert --}}
 
+    <script src="/template/assets/vendors/feather-icons/feather.min.js"></script>
+	<script src="/template/assets/js/template.js"></script>
+
     @stack('js')
 
     <script>
@@ -116,7 +119,7 @@
                     $('.modal-form').modal('hide');
                     Swal.fire({
                         title: 'Berhasil',
-                        text: data.message,
+                        // text: data.message,
                         icon: 'success',
                         confirmButtonText: 'Ok'
                     }).then((result) => {
@@ -141,6 +144,7 @@
             }
         });
     })
+    
 </script>
 
 </body>

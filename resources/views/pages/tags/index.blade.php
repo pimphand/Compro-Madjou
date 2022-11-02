@@ -21,7 +21,7 @@
                             <h4 class="card-title">Tabel Tags</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
                                 <i data-feather="plus"></i>
-                                Tambah Data
+                                Add Data
                             </button>
                         </div>
                         <div class="table-responsive">

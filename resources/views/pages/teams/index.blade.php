@@ -19,7 +19,8 @@
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h4 class="card-title">Table team</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
+                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
+                            data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
                                 Add Data
                             </button>
@@ -116,7 +117,7 @@
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Tambah data team");
+                $("#title").html("Add data team");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");

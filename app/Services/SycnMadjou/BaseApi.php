@@ -31,10 +31,6 @@ abstract class BaseApi
     {
         $response = $this->api->request($method, $endpoint, $params);
 
-        if ($response->getStatusCode() > 304) {
-            abort($response->getStatusCode(), $response->getReasonPhrase());
-        }
-
-        return json_decode((string) $response->getBody(), true)['data'];
+        return json_decode($response->getBody(), true);
     }
 }

@@ -1,4 +1,4 @@
-@section('title', 'Madjou | Programming Languages')
+@section('title', 'Madjou | Tags')
 <x-app-layout>
     <div class="page-content">
         <div class="row">
@@ -18,11 +18,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Table programming language</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
-                            data-bs-target="#tagEditorModal" id='btn-add'>
+                            <h4 class="card-title">Data blog</h4>
+                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
                                 <i data-feather="plus"></i>
-                                Add data
+                                Add Data
                             </button>
                         </div>
                         <div class="table-responsive">
@@ -30,7 +29,12 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Name</th>
+                                        <th>Category Blog</th>
+                                        <th>Title</th>
+                                        <th>Slug</th>
+                                        <th>Body</th>
+                                        <th>Tags</th>
+                                        <th>Author</th>
                                         <th>Image</th>
                                         <th>Action</th>
                                     </tr>
@@ -60,17 +64,56 @@
                                             novalidate="">
                                             @csrf
                                             <div id="put"></div>
-                                            
                                             <div class="mb-3">
-                                                <label for="name" class="form-label">Name </label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Input name language..." value="">
-                                                <div class="text-danger" id="error-name"></div>
-                                            </div>
+                                                <label for="category_blog" class="form-label">Category blog </label>
+                                                <select name="blog_category_id" id="blog_category_id" class="form-control">
+                                                    <option value="" disabled selected>Select category</option>
 
+                                                    @foreach ($category as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="text-danger" id="error-category_blog"></div>
+                                            </div>
                                             <div class="mb-3">
-                                                <label for="image" class="form-label">Image </label>
-                                                <input type="file" name="image" id="image" class="form-control" value="">
+                                                <label for="title" class="form-label">Title </label>
+                                                <input type="text" class="form-control" id="title" name="title"
+                                                    placeholder="Input title blog..." value="">
+                                                <div class="text-danger" id="error-title"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="slug" class="form-label">Slug </label>
+                                                <input type="text" class="form-control" id="slug" name="slug"
+                                                    placeholder="Input slug blog..." value="">
+                                                <div class="text-danger" id="error-slug"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="body" class="form-label">Content </label>
+                                                <textarea class="form-control" id="body" name="body"
+                                                    placeholder="Input konten blog..." value="">
+                                                </textarea>
+                                                <div class="text-danger" id="error-body"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="tags" class="form-label">Tags </label>
+                                                <select name="tags" id="tags" class="form-control" multiple="">
+                                                    <option value="" disabled selected>Selected tags</option>
+                                                    @foreach ($tag as $tag)
+                                                    <option value="{{$tag->id}}">{{$tag->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="text-danger" id="error-title"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="author" class="form-label">Author </label>
+                                                <input type="text" class="form-control" id="author" name="author"
+                                                    placeholder="Input author blog..." value="">
+                                                <div class="text-danger" id="error-author"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="title" class="form-label">Image </label>
+                                                <input type="file" class="form-control" id="image" name="image"
+                                                    value="">
                                                 <div class="text-danger" id="error-image"></div>
                                             </div>
                                         </form>
@@ -78,7 +121,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-inverse-primary" id="btn-save"
                                             value="add">Simpan data</button>
-                                        <input type="hidden" id="programing_language_id" name="id" value="0">
+                                        <input type="hidden" id="tag_id" name="id" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -96,12 +139,12 @@
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Tambah data bahasa pemrograman");
+                $("#title").html("Add data blog");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('languages.store') }}");
+                $("#modalFormData").attr('action', "{{ route('blogs.store') }}");
             });
             // datatable
             showData = $('.table-data').DataTable({
@@ -115,7 +158,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 3],
+                        targets: [0, 8],
                         className: 'text-center'
                     },
                     {
@@ -134,8 +177,23 @@
                         return DT_RowIndex + '.';
                     }
                 }, {
-                    data: 'name',
-                    name: 'name',
+                    data: 'getCategory',
+                    name: 'getCategory',
+                }, {
+                    data: 'title',
+                    name: 'title',
+                }, {
+                    data: 'slug',
+                    name: 'slug',
+                }, {
+                    data: 'body',
+                    name: 'body',
+                }, {
+                    data: 'getTags',
+                    name: 'getTags',
+                }, {
+                    data: 'author',
+                    name: 'author',
                 }, {
                     data: 'image',
                     name: 'image',
@@ -173,20 +231,20 @@
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('languages.update',':id') }}"
+                let url = "{{ route('tags.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
                 $("#title").html("Edit "+ row.name);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
+                $("#type").val(row.type);
                 $("#name").val(row.name);
-                // $("#image").val(row.image);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('languages.destroy',':id') }}"
+                let url = "{{ route('tags.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({

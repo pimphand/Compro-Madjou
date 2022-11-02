@@ -5,6 +5,8 @@ use App\Http\Controllers\Web\MasterUserController;
 use App\Http\Controllers\Web\RoleController;
 use App\Http\Controllers\Web\TagController;
 use App\Http\Controllers\Sync\XenditController;
+use App\Http\Controllers\Web\BlogController;
+use App\Http\Controllers\Web\CategoryBlogController;
 use App\Http\Controllers\Web\CategoryTeamController;
 use App\Http\Controllers\Web\ProgrammingLanguageController;
 use App\Http\Controllers\Web\TeamController;
@@ -34,6 +36,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/category-teams', CategoryTeamController::class);
         Route::resource('/teams', TeamController::class);
         Route::resource('/languages', ProgrammingLanguageController::class);
+        Route::resource('/blogs', BlogController::class);
+        Route::resource('/category-blogs', CategoryBlogController::class);
         Route::resource('/user', MasterUserController::class);
     });
 });

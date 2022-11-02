@@ -19,7 +19,8 @@
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h4 class="card-title">Table category team</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
+                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
+                            data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
                                 Add Data
                             </button>
@@ -58,12 +59,7 @@
                                             novalidate="">
                                             @csrf
                                             <div id="put"></div>
-                                            {{-- <div class="mb-3">
-                                                <label for="type" class="form-label">Name </label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Input type tag..." value="">
-                                                <div class="text-danger" id="error-type"></div>
-                                            </div> --}}
+                                           
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">Name </label>
                                                 <input type="text" class="form-control" id="name" name="name"

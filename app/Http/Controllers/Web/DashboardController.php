@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Notification as ModelsNotification;
-use App\Models\Subscribe;
-use App\Notifications\SubscribeNotification;
+use App\Models\Madjou\Product;
+use App\Services\SycnMadjou\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use App\Models\Blog;
 use App\Models\Dashboard;
+
 
 class DashboardController extends Controller
 {
@@ -20,13 +20,6 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $users = Subscribe::whereStatus(1)->get(); // User::all();
-        $message = [
-            "body" => "test"
-        ];
-        foreach ($users as $user) {
-            Notification::route('mail', $user->email)->notify(new SubscribeNotification($message)); // test notification
-        }
         return view('dashboard');
     }
 

@@ -69,13 +69,13 @@
           </li>
           <li class="nav-item nav-category">Blogs</li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#uiComponents" role="button" aria-expanded="false" aria-controls="uiComponents">
+            <a href="{{ route('category-blogs.index')}}" class="nav-link">
               <i class="link-icon" data-feather="feather"></i>
               <span class="link-title">Category blog</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#advancedUI" role="button" aria-expanded="false" aria-controls="advancedUI">
+            <a href="{{ route('blogs.index')}}" class="nav-link">
               <i class="link-icon" data-feather="anchor"></i>
               <span class="link-title">Data blog</span>
             </a>
