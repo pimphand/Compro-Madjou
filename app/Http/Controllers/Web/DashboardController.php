@@ -6,12 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Madjou\Product;
 use App\Services\SycnMadjou\UserService;
 use Illuminate\Http\Request;
-<<<<<<< HEAD:app/Http/Controllers/Api/Admin/DashboardController.php
-=======
 use Illuminate\Support\Facades\Notification;
 use App\Models\Blog;
 use App\Models\Dashboard;
->>>>>>> 2dad23084eb627740a431bc9203f3e6a8405f84c:app/Http/Controllers/Web/DashboardController.php
 
 class DashboardController extends Controller
 {
