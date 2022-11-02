@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Madjou\Product;
-use App\Services\SycnMadjou\UserService;
+use App\Http\Resources\RoleResource;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Yajra\DataTables\Facades\DataTables;
 
-class DashboardController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +18,17 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        if(request()->ajax())
+        {
+            if (request()->ajax()) {
+                $dataRole = Role::latest()->get();
+                return DataTables::of($dataRole)
+                    ->addIndexColumn()
+                    ->make(true);
+            }
+        }
+
+        return view('pages.roles.index')->with('roles','Permission');
     }
 
     /**

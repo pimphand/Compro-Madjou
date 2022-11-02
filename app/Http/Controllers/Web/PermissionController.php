@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\RoleResource;
-use App\Models\Role;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Yajra\DataTables\Facades\DataTables;
 
-class RoleController extends Controller
+class PermissionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,17 +14,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        if(request()->ajax())
-        {
-            if (request()->ajax()) {
-                $dataRole = Role::latest()->get();
-                return DataTables::of($dataRole)
-                    ->addIndexColumn()
-                    ->make(true);
-            }
-        }
-
-        return view('pages.roles.index')->with('roles','Permission');
+        //
     }
 
     /**

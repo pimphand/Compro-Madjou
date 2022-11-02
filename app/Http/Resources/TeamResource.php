@@ -20,7 +20,6 @@ class TeamResource extends JsonResource
             'name'          => $this->name,
             'image'         => $this->image,
             'position'      => $this->position,
-            'lang'          => $this->lang,
             'created'       => $this->created_at,
             'update'        => $this->update_at,
             'delete'        => $this->delete_at,

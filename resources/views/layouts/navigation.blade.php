@@ -89,19 +89,19 @@
           </li>
           <li class="nav-item nav-category">Teams</li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" role="button" aria-expanded="false" aria-controls="general-pages">
+            <a href="{{ route('category-teams.index')}}" class="nav-link">
               <i class="link-icon" data-feather="book"></i>
               <span class="link-title">Category team</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" role="button" aria-expanded="false" aria-controls="general-pages">
+            <a href="{{ route('teams.index')}}" class="nav-link">
               <i class="link-icon" data-feather="book"></i>
               <span class="link-title">Data team</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" role="button" aria-expanded="false" aria-controls="general-pages">
+            <a href="{{ route('languages.index')}}" class="nav-link">
               <i class="link-icon" data-feather="book"></i>
               <span class="link-title">Programming language</span>
             </a>

@@ -1,10 +1,14 @@
 <?php
 
-use App\Http\Controllers\Api\Admin\DashboardController;
-use App\Http\Controllers\Api\Admin\MasterUserController;
-use App\Http\Controllers\Api\Admin\RoleController;
-use App\Http\Controllers\Api\Admin\TagController;
+use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\MasterUserController;
+use App\Http\Controllers\Web\RoleController;
+use App\Http\Controllers\Web\TagController;
 use App\Http\Controllers\Sync\XenditController;
+use App\Http\Controllers\Web\CategoryTeamController;
+use App\Http\Controllers\Web\ProgrammingLanguageController;
+use App\Http\Controllers\Web\TeamController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,11 +27,13 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-
     Route::middleware(['role:superadmin|dev'])->group(function () {
         Route::resource('/dashboard', DashboardController::class);
         Route::resource('/roles', RoleController::class);
         Route::resource('/tags', TagController::class);
+        Route::resource('/category-teams', CategoryTeamController::class);
+        Route::resource('/teams', TeamController::class);
+        Route::resource('/languages', ProgrammingLanguageController::class);
         Route::resource('/user', MasterUserController::class);
     });
 });

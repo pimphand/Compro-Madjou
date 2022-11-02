@@ -1,12 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
+use App\Models\TeamCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
+use Carbon\Carbon;
 
 class TeamController extends Controller
 {
@@ -17,13 +21,21 @@ class TeamController extends Controller
      */
     public function index()
     {
-        $dataTeam = Team::with('getTeam')->latest()->paginate(10);
+        $data = TeamCategory::all();
 
-        return response()->json([
-            'success'   => true,
-            'message'   => 'Data team berhasil ditampilkan!',
-            'data'      => TeamResource::collection($dataTeam),
-        ], 200);
+        if (request()->ajax()) {
+            $dataTeam    = Team::with('getTeam')->latest()->get();
+            return DataTables::of($dataTeam)
+                ->addColumn('getTeam', function($data) {
+                    return $data->getTeam->name;
+                })
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        return view('pages.teams.index',[
+            'data'  => $data
+        ])->with('teams');
     }
 
     /**
@@ -44,19 +56,33 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name'                  => 'required|string|max:50|unique',
-            'category_team_id'      => 'required|exist:team_categories',
-            'image'                 => 'required|image|mime:jpg,jpeg,png|max:2048',
-            'position'              => 'required|string|max:50',
+        $data   = Validator::make($request->all(),[
+            'category_team_id'  => 'required',
+            'name'              => 'required|string|max:50|unique:teams',
+            'image'             => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'position'          => 'required|string|max:50',
+        ], [
+            'name.required'     => 'Nama tidak boleh kosong',
+            'name.unique'       => 'Nama sudah digunakan',
+            'category_team_id.required'  => 'Kategori tim tidak boleh kosong',
+            'image.required'    => 'Gambar tidak boleh kosong',
+            'position.required' => 'Posisi tidak boleh kosong',
         ]);
+
+        if($data->fails())
+        {
+            return response()->json([
+                'status'    => false,
+                'errors'    => $data->getMessageBag()->toArray()
+            ]);
+        }
 
         if($image = $request->file('image'))
         {
             $path           = 'team/';
             $teamImage      = $image->getClientOriginalName();
             $image->move($path, $teamImage);
-            $data['image']  = $teamImage;
+            $request->image  = $teamImage;
         }
 
         $team = Team::create([
@@ -110,12 +136,25 @@ class TeamController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name'                  => 'required|string|max:50|unique',
-            'category_team_id'      => 'required|exist:team_categories',
-            'image'                 => 'required|image|mime:jpg,jpeg,png|max:2048',
-            'position'              => 'required|string|max:50',
+        $data   = Validator::make($request->all(),[
+            'category_team_id'  => 'required',
+            'name'              => 'required|string|max:50|unique:teams,id,'. $id,
+            'image'             => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'position'          => 'required|string|max:50',
+        ],[
+            'name.required'     => 'Nama tidak boleh kosong',
+            'name.unique'       => 'Nama sudah digunakan',
+            'category_team_id.required'  => 'Kategori tim tidak boleh kosong',
+            'position.required' => 'Posisi tidak boleh kosong',
         ]);
+
+        if($data->fails())
+        {
+            return response()->json([
+                'status'    => false,
+                'errors'    => $data->getMessageBag()->toArray(),
+            ]);
+        }
 
         $team = Team::findOrFail($id);
 
@@ -131,13 +170,13 @@ class TeamController extends Controller
             $path       = 'team/';
             $teamImage  = $image->getClientOriginalName();
             $image->move($path, $teamImage);
-            $data['image']  = $teamImage;
+            $request->image  = $teamImage;
         }
-
+        
         $team->update([
             'name'              => $request->name,
             'category_team_id'  => $request->category_team_id,
-            'image'             => $request->image,
+            'image'             => $request->image ?? $team->image,
             'position'          => $request->position,
         ]);
 
