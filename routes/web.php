@@ -8,7 +8,10 @@ use App\Http\Controllers\Sync\XenditController;
 use App\Http\Controllers\Web\BlogController;
 use App\Http\Controllers\Web\CategoryBlogController;
 use App\Http\Controllers\Web\CategoryTeamController;
+use App\Http\Controllers\Web\DetailServiceController;
+use App\Http\Controllers\Web\OurClientController;
 use App\Http\Controllers\Web\ProgrammingLanguageController;
+use App\Http\Controllers\Web\ServiceController;
 use App\Http\Controllers\Web\TeamController;
 
 use Illuminate\Support\Facades\Route;
@@ -38,6 +41,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/languages', ProgrammingLanguageController::class);
         Route::resource('/blogs', BlogController::class);
         Route::resource('/category-blogs', CategoryBlogController::class);
+        Route::resource('/clients', OurClientController::class);
+        Route::resource('/services', ServiceController::class);
+        Route::resource('/detail-services', DetailServiceController::class);
         Route::resource('/user', MasterUserController::class);
     });
 });

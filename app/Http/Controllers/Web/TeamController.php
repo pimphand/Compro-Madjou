@@ -96,11 +96,11 @@ class TeamController extends Controller
             'position'          => $request->position,
         ]);
 
-        return response()->json([
+        return [
             'success'   => true,
             'message'   => 'Data team berhasil ditambahkan!',
             'data'      => new TeamResource($team),
-        ], 200);
+        ];
     }
 
     /**
@@ -180,11 +180,11 @@ class TeamController extends Controller
             'position'          => $request->position,
         ]);
 
-        return response()->json([
+        return [
             'success'   => true,
             'message'   => 'Data team berhasil diubah!',
             'data'      => new TeamResource($team),
-        ], 200);
+        ];
     }
 
     /**
@@ -200,9 +200,9 @@ class TeamController extends Controller
 
         $team->delete();
 
-        return response()->json([
+        return [
             'success'       => true,
             'message'       => 'Data team berhasil dihapus!',
-        ], 200);
+        ];
     }
 }

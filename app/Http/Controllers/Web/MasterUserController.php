@@ -118,8 +118,9 @@ class MasterUserController extends Controller
     public function update(Request $request, $id)
     {
         $data = Validator::make($request->all(),[
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users, id,' . $id],
+            'name'      => 'required|string|max:255',
+            'email'     => 'required|email|max:255|unique:users,id,' . $id,
+            'password'  => 'nullable|min:8',
         ],[
             'name.required' => 'Nama tidak boleh kosong',
             'email.unique'   => 'Email sudah digunakan',
@@ -136,8 +137,9 @@ class MasterUserController extends Controller
 
         $user = User::findOrFail($id);
         $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name'      => $request->name,
+            'email'     => $request->email,
+            'password'  => Hash::make($request->password),
         ]);
 
         return response()->json([

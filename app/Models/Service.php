@@ -14,4 +14,19 @@ class Service extends Model
         'user_id', 'title', 'slug', 'tags', 'body'
         ,'image', 'lang'
     ];
+
+    public function getUser()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function setTagsAttribute($value)
+    {
+        $this->attributes['tags']   = json_encode($value);
+    }
+
+    public function getTagsAtrribute($value)
+    {
+        $this->attributes['tags']   = json_encode($value);
+    }
 }
