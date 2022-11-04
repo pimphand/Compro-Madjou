@@ -82,7 +82,7 @@ class ServiceController extends Controller
             $fileNameWithExt   = $image->getClientOriginalName();
             $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext               = $image->getClientOriginalExtension();
-            $fileNameSave      = $fileName.'.'.$ext;
+            $fileNameSave      = Str::uuid();
             $path              = $image->storeAs('public/service', $fileNameSave);  
         }
 
@@ -158,13 +158,14 @@ class ServiceController extends Controller
 
         if($request->hasFile('image') && $request->file('image') != null)
         {
-            Storage::delete($service->image);
+            Storage::delete('public/service/'.$service->image);
+            
 
             $fileNameWithExt    = $request->file('image')->getClientOriginalName();
             $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext                = $request->file('image')->getClientOriginalExtension();
-            $fileNameSave       = $fileName.'.'.$ext;
-            $path               = $request->file('image')->store($fileNameSave);
+            $fileNameSave       = Str::uuid();
+            $path               = $request->file('image')->storeAs('public/service', $fileNameSave);
         }
 
         $service->update([
@@ -194,8 +195,7 @@ class ServiceController extends Controller
     public function destroy($id)
     {
         $service    = Service::findOrFail($id);
-        Storage::delete($service->image);
-
+        Storage::delete('public/service/'.$service->image);
         $service->delete();
 
         return [

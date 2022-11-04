@@ -6,11 +6,14 @@ use App\Http\Controllers\Web\RoleController;
 use App\Http\Controllers\Web\TagController;
 use App\Http\Controllers\Sync\XenditController;
 use App\Http\Controllers\Web\BlogController;
+use App\Http\Controllers\Web\CarrerController;
 use App\Http\Controllers\Web\CategoryBlogController;
 use App\Http\Controllers\Web\CategoryTeamController;
 use App\Http\Controllers\Web\DetailServiceController;
 use App\Http\Controllers\Web\OurClientController;
 use App\Http\Controllers\Web\ProgrammingLanguageController;
+use App\Http\Controllers\Web\ProjectController;
+use App\Http\Controllers\Web\ProjectTypeController;
 use App\Http\Controllers\Web\ServiceController;
 use App\Http\Controllers\Web\TeamController;
 
@@ -44,6 +47,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/clients', OurClientController::class);
         Route::resource('/services', ServiceController::class);
         Route::resource('/detail-services', DetailServiceController::class);
+        Route::resource('/project-types', ProjectTypeController::class);
+        Route::resource('/project', ProjectController::class);
+        Route::resource('/careers', CarrerController::class);
         Route::resource('/user', MasterUserController::class);
     });
 });

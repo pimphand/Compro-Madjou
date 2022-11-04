@@ -84,7 +84,7 @@ class TeamController extends Controller
             $fileNameWithExt   = $image->getClientOriginalName();
             $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext               = $image->getClientOriginalExtension();
-            $fileNameSave      = $fileName.'.'.$ext;
+            $fileNameSave      = Str::uuid();
             $path              = $image->storeAs('public/teams', $fileNameSave);
 
         }
@@ -164,13 +164,13 @@ class TeamController extends Controller
 
         if($request->hasFile('image') && $request->file('image') != null)
         {
-            Storage::delete($team->image);
+            Storage::delete('public/teams/'.$team->image);
             
             $fileNameWithExt   = $request->file('image')->getClientOriginalName();
             $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext               = $request->file('image')->getClientOriginalExtension();
-            $fileNameSave      = $fileName.'.'.$ext;
-            $path              = $request->file('image')->store($fileNameSave);
+            $fileNameSave      = Str::uuid();
+            $path               = $request->file('image')->storeAs('public/teams', $fileNameSave);
         }
         
         $team->update([
@@ -196,7 +196,7 @@ class TeamController extends Controller
     public function destroy($id)
     {
         $team = Team::findOrFail($id);
-        $path = Storage::delete($team->image);
+        Storage::delete('public/teams/'.$team->image);
 
         $team->delete();
 

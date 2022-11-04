@@ -16,12 +16,17 @@
               <span class="link-title">Dashboard</span>
             </a>
           </li>
-          <li class="nav-item nav-category">Subscribtion</li>
+          <li class="nav-item nav-category">Notifications</li>
           
           <li class="nav-item">
             <a href="pages/apps/chat.html" class="nav-link">
               <i class="link-icon" data-feather="bell"></i>
-              <span class="link-title">Subscribes</span>
+              <span class="link-title">Notification</span>
+            </a>
+          </li><li class="nav-item">
+            <a href="pages/apps/chat.html" class="nav-link">
+              <i class="link-icon" data-feather="bell"></i>
+              <span class="link-title">Subscribe</span>
             </a>
           </li>
           <li class="nav-item nav-category">Service</li>
@@ -39,13 +44,13 @@
           </li>
           <li class="nav-item nav-category">Projects</li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" role="button" aria-expanded="false" aria-controls="general-pages">
+            <a href="{{ route('project-types.index')}}" class="nav-link">
               <i class="link-icon" data-feather="codepen"></i>
               <span class="link-title">Project type</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" role="button" aria-expanded="false" aria-controls="general-pages">
+            <a href="{{ route('project.index')}}" class="nav-link">
               <i class="link-icon" data-feather="folder"></i>
               <span class="link-title">Data project</span>
             </a>
@@ -71,7 +76,7 @@
           </li>
           <li class="nav-item nav-category">Careers</li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" role="button" aria-expanded="false" aria-controls="general-pages">
+            <a href="{{route('careers.index')}}" class="nav-link">
               <i class="link-icon" data-feather="dollar-sign"></i>
               <span class="link-title">Data career</span>
             </a>

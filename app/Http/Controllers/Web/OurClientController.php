@@ -141,13 +141,13 @@ class OurClientController extends Controller
 
         if($request->hasFile('image') && $request->file('image') != null)
         {
-            Storage::delete($client->image);
+            Storage::delete('public/clients/'.$client->image);
             
             $fileNameWithExt        = $request->file('image')->getClientOriginalName();
             $fileName               = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext                    = $request->file('image')->getClientOriginalExtension();
             $fileNameSave           = $fileName.'.'.$ext;
-            $path                   = $request->file('image')->store($fileNameSave);
+            $path                   = $request->file('image')->storeAs('public/clients', $fileNameSave);
         }
 
         $client->update([
@@ -173,7 +173,7 @@ class OurClientController extends Controller
     {
         $client = OurClient::findOrFail($id);
 
-        $path = Storage::delete($client->image);
+        Storage::delete('public/client/'.$client->image);
 
         $client->delete();
 

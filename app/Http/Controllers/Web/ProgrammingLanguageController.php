@@ -68,10 +68,11 @@ class ProgrammingLanguageController extends Controller
 
         if($image = $request->file('image'))
         {
-            $path           = 'language/';
-            $languageImage  = $image->getClientOriginalName();
-            $image->move($path);
-            $request->image = $languageImage;
+            $fileNameWithExt    = $request->file('image')->getClientOriginalName();
+            $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $ext                = $request->file('image')->getClientOriginalExtension();
+            $fileNameSave       = Str::uuid();
+            $path               = $request->file('image')->storeAs('public/language', $fileNameSave);
         }
 
         $language = ProgramingLanguage::create([
@@ -138,17 +139,14 @@ class ProgrammingLanguageController extends Controller
 
         if($request->hasFile('image') && $request->file('image') != null)
         {
-            $imagePath = public_path().'/language/'.$language->image;
-            if(File::exists($imagePath))
-            {
-                unlink($imagePath);
-            }
+            Storage::delete('public/language/'.$language->image);
+            
 
-            $image  = $request->file('image');
-            $path   = 'language/';
-            $languageImage  = $image->getClientOriginalName();
-            $image->move($path, $languageImage);
-            $request->image = $languageImage;
+            $fileNameWithExt    = $request->file('image')->getClientOriginalName();
+            $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $ext                = $request->file('image')->getClientOriginalExtension();
+            $fileNameSave       = Str::uuid();
+            $path               = $request->file('image')->storeAs('public/language', $fileNameSave);
         }
 
         $language->update([
@@ -172,9 +170,7 @@ class ProgrammingLanguageController extends Controller
     public function destroy($id)
     {
         $language   = ProgramingLanguage::findOrFail($id);
-        $path       = public_path().'/language/'.$language->image;
-        unlink($path);
-
+        Storage::delete('public/language/'.$language->image);
         $language->delete();
 
         return response()->json([

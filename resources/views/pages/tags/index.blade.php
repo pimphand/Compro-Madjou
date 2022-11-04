@@ -61,8 +61,12 @@
                                             <div id="put"></div>
                                             <div class="mb-3">
                                                 <label for="type" class="form-label">Type </label>
-                                                <input type="text" class="form-control" id="type" name="type"
-                                                    placeholder="Input type tag..." value="">
+                                                    <select name="type" id="type" class="form-control">
+                                                        <option value="" selected disabled hidden>Select type</option>
+                                                        <option value="blog">Blog</option>
+                                                        <option value="service">Service</option>
+                                                        <option value="all">All</option>
+                                                    </select>
                                                 <div class="text-danger" id="error-type"></div>
                                             </div>
                                             <div class="mb-3">
@@ -174,7 +178,7 @@
                 let url = "{{ route('tags.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
-                $("#title").html("Edit "+ row.name);
+                $("#title").html("Edit "+ row.title);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#type").val(row.type);
                 $("#name").val(row.name);

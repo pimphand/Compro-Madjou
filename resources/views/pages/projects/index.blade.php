@@ -1,4 +1,4 @@
-@section('title', 'Madjou | Our - Client')
+@section('title', 'Madjou | Project')
 <x-app-layout>
     <div class="page-content">
         <div class="row">
@@ -18,7 +18,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Table client</h4>
+                            <h4 class="card-title">Tabel project</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
                             data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
@@ -30,9 +30,12 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Name</th>
-                                        <th>url</th>
-                                        <th>Image</th>
+                                        <th>Project type</th>
+                                        <th>Programming</th>
+                                        <th>Title</th>
+                                        <th>Content</th>
+                                        <th>Url</th>
+                                        <th>Location</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -62,28 +65,51 @@
                                             @csrf
                                             <div id="put"></div>
                                             <div class="mb-3">
-                                                <label for="name" class="form-label">Name </label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Input client name..." value="">
-                                                <div class="text-danger" id="error-name"></div>
+                                                <label for="project_type" class="form-label">Project type </label>
+                                                    <select name="project_type_id" id="project_type_id" class="form-control">
+                                                        <option value="" selected disabled>Select project type</option>
+
+                                                        @foreach ($projectType as $type)
+                                                            <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                <div class="text-danger" id="error-project_type_id"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="titles" class="form-label">Title </label>
+                                                <input type="text" class="form-control" id="titles" name="title"
+                                                    placeholder="Input project title..." value="">
+                                                <div class="text-danger" id="error-title"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="programing" class="form-label">Programing </label>
+                                                <input type="text" class="form-control" id="programings" name="programing"
+                                                    placeholder="Input project programing..." value="">
+                                                <div class="text-danger" id="error-programing"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="body" class="form-label">Content </label>
+                                                <textarea type="text" name="body" id="body" cols="30" rows="10" class="form-control" value="" placeholder="Input you're content"></textarea>
+                                                <div class="text-danger" id="error-body"></div>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="url" class="form-label">Url </label>
                                                 <input type="text" class="form-control" id="url" name="url"
-                                                    placeholder="Input client url..." value="">
+                                                    placeholder="Input project url..." value="">
                                                 <div class="text-danger" id="error-url"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="image" class="form-label">Image </label>
-                                                <input type="file" name="image" id="image" class="form-control" value="">
-                                                <div class="text-danger" id="error-image"></div>
+                                                <label for="location" class="form-label">Location </label>
+                                                <input type="text" class="form-control" id="location" name="location"
+                                                    placeholder="Input project location..." value="">
+                                                <div class="text-danger" id="error-location"></div>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-inverse-primary" id="btn-save"
                                             value="add">Simpan data</button>
-                                        <input type="hidden" id="client_id" name="id" value="0">
+                                        <input type="hidden" id="project_type_id" name="id" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -101,15 +127,13 @@
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Add data Client");
+                $("#title").html("Add data project");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('clients.store') }}");
+                $("#modalFormData").attr('action', "{{ route('project.store') }}");
             });
-
-
             // datatable
             showData = $('.table-data').DataTable({
                 processing: true,
@@ -122,7 +146,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 4],
+                        targets: [0, 7],
                         className: 'text-center'
                     },
                     {
@@ -141,16 +165,23 @@
                         return DT_RowIndex + '.';
                     }
                 }, {
-                    data: 'name',
-                    name: 'name',
+                    data: 'getType',
+                    name: 'getType',
+                }, {
+                    data: 'programing',
+                    name: 'programing',
+                }, {
+                    data: 'title',
+                    name: 'title',
+                }, {
+                    data: 'body',
+                    name: 'body',
                 }, {
                     data: 'url',
                     name: 'url',
                 }, {
-                    data: 'image',
-                    name: 'image',
-                    render: function ( data) {
-              return `<img src="{{asset('storage/service')}}/${data}" width="40px">`;},
+                    data: 'location',
+                    name: 'location',
                 }, {
                     data: 'id',
                     name: 'id',
@@ -184,22 +215,25 @@
             })
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
-                
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('clients.update',':id') }}"
+                let url = "{{ route('project.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
-                $("#title").html("Edit "+ row.name);
+                $("#title").html("Edit "+ row.title);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
-                $("#name").val(row.name);
+                $("#project_type_id").val(row.project_type_id);
+                $("#titles").val(row.title);
+                $("#programings").val(row.programing);
+                $("#body").val(row.body);
                 $("#url").val(row.url);
+                $("#location").val(row.location);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('clients.destroy',':id') }}"
+                let url = "{{ route('project.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({

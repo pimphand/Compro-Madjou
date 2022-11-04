@@ -1,4 +1,4 @@
-@section('title', 'Madjou | Our - Client')
+@section('title', 'Madjou | Career')
 <x-app-layout>
     <div class="page-content">
         <div class="row">
@@ -18,7 +18,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Table client</h4>
+                            <h4 class="card-title">Tabel career</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
                             data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
@@ -31,8 +31,11 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Name</th>
-                                        <th>url</th>
-                                        <th>Image</th>
+                                        <th>Content</th>
+                                        <th>Location</th>
+                                        <th>Department</th>
+                                        <th>Minimum experience</th>
+                                        <th>Emplpoyment type</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -61,29 +64,51 @@
                                             novalidate="">
                                             @csrf
                                             <div id="put"></div>
+                                            
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">Name </label>
                                                 <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Input client name..." value="">
+                                                    placeholder="Input career name..." value="">
                                                 <div class="text-danger" id="error-name"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="url" class="form-label">Url </label>
-                                                <input type="text" class="form-control" id="url" name="url"
-                                                    placeholder="Input client url..." value="">
-                                                <div class="text-danger" id="error-url"></div>
+                                                <label for="body" class="form-label">Content </label>
+                                                <textarea type="text" name="body" id="body" cols="30" rows="10" class="form-control" value="" placeholder="Input you're content"></textarea>
+                                                <div class="text-danger" id="error-body"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="image" class="form-label">Image </label>
-                                                <input type="file" name="image" id="image" class="form-control" value="">
-                                                <div class="text-danger" id="error-image"></div>
+                                                <label for="location" class="form-label">Location </label>
+                                                <input type="text" class="form-control" id="location" name="location"
+                                                    placeholder="Input project location..." value="">
+                                                <div class="text-danger" id="error-location"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="department" class="form-label">Department </label>
+                                                <input type="text" class="form-control" id="department" name="department"
+                                                    placeholder="Input career department..." value="">
+                                                <div class="text-danger" id="error-department"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="minimum_experience" class="form-label">Minimum experience </label>
+                                                <input type="text" class="form-control" id="minimum_experience" name="minimum_experience"
+                                                    placeholder="Input career minimum experience..." value="">
+                                                <div class="text-danger" id="error-minimum_experience"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="employment_type" class="form-label">Emplpoyment type </label>
+                                                    <select name="employment_type" id="employment_type">
+                                                        <option value="" selected disabled>Select employment type</option>
+                                                        <option value="Contract">Contract</option>
+                                                        <option value="Permanent">Permanent</option>
+                                                    </select>
+                                                <div class="text-danger" id="error-employment_type"></div>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-inverse-primary" id="btn-save"
                                             value="add">Simpan data</button>
-                                        <input type="hidden" id="client_id" name="id" value="0">
+                                        <input type="hidden" id="career_id" name="id" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -101,15 +126,13 @@
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Add data Client");
+                $("#title").html("Add data career");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('clients.store') }}");
+                $("#modalFormData").attr('action', "{{ route('careers.store') }}");
             });
-
-
             // datatable
             showData = $('.table-data').DataTable({
                 processing: true,
@@ -122,7 +145,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 4],
+                        targets: [0, 7],
                         className: 'text-center'
                     },
                     {
@@ -144,13 +167,20 @@
                     data: 'name',
                     name: 'name',
                 }, {
-                    data: 'url',
-                    name: 'url',
+                    data: 'body',
+                    name: 'body',
                 }, {
-                    data: 'image',
-                    name: 'image',
-                    render: function ( data) {
-              return `<img src="{{asset('storage/service')}}/${data}" width="40px">`;},
+                    data: 'location',
+                    name: 'location',
+                }, {
+                    data: 'department',
+                    name: 'department',
+                }, {
+                    data: 'minimum_experience',
+                    name: 'minimum_experience',
+                }, {
+                    data: 'employment_type',
+                    name: 'employment_type',
                 }, {
                     data: 'id',
                     name: 'id',
@@ -184,22 +214,25 @@
             })
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
-                
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('clients.update',':id') }}"
+                let url = "{{ route('careers.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
-                $("#title").html("Edit "+ row.name);
+                $("#name").html("Edit "+ row.name);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#name").val(row.name);
-                $("#url").val(row.url);
+                $("#body").val(row.body);
+                $("#location").val(row.location);
+                $("#department").val(row.department);
+                $("#minimum_experience").val(row.minimum_experience);
+                $("#employment_type").val(row.employment_type);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('clients.destroy',':id') }}"
+                let url = "{{ route('careers.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({

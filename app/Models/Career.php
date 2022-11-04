@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Career extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'name', 'body', 'location', 'department', 
+        'minimum_experience', 'employment_type', 'lang',
+    ];
 }

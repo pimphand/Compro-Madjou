@@ -67,7 +67,7 @@
                                             
                                             <div class="mb-3">
                                                 <label for="title" class="form-label">Title </label>
-                                                <input type="text" class="form-control" id="title" name="title"
+                                                <input type="text" class="form-control" id="titles" name="title"
                                                     placeholder="Input title..." value="">
                                                 <div class="text-danger" id="error-title"></div>
                                             </div>
@@ -173,6 +173,8 @@
                 }, {
                     data: 'image',
                     name: 'image',
+                    render: function ( data) {
+              return `<img src="{{asset('storage/service')}}/${data}" width="40px">`;}
                 }, {
                     data: 'id',
                     name: 'id',
@@ -210,9 +212,9 @@
                 let url = "{{ route('services.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
-                $("#title").html("Edit " + row.name);
+                $("#title").html("Edit " + row.title);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
-                $("#title").val(row.title);
+                $("#titles").val(row.title);
                 $("#body").val(row.body);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');

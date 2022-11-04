@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\RoleResource;
-use App\Models\Role;
+use App\Http\Resources\ProjectResource;
+use App\Models\Project;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
-use Carbon\Carbon;
-use Yajra\DataTables\Facades\DataTables;
 
-class RoleController extends Controller
+class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,10 +16,13 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return View::make('laratrust::panel.roles.index', [
-            'roles' => Role::withCount('permissions')
-                ->simplePaginate(10),
-        ]);
+        $dataProject = Project::latest()->get();
+
+        return response()->json([
+            'success'   => true,
+            'message'   => 'Data projek berhasil ditampilkan!',
+            'data'      => ProjectResource::collection($dataProject),
+        ], 200);
     }
 
     /**
