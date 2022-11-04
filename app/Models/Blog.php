@@ -37,4 +37,18 @@ class Blog extends Model
             }
         }
     }
+
+    protected $fillable = [
+        'blog_category_id', 'title', 'slug', 'body',
+        'image', 'tags', 'lang', 'author'
+    ];
+
+    public function getCategories(){
+        return $this->belongsTo(BlogCategory::class, 'blog_category_id', 'id');
+    }
+
+    public function getTags()
+    {
+        return $this->belongsTo(Tag::class, 'tags_id', 'id');
+    }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -18,17 +19,10 @@ class RoleController extends Controller
      */
     public function index()
     {
-        if(request()->ajax())
-        {
-            if (request()->ajax()) {
-                $dataRole = Role::latest()->get();
-                return DataTables::of($dataRole)
-                    ->addIndexColumn()
-                    ->make(true);
-            }
-        }
-
-        return view('pages.roles.index')->with('roles','Permission');
+        return View::make('laratrust::panel.roles.index', [
+            'roles' => Role::withCount('permissions')
+                ->simplePaginate(10),
+        ]);
     }
 
     /**

@@ -1,4 +1,4 @@
-@section('title', 'Madjou | Users')
+@section('title', 'Madjou | Master - users')
 <x-app-layout>
     <div class="page-content">
         <div class="row">
@@ -168,26 +168,28 @@
                             class: 'btn-group btn-group-sm',
                             role: 'group',
                             html: () => {
-                                return [ button_delete]
+                                return [button_edit, button_delete]
                             }
                         })
                         return button_group.prop('outerHTML')
                     }
                 }]
             })
+
             // edit
-            // $('.table-data').on('click', '.btn-edit', function() {
-            //     let row = showData.row($(this).closest('tr')).data();
-            //     let url = "{{ route('user.update',':id') }}"
-            //         url = url.replace(':id', row.id);
-            //     $("#modalFormData").attr('action', url);
-            //     $("#title").html("Edit "+ row.name);
-            //     $("#put").html('<input type="hidden" name="_method" value="put">');
-            //     $("#name").val(row.name);
-            //     $("#email").val(row.email);
-            //     $('.error').empty();
-            //     $('#tagEditorModal').modal('show');
-            // })
+            $('.table-data').on('click', '.btn-edit', function() {
+                
+                let row = showData.row($(this).closest('tr')).data();
+                let url = "{{ route('user.update',':id') }}"
+                    url = url.replace(':id', row.id);
+                $("#modalFormData").attr('action', url);
+                $("#title").html("Edit "+ row.name);
+                $("#put").html('<input type="hidden" name="_method" value="put">');
+                $("#name").val(row.name);
+                $("#email").val(row.email);
+                $('.error').empty();
+                $('#tagEditorModal').modal('show');
+            })
 
             // // Delete
             $('.table-data').on('click', '.btn-remove', function() {

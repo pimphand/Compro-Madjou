@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 class TeamController extends Controller
@@ -77,26 +78,29 @@ class TeamController extends Controller
             ]);
         }
 
+
         if($image = $request->file('image'))
         {
-            $path           = 'team/';
-            $teamImage      = $image->getClientOriginalName();
-            $image->move($path, $teamImage);
-            $request->image  = $teamImage;
+            $fileNameWithExt   = $image->getClientOriginalName();
+            $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $ext               = $image->getClientOriginalExtension();
+            $fileNameSave      = Str::uuid();
+            $path              = $image->storeAs('public/teams', $fileNameSave);
+
         }
 
         $team = Team::create([
             'name'              => $request->name,
             'category_team_id'  => $request->category_team_id,
-            'image'             => $request->image,
+            'image'             => $fileNameSave,
             'position'          => $request->position,
         ]);
 
-        return response()->json([
+        return [
             'success'   => true,
             'message'   => 'Data team berhasil ditambahkan!',
             'data'      => new TeamResource($team),
-        ], 200);
+        ];
     }
 
     /**
@@ -160,31 +164,27 @@ class TeamController extends Controller
 
         if($request->hasFile('image') && $request->file('image') != null)
         {
-            $imagePath = public_path().'/team/'.$team->image;
-            if(File::exists($imagePath))
-            {
-                unlink($imagePath);
-            }
-
-            $image      = $request->file('image');
-            $path       = 'team/';
-            $teamImage  = $image->getClientOriginalName();
-            $image->move($path, $teamImage);
-            $request->image  = $teamImage;
+            Storage::delete('public/teams/'.$team->image);
+            
+            $fileNameWithExt   = $request->file('image')->getClientOriginalName();
+            $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $ext               = $request->file('image')->getClientOriginalExtension();
+            $fileNameSave      = Str::uuid();
+            $path               = $request->file('image')->storeAs('public/teams', $fileNameSave);
         }
         
         $team->update([
             'name'              => $request->name,
             'category_team_id'  => $request->category_team_id,
-            'image'             => $request->image ?? $team->image,
+            'image'             => $fileNameSave ?? $team->image,
             'position'          => $request->position,
         ]);
 
-        return response()->json([
+        return [
             'success'   => true,
             'message'   => 'Data team berhasil diubah!',
             'data'      => new TeamResource($team),
-        ], 200);
+        ];
     }
 
     /**
@@ -196,14 +196,13 @@ class TeamController extends Controller
     public function destroy($id)
     {
         $team = Team::findOrFail($id);
-        $path = public_path().'/team/'.$team->image;
-        unlink($path);
+        Storage::delete('public/teams/'.$team->image);
 
         $team->delete();
 
-        return response()->json([
+        return [
             'success'       => true,
             'message'       => 'Data team berhasil dihapus!',
-        ], 200);
+        ];
     }
 }

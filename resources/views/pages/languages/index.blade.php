@@ -19,7 +19,8 @@
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h4 class="card-title">Table programming language</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
+                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
+                            data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
                                 Add data
                             </button>
@@ -138,6 +139,8 @@
                 }, {
                     data: 'image',
                     name: 'image',
+                    render: function ( data) {
+              return `<img src="{{asset('storage/service')}}/${data}" width="40px">`;},
                 }, {
                     data: 'id',
                     name: 'id',

@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class OurClient extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'name', 'image','url', 'lang'
+    ];
+
 }
