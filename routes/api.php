@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Api\Admin\CategoryTeamController;
-use App\Http\Controllers\Api\Admin\TagController;
-use App\Http\Controllers\Api\Admin\TeamController;
+use App\Http\Controllers\Api\v1\CategoryTeamController;
+use App\Http\Controllers\Api\v1\TagController;
+use App\Http\Controllers\Api\v1\TeamController;
 use App\Http\Controllers\Api\v1\DetailServiceController;
 use App\Http\Controllers\Api\v1\OurClientController;
 use App\Http\Controllers\Api\v1\ServiceController;
