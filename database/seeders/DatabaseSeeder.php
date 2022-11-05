@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            ContactSeeder::class,
             LaratrustSeeder::class,
             ProvincesSeeder::class,
             CitiesSeeder::class,

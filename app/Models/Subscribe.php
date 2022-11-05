@@ -12,6 +12,10 @@ class Subscribe extends Model
 {
     use HasFactory, SoftDeletes, Notifiable;
 
+    protected $fillable = [
+        'email', 'status', 'location'
+    ];
+
     /**
      * Route notifications for the mail channel.
      *

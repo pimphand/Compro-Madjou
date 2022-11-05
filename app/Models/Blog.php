@@ -13,7 +13,7 @@ class Blog extends Model
     /*
         create log for blog
     */
-    public static function  createLog($post)
+    public static function createLog($post)
     {
         $log = BlogLog::whereIp(request()->getClientIp())
                 ->where('created_at', ">" , now()->subMinutes(2))

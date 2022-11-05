@@ -7,11 +7,11 @@ use App\Http\Resources\TeamResource;
 use App\Models\Team;
 use App\Models\TeamCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class TeamController extends Controller
 {
