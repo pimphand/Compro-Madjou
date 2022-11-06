@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CarrerResource;
 use Illuminate\Http\Request;
 use App\Models\Career;
 
@@ -15,12 +16,11 @@ class CarrerController extends Controller
      */
     public function index()
     {
-        $career = Career::latest();
+        $career = Career::where('lang', request()->header('lang') ?? 'id');
 
-        return response()->json([
+        return CarrerResource::collection($career->paginate(10))->additional([
             'success'   => true,
             'message'   => 'Data karir berhasil ditampilkan',
-            'data'      => CareerResource::collection($career),
         ]);
     }
 

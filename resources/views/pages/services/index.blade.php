@@ -19,8 +19,8 @@
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h4 class="card-title">Table data service</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
-                            data-bs-target="#tagEditorModal" id='btn-add'>
+                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
+                                data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
                                 Add Data
                             </button>
@@ -64,7 +64,7 @@
                                             novalidate="" enctype="multipart/form-data">
                                             @csrf
                                             <div id="put"></div>
-                                            
+
                                             <div class="mb-3">
                                                 <label for="title" class="form-label">Title </label>
                                                 <input type="text" class="form-control" id="titles" name="title"
@@ -73,24 +73,27 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="body" class="form-label">Content </label>
-                                                <textarea type="text" class="form-control" id="body" name="body" placeholder="Input service content..."></textarea>
+                                                <textarea type="text" class="form-control" id="body" name="body"
+                                                    placeholder="Input service content..."></textarea>
                                                 <div class="text-danger" id="error-body"></div>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label for="body" class="form-label">Tags </label>
-                                                    <select name="tags[]" id="tags" class="form-control" multiple="multiple">
-                                                        <option value="" disabled selected>Select Tags</option>
-                                                        @foreach ($tags as $tag)
-                                                            <option value="{{ $tag->name }}">{{ $tag->name }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                <select name="tags[]" id="tags" class="form-control"
+                                                    multiple="multiple">
+                                                    <option value="" disabled selected>Select Tags</option>
+                                                    @foreach ($tags as $tag)
+                                                    <option value="{{ $tag->name }}">{{ $tag->name }}</option>
+                                                    @endforeach
+                                                </select>
                                                 <div class="text-danger" id="error-tag"></div>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label for="image" class="form-label">Image </label>
-                                                <input type="file" name="image" id="image" class="form-control" value="">
+                                                <input type="file" name="image" id="image" class="form-control"
+                                                    value="">
                                                 <div class="text-danger" id="error-image"></div>
                                             </div>
                                         </form>
@@ -174,7 +177,8 @@
                     data: 'image',
                     name: 'image',
                     render: function ( data) {
-              return `<img src="{{asset('storage/service')}}/${data}" width="40px">`;}
+                        return `<img src="{{asset('storage/service')}}/${data}" width="40px">`;
+                    }
                 }, {
                     data: 'id',
                     name: 'id',
