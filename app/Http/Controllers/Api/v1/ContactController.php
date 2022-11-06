@@ -16,13 +16,12 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $data = Contact::all();
+       $contact = Contact::where('lang', request()->header('lang') ?? 'id');
 
-        return response()->json([
+       return ContactResource::collection($contact)->additional([
             'success'   => true,
-            'message'   => 'Data kontak berhasil ditampilkan',
-            'data'      => ContactResource::collection($data)
-        ], 200);
+            'message'   => 'Data kontak berhasil ditampilkan'
+       ]);
     }
 
     /**

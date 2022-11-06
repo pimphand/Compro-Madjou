@@ -16,13 +16,12 @@ class OurClientController extends Controller
      */
     public function index()
     {
-        $data = OurClient::latest()->get();
+        $client = OurClient::where('lang', request()->header('lang') ?? 'id');
 
-        return response()->json([
+        return OurClientResource::collection($client->paginate(10))->additional([
             'success'   => true,
-            'message'   => 'Data client berhasil ditampilkan',
-            'data'      => OurClientResource::collection($data),
-        ], 200);
+            'message'   => 'Data klien berhasil ditampilkan',
+        ]);
     }
 
     /**

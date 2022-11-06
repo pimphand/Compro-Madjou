@@ -64,7 +64,7 @@
                                             <div id="put"></div>
                                             
                                             <div class="mb-3">
-                                                <label for="body" class="form-label">Tags </label>
+                                                <label for="body" class="form-label">Service </label>
                                                     <select name="service_id" id="service_id" class="form-control" >
                                                         <option value="" disabled selected>Select service</option>
                                                         @foreach ($services as $service)
@@ -76,7 +76,7 @@
 
                                             <div class="mb-3">
                                                 <label for="title" class="form-label">Title </label>
-                                                <input type="text" class="form-control" id="title" name="title"
+                                                <input type="text" class="form-control" id="titles" name="title"
                                                     placeholder="Input title..." value="">
                                                 <div class="text-danger" id="error-title"></div>
                                             </div>
@@ -204,9 +204,10 @@
                 let url = "{{ route('detail-services.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
-                $("#title").html("Edit " + row.name);
+                $("#title").html("Edit " + row.title);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
-                $("#title").val(row.title);
+                $("#tags").val(row.tags)
+                $("#titles").val(row.title);
                 $("#body").val(row.body);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');

@@ -7,6 +7,10 @@ use App\Http\Controllers\Api\v1\DetailServiceController;
 use App\Http\Controllers\Api\v1\OurClientController;
 use App\Http\Controllers\Api\v1\ServiceController;
 use App\Http\Controllers\Api\v1\CarrerController;
+use App\Http\Controllers\Api\v1\EmployeeRegistrationController;
+use App\Http\Controllers\Api\v1\ProjectController;
+use App\Http\Controllers\Api\v1\ProjectTypeController;
+use App\Http\Controllers\Api\v1\SubscribeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,11 +25,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::resource('/employee', EmployeeRegistrationController::class);
+
 Route::resource('/clients', OurClientController::class);
 
 Route::resource('/services', ServiceController::class);
 
 Route::resource('/detail-services', DetailServiceController::class);
+
+Route::resource('/project-type', ProjectTypeController::class);
+
+Route::resource('/projects', ProjectController::class);
 
 Route::resource('/careers', CarrerController::class);
 
@@ -34,6 +44,8 @@ Route::resource('/category-team', CategoryTeamController::class);
 Route::resource('/team', TeamController::class);
 
 Route::resource('/tags', TagController::class);
+
+route::resource('/subscribe', SubscribeController::class);
 
 
 

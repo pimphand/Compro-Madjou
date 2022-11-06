@@ -16,13 +16,14 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $dataProject = Project::latest()->get();
+        $project = Project::where('lang', request()->header('lang') ?? 'id');
 
-        return response()->json([
+        return ProjectResource::collection($project->paginate(10))->additional([
             'success'   => true,
-            'message'   => 'Data projek berhasil ditampilkan!',
-            'data'      => ProjectResource::collection($dataProject),
-        ], 200);
+            'message'   => 'Data project berhasil ditampilkan',
+        ]);
+
+        
     }
 
     /**

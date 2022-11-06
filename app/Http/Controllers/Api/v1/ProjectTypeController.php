@@ -16,13 +16,14 @@ class ProjectTypeController extends Controller
      */
     public function index()
     {
-        $dataProType = ProjectType::latest()->get();
+        $projectType = ProjectType::where('lang', request()->header('lang') ?? 'id');
 
-        return response()->json([
+        return ProjectTypeResource::collection($projectType->paginate(10))->additional([
             'success'   => true,
-            'message'   => 'Data tipe projek berhasil ditampilkan',
-            'data'      => ProjectTypeResource::collection($dataProType),
-        ], 200);
+            'message'   => 'Data tipe projek berhasil ditampilkan'
+        ]);
+
+       
     }
 
     /**

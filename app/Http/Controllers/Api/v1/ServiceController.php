@@ -17,13 +17,12 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $data = Service::latest()->get();
+        $service = Service::where('lang', request()->header('lang') ?? 'id');
 
-        return response()->json([
+        return ServiceResource::collection($service->paginate(10))->additional([
             'success'   => true,
-            'message'   => 'Data layanan berhasil ditampilkan!',
-            'data'      => ServiceResource::collection($data)
-        ],200);
+            'message'   => 'Data layanan berhasil ditampilkan',
+        ]);
     }
 
     /**
