@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CarrerResource;
 use Illuminate\Http\Request;
+use App\Models\Career;
 
-class PermissionController extends Controller
+class CarrerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +16,12 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //
+        $career = Career::where('lang', request()->header('lang') ?? 'id');
+
+        return CarrerResource::collection($career->paginate(10))->additional([
+            'success'   => true,
+            'message'   => 'Data karir berhasil ditampilkan',
+        ]);
     }
 
     /**

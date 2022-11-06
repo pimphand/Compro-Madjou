@@ -1,31 +1,32 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\TagsResource;
-use App\Models\Tag;
-use Carbon\Carbon;
+use App\Http\Resources\CategoryTeamResource;
+use App\Models\TeamCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Carbon\Carbon;
 
-class TagController extends Controller
+class CategoryTeamController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->ajax()) {
-            $dataTag    = Tag::latest()->get();
-            return DataTables::of($dataTag)
+        if (request()->ajax()) 
+        {
+            $dataCatTeam    = TeamCategory::latest()->get();
+            return DataTables::of($dataCatTeam)
                 ->addIndexColumn()
                 ->make(true);
         }
-        return view('pages.tags.index')->with('tags');
+        return view('pages.category-teams.index')->with('category-teams');
     }
 
     /**
@@ -46,34 +47,31 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        $data = Validator::make($request->all(), [
-            'type'  => 'required|string',
-            'name'  => 'required|string|unique:tags'
-        ], [
+        $data   = Validator::make($request->all(),[
+            'name'  => 'required|max:50',
+        ],[
             'name.required' => 'Nama tidak boleh kosong',
-            'name.unique' => 'Nama sudah ada',
-            'type.required' => 'Tipe tidak boleh kosong',
+            'name.max'      => 'Nama terlalu panjang',
         ]);
 
-        if ($data->fails()) {
+        if($data->fails())
+        {
             return response()->json([
-                'status' => false,
-                'errors' => $data->getMessageBag()->toArray()
+                'status'    => false,
+                'errors'    => $data->getMessageBag()->toArray()
             ]);
         }
 
-        $tag    = Tag::create([
-            'type'      => $request->type,
-            'name'      => $request->name,
+        
+        $dataCategoryTeam = TeamCategory::create([
+            'name'  => $request->name,
         ]);
 
-        // $request->session()->flash('message' , 'Data tag berhasil ditambahkan!');
-
-        return [
+        return response()->json([
             'success'   => true,
-            'message'   => 'Data tag berhasil ditambahkan!',
-            'data'      => new TagsResource($tag)
-        ];
+            'message'   => 'Data kategori team berhasil ditambah!',
+            'data'      => new CategoryTeamResource($dataCategoryTeam),
+        ], 200);
     }
 
     /**
@@ -84,12 +82,12 @@ class TagController extends Controller
      */
     public function show($id)
     {
-        $tag = Tag::findOrFail($id);
+        $dataCategoryTeam = TeamCategory::findOrFail($id);
 
         return response()->json([
             'success'   => true,
-            'message'   => 'Data tag berhasil ditampilkan!',
-            'data'      => new TagsResource($tag),
+            'message'   => 'Data kategori team berhasil ditampilkan!',
+            'data'      => new CategoryTeamResource($dataCategoryTeam),
         ], 200);
     }
 
@@ -113,32 +111,32 @@ class TagController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = Validator::make($request->all(), [
-            'type'  => 'required|string',
-            'name'  => 'required|string|unique:tags,id,' . $id
-        ], [
+        $data   = Validator::make($request->all(),[
+            'name'  => 'required|max:50',
+        ],[
             'name.required' => 'Nama tidak boleh kosong',
-            'name.unique' => 'Nama sudah ada',
-            'type.required' => 'Tipe tidak boleh kosong',
+            'name.max'      => 'Nama terlalu panjang',
         ]);
 
-        if ($data->fails()) {
+        if($data->fails())
+        {
             return response()->json([
-                'success' => false,
-                'errors' => $data->getMessageBag()->toArray()
+                'status'    => false,
+                'errors'    => $data->getMessageBag()->toArray()
             ]);
         }
 
-        $tag = Tag::findOrFail($id);
-        $tag->update([
-            'type'  => $request->type,
+
+        $categoryTeam = TeamCategory::findOrFail($id);
+
+        $categoryTeam->update([
             'name'  => $request->name,
         ]);
 
         return response()->json([
             'success'   => true,
-            'message'   => 'Data tag berhasil diubah!',
-            'data'      => new TagsResource($tag),
+            'message'   => 'Data kategori team berhasil diubah!',
+            'data'      => new CategoryTeamResource($categoryTeam),
         ], 200);
     }
 
@@ -150,12 +148,13 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        $tag = Tag::findOrFail($id);
-        $tag->delete();
+        $categoryTeam = TeamCategory::findOrFail($id);
 
-        return [
+        $categoryTeam->delete();
+
+        return response()->json([
             'success'   => true,
-            'message'   => 'Data tag berhasil dihapus',
-        ];
+            'message'   => 'Data kategori team berhasil di hapus!',
+        ], 200);
     }
 }

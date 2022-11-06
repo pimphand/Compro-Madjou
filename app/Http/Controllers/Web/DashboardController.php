@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Madjou\Product;
 use App\Services\SycnMadjou\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
+use App\Models\Blog;
+use App\Models\Dashboard;
+
 
 class DashboardController extends Controller
 {

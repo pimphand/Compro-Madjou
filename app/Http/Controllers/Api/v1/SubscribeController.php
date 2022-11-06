@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CategoryTeamResource;
-use App\Models\TeamCategory;
+use App\Http\Resources\SubsribeResource;
+use App\Models\Subscribe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class CategoryTeamController extends Controller
+class SubscribeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,12 +17,7 @@ class CategoryTeamController extends Controller
      */
     public function index()
     {
-        $dataCategoryTeam = TeamCategory::latest()->paginate(10);
-        return response()->json([
-            'success'   => true,
-            'message'   => 'Data kategori team berhasil ditampilkan',
-            'data'      => CategoryTeamResource::collection($dataCategoryTeam),
-        ], 200);
+        //
     }
 
     /**
@@ -31,7 +27,7 @@ class CategoryTeamController extends Controller
      */
     public function create()
     {
-        return view('');
+        //
     }
 
     /**
@@ -42,19 +38,31 @@ class CategoryTeamController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name'  => 'required|string|max:50',
+        $data = Validator::make($request->all(),[
+            'email'     => 'required|email|unique:subscribes',
+        ], [
+            'email.required'    => 'Email tidak boleh kosong',
         ]);
 
-        $dataCategoryTeam = TeamCategory::create([
-            'name'  => $request->name,
+        if($data->fails())
+        {
+            return response()->json([
+                'status'    => false,
+                'errors'    => $data->getMessageBag()->toArray()
+            ]);
+        }
+
+        $subscribe  = Subscribe::create([
+            'email'     => $request->email,
+            'location'  => $request->getClientIp(),
         ]);
 
         return response()->json([
             'success'   => true,
-            'message'   => 'Data kategori team berhasil ditambah!',
-            'data'      => new CategoryTeamResource($dataCategoryTeam),
+            'message'   => 'Subscribe telah berhasil',
+            'data'      => new SubsribeResource($subscribe)
         ], 200);
+
     }
 
     /**
@@ -65,12 +73,12 @@ class CategoryTeamController extends Controller
      */
     public function show($id)
     {
-        $dataCategoryTeam = TeamCategory::findOrFail($id);
+        $data = Subscribe::findOrFail($id);
 
         return response()->json([
             'success'   => true,
-            'message'   => 'Data kategori team berhasil ditampilkan!',
-            'data'      => new CategoryTeamResource($dataCategoryTeam),
+            'message'   => 'Data subscribe berhasil ditampilkan',
+            'data'      => new SubsribeResource($data)
         ], 200);
     }
 
@@ -94,20 +102,26 @@ class CategoryTeamController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name'  => 'required|string|max:50',
-        ]);
+        $data = Subscribe::findOrFail($id);
 
-        $categoryTeam = TeamCategory::findOrFail($id);
+        if($data->status == 1)
+        {
+            $data->update([
+                'status'    => 0,
+            ]);
 
-        $categoryTeam->update([
-            'name'  => $request->name,
-        ]);
+            return response()->json([
+                'success'   => true,
+                'message'   => 'Anda berhasil unsubscribe',
+                'data'      => new SubsribeResource($data),
+            ], 200);
+        } 
+        
 
         return response()->json([
             'success'   => true,
-            'message'   => 'Data kategori team berhasil diubah!',
-            'data'      => new CategoryTeamResource($categoryTeam),
+            'message'   => 'Anda berhasil subscribe',
+            'data'      => new SubsribeResource($data),
         ], 200);
     }
 
@@ -119,13 +133,6 @@ class CategoryTeamController extends Controller
      */
     public function destroy($id)
     {
-        $categoryTeam = TeamCategory::findOrFail($id);
-
-        $categoryTeam->delete();
-
-        return response()->json([
-            'success'   => true,
-            'message'   => 'Data kategori team berhasil di hapus!',
-        ], 200);
+        //
     }
 }

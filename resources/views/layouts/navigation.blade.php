@@ -17,111 +17,111 @@
             </a>
           </li>
           <li class="nav-item nav-category">Notifications</li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#emails" role="button" aria-expanded="false" aria-controls="emails">
-              <i class="link-icon" data-feather="mail"></i>
-              <span class="link-title">Contact</span>
-            </a>
-          </li>
+          
           <li class="nav-item">
             <a href="pages/apps/chat.html" class="nav-link">
-              <i class="link-icon" data-feather="message-square"></i>
-              <span class="link-title">Employee Registrasions</span>
+              <i class="link-icon" data-feather="bell"></i>
+              <span class="link-title">Notification</span>
             </a>
-          </li>
-          <li class="nav-item">
+          </li><li class="nav-item">
             <a href="pages/apps/chat.html" class="nav-link">
-              <i class="link-icon" data-feather="message-square"></i>
-              <span class="link-title">Subscribes</span>
+              <i class="link-icon" data-feather="bell"></i>
+              <span class="link-title">Subscribe</span>
             </a>
           </li>
           <li class="nav-item nav-category">Service</li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#emails" role="button" aria-expanded="false" aria-controls="emails">
-              <i class="link-icon" data-feather="mail"></i>
+            <a href="{{ route('services.index')}}" class="nav-link">
+              <i class="link-icon" data-feather="tool"></i>
               <span class="link-title">Service</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/apps/chat.html" class="nav-link">
-              <i class="link-icon" data-feather="message-square"></i>
+            <a href="{{ route('detail-services.index')}}" class="nav-link">
+              <i class="link-icon" data-feather="tool"></i>
               <span class="link-title">Detail service</span>
             </a>
           </li>
           <li class="nav-item nav-category">Projects</li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" role="button" aria-expanded="false" aria-controls="general-pages">
-              <i class="link-icon" data-feather="book"></i>
+            <a href="{{ route('project-types.index')}}" class="nav-link">
+              <i class="link-icon" data-feather="codepen"></i>
               <span class="link-title">Project type</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" role="button" aria-expanded="false" aria-controls="general-pages">
-              <i class="link-icon" data-feather="book"></i>
+            <a href="{{ route('project.index')}}" class="nav-link">
+              <i class="link-icon" data-feather="folder"></i>
               <span class="link-title">Data project</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" role="button" aria-expanded="false" aria-controls="general-pages">
-              <i class="link-icon" data-feather="book"></i>
+            <a href="{{ route('clients.index')}}" class="nav-link">
+              <i class="link-icon" data-feather="smile"></i>
               <span class="link-title">Our clients</span>
             </a>
           </li>
           <li class="nav-item nav-category">Blogs</li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#uiComponents" role="button" aria-expanded="false" aria-controls="uiComponents">
-              <i class="link-icon" data-feather="feather"></i>
+            <a href="{{ route('category-blogs.index')}}" class="nav-link">
+              <i class="link-icon" data-feather="grid"></i>
               <span class="link-title">Category blog</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#advancedUI" role="button" aria-expanded="false" aria-controls="advancedUI">
-              <i class="link-icon" data-feather="anchor"></i>
+            <a href="{{ route('blogs.index')}}" class="nav-link">
+              <i class="link-icon" data-feather="book-open"></i>
               <span class="link-title">Data blog</span>
             </a>
           </li>
           <li class="nav-item nav-category">Careers</li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" role="button" aria-expanded="false" aria-controls="general-pages">
-              <i class="link-icon" data-feather="book"></i>
+            <a href="{{route('careers.index')}}" class="nav-link">
+              <i class="link-icon" data-feather="dollar-sign"></i>
               <span class="link-title">Data career</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="pages/apps/chat.html" class="nav-link">
+              <i class="link-icon" data-feather="user-check"></i>
+              <span class="link-title">Employee Registrasions</span>
             </a>
           </li>
           <li class="nav-item nav-category">Teams</li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" role="button" aria-expanded="false" aria-controls="general-pages">
-              <i class="link-icon" data-feather="book"></i>
+            <a href="{{ route('category-teams.index')}}" class="nav-link">
+              <i class="link-icon" data-feather="user-plus"></i>
               <span class="link-title">Category team</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" role="button" aria-expanded="false" aria-controls="general-pages">
-              <i class="link-icon" data-feather="book"></i>
+            <a href="{{ route('teams.index')}}" class="nav-link">
+              <i class="link-icon" data-feather="folder"></i>
               <span class="link-title">Data team</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" role="button" aria-expanded="false" aria-controls="general-pages">
-              <i class="link-icon" data-feather="book"></i>
+            <a href="{{ route('languages.index')}}" class="nav-link">
+              <i class="link-icon" data-feather="bookmark"></i>
               <span class="link-title">Programming language</span>
             </a>
           </li>
           <li class="nav-item nav-category">Super-Admin Menu</li>
           <li class="nav-item">
             <a href="{{route('user.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="hash"></i>
+              <i class="link-icon" data-feather="users"></i>
               <span class="link-title">Master User</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="{{ route('roles.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="book"></i>
+              <i class="link-icon" data-feather="lock"></i>
               <span class="link-title">Role & Privilage</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="{{ route('tags.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="book"></i>
+              <i class="link-icon" data-feather="tag"></i>
               <span class="link-title">Tags</span>
             </a>
           </li>
