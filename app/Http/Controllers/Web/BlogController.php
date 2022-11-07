@@ -8,9 +8,11 @@ use App\Models\Blog;
 use App\Models\BlogCategory;
 use App\Models\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
@@ -26,13 +28,13 @@ class BlogController extends Controller
 
         if(request()->ajax())
         {
-            $dataBlog = Blog::with('getCategories', 'getTags')->latest()->get();
+            $dataBlog = Blog::with('getCategories', 'getTags', 'getUsers')->latest()->get();
             return DataTables::of($dataBlog)
-                    ->addColumn('getCategory', function($dataCat){
-                        return $dataCat->getCategory->name;
+                    ->addColumn('getCategories', function($dataCat){
+                        return $dataCat->getCategories->name;
                     })
-                    ->addColumn('getTags', function($dataTag){
-                        return $dataTag->getTags->name;
+                    ->addColumn('getUsers', function($user){
+                        return $user->getUsers->name;
                     })
                     ->addIndexColumn()
                     ->make(true);
@@ -66,18 +68,12 @@ class BlogController extends Controller
         $data = Validator::make($request->all(),[
             'blog_category_id'  => 'required|',
             'title'             => 'required|string|max:50',
-            'slug'              => 'required|string|',
             'body'              => 'required|string|',
-            'tags'              => 'required|',
-            'author'            => 'required|string|',
             'image'             => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ], [
             'blog_category_id.required'     => 'Kategori blog tidak boleh kosong!',
             'title.required'                => 'Judul tidak boleh kosong!',
-            'slug.required'                 => 'Slug tidak boleh kosong!',
             'body.required'                 => 'Konten tidak boleh kosong!',
-            'tags.required'                 => 'Tags tidak boleh kosong!',
-            'author.required'               => 'Penulis tidak boleh kosong!',
             'image.required'                => 'Gambar tidak boleh kosong!',     
         ]);
 
@@ -91,20 +87,21 @@ class BlogController extends Controller
 
         if($image = $request->file('image'))
         {
-            $path           = 'storage/blogs';
-            $blogImage      = $image->getClientOriginalName();
-            $image->move($path, $blogImage);
-            $request->image  = $blogImage;
+            $fileNameWithExt   = $image->getClientOriginalName();
+            $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $ext               = $image->getClientOriginalExtension();
+            $fileNameSave      = Str::uuid();
+            $path              = $image->storeAs('public/blogs', $fileNameSave);  
         }
 
         $dataBlog = Blog::create([
             'blog_category_id'      => $request->blog_category_id,
             'title'                 => $request->title,
-            'slug'                  => $request->slug,
+            'slug'                  => Str::slug($request->title),
             'body'                  => $request->body,
             'tags'                  => $request->tags,
-            'author'                => $request->author,
-            'image'                 => $blogImage,
+            'author'                => Auth::user()->id,
+            'image'                 => $fileNameSave,
         ]);
 
         return [
@@ -145,7 +142,55 @@ class BlogController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = Validator::make($request->all(),[
+            'blog_category_id'  => 'required|',
+            'title'             => 'required|string|max:50',
+            'body'              => 'required|string|',
+            'image'             => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ], [
+            'blog_category_id.required'     => 'Kategori blog tidak boleh kosong!',
+            'title.required'                => 'Judul tidak boleh kosong!',
+            'body.required'                 => 'Konten tidak boleh kosong!',
+            'image.required'                => 'Gambar tidak boleh kosong!',     
+        ]);
+
+        if($data->fails())
+        {
+            return response()->json([
+                'status'        => false,
+                'message'       => $data->getMessageBag()->toArray()
+            ]);
+        }
+
+        $blog    = Blog::findOrFail($id);
+
+        if($request->hasFile('image') && $request->file('image') != null)
+        {
+            Storage::delete('public/blogs/'.$blog->image);
+            
+
+            $fileNameWithExt    = $request->file('image')->getClientOriginalName();
+            $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $ext                = $request->file('image')->getClientOriginalExtension();
+            $fileNameSave       = Str::uuid();
+            $path               = $request->file('image')->storeAs('public/service', $fileNameSave);
+        }
+
+        $blog->update([
+            'blog_category_id'      => $request->blog_category_id,
+            'title'                 => $request->title,
+            'slug'                  => Str::slug($request->title),
+            'body'                  => $request->body,
+            'tags'                  => $request->tags,
+            'author'                => Auth::user()->id,
+            'image'                 => $fileNameSave ?? $blog->image,
+        ]);
+
+        return [
+            'success'   => true,
+            'message'   => 'Data blog berhasil diubah',
+            'data'      => new BlogResource($blog)
+        ];
     }
 
     /**
@@ -156,6 +201,13 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $blog    = Blog::findOrFail($id);
+        Storage::delete('public/blog/'.$blog->image);
+        $blog->delete();
+
+        return [
+            'success'   => true,
+            'message'   => 'Data blog berhasil dihapus!',
+        ];
     }
 }
