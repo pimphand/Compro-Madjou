@@ -31,7 +31,6 @@
                                         <th>No</th>
                                         <th>Category Blog</th>
                                         <th>Title</th>
-                                        <th>Slug</th>
                                         <th>Body</th>
                                         <th>Tags</th>
                                         <th>Author</th>
@@ -44,6 +43,7 @@
                                 </tbody>
                             </table>
                         </div>
+
 
                         {{-- modal --}}
 
@@ -82,12 +82,6 @@
                                                 <div class="text-danger" id="error-title"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="slug" class="form-label">Slug </label>
-                                                <input type="text" class="form-control" id="slug" name="slug"
-                                                    placeholder="Input slug blog..." value="">
-                                                <div class="text-danger" id="error-slug"></div>
-                                            </div>
-                                            <div class="mb-3">
                                                 <label for="body" class="form-label">Content </label>
                                                 <textarea class="form-control" id="body" name="body"
                                                     placeholder="Input konten blog..." value="">
@@ -99,16 +93,10 @@
                                                 <select name="tags" id="tags" class="form-control" multiple="">
                                                     <option value="" disabled selected>Selected tags</option>
                                                     @foreach ($tag as $tag)
-                                                    <option value="{{$tag->id}}">{{$tag->name}}</option>
+                                                    <option value="{{$tag->name}}">{{$tag->name}}</option>
                                                     @endforeach
                                                 </select>
                                                 <div class="text-danger" id="error-title"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="author" class="form-label">Author </label>
-                                                <input type="text" class="form-control" id="author" name="author"
-                                                    placeholder="Input author blog..." value="">
-                                                <div class="text-danger" id="error-author"></div>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="title" class="form-label">Image </label>
@@ -121,7 +109,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-inverse-primary" id="btn-save"
                                             value="add">Simpan data</button>
-                                        <input type="hidden" id="tag_id" name="id" value="0">
+                                        <input type="hidden" id="blog_id" name="id" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -152,24 +140,7 @@
                 serverSide: true,
                 destroy: true,
                 ajax: $('.table-data').data('url'),
-                order: [
-                    [1, 'DESC'],
-                ],
-                columnDefs: [{
-                        orderable: false,
-                        searchable: false,
-                        targets: [0, 8],
-                        className: 'text-center'
-                    },
-                    {
-                        visible: false,
-                        targets: []
-                    },
-                    {
-                        className: 'w-5 pr-0',
-                        targets: [1, 2]
-                    }
-                ],
+               
                 columns: [{
                     name: 'DT_RowIndex',
                     data: 'DT_RowIndex',
@@ -177,26 +148,26 @@
                         return DT_RowIndex + '.';
                     }
                 }, {
-                    data: 'getCategory',
-                    name: 'getCategory',
+                    data: 'getCategories',
+                    name: 'getCategories',
                 }, {
                     data: 'title',
                     name: 'title',
-                }, {
-                    data: 'slug',
-                    name: 'slug',
-                }, {
+                },  {
                     data: 'body',
                     name: 'body',
                 }, {
-                    data: 'getTags',
-                    name: 'getTags',
+                    data: 'tags',
+                    name: 'tags',
                 }, {
-                    data: 'author',
-                    name: 'author',
+                    data: 'getUsers',
+                    name: 'getUsers',
                 }, {
                     data: 'image',
                     name: 'image',
+                    render: function (data) {
+                        return `<img src="{{asset('storage/blogs')}}/${data}" width="40px">`;
+                    }
                 }, {
                     data: 'id',
                     name: 'id',
@@ -234,10 +205,10 @@
                 let url = "{{ route('tags.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
-                $("#title").html("Edit "+ row.name);
+                $("#title").html("Edit "+ row.title);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#type").val(row.type);
-                $("#name").val(row.name);
+                $("#title").val(row.title);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
@@ -249,7 +220,7 @@
                 
                 Swal.fire({
                     title: 'Apakah anda yakin?',
-                    text: "Data "+row.name+" akan terhapus!",
+                    text: "Data "+row.title+" akan terhapus!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -264,7 +235,7 @@
                         }).done((res) => {
                             if (res.success == true) {
                                 Swal.fire(
-                                    row.name,
+                                    row.title,
                                     'Data berhasil di hapus.',
                                     'success'
                                 )
@@ -280,6 +251,7 @@
                 })
             })
         })
+
     </script>
     @endpush
 </x-app-layout>

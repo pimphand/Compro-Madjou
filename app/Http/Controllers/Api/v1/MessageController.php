@@ -3,16 +3,15 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\SubsribeResource;
-use App\Jobs\SendNotifJobs;
-use App\Models\Subscribe;
-use App\Notifications\SubscribeNotification;
+use App\Http\Resources\MessageResource;
+use App\Mail\MailCustomer;
+use App\Models\Message;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
-class SubscribeController extends Controller
+
+class MessageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -42,46 +41,59 @@ class SubscribeController extends Controller
      */
     public function store(Request $request)
     {
-        $data = Validator::make($request->all(),[
-            'email'     => 'required|email|unique:subscribes',
-        ], [
+        $data = Validator::make($request->all(), [
+            'email'     => 'required|email',
+            'company'   => 'required',
+            'phone'     => 'required',
+            'text'      => 'required',
+            'requirement'   => 'required',
+            'from'          => 'required',
+        ],[
             'email.required'    => 'Email tidak boleh kosong',
+            'company.required'  => 'Perusahaan tidak boleh kosong',
+            'phone.required'    => 'Telpon tidak boleh kosong',
+            'text.required'     => 'Isi pesan tidak boleh kosong',
+            'requirement.required'   => 'Kebutuhan tidak boleh kosong',
+            'from.required'         => 'Tidak boleh kosong',
         ]);
 
         if($data->fails())
         {
             return response()->json([
                 'status'    => false,
-                'errors'    => $data->getMessageBag()->toArray()
+                'message'   => $data->getMessageBag()->toArray()
             ]);
         }
 
-        $subscribe  = Subscribe::create([
-            'email'     => $request->email,
-            'location'  => $request->getClientIp(),
+        $message = Message::create([
+            'email'         => $request->email,
+            'company'       => $request->company,
+            'phone'         => $request->phone,
+            'text'          => $request->text,
+            'requirement'   => $request->requirement,
+            'from'          => $request->from,
+            'ip'            => $request->getClientIp(),
+            'country'       => $request->country,
         ]);
 
-        
-        // queue jobs
-        SendNotifJobs::dispatch($subscribe);
+        $sendMessage = (new MailCustomer($message))
+                ->onQueue('emails');
 
-
-        if($subscribe)
+        if($message)
         {
-              
+            Mail::to('admin-madjou@test.com')->queue($sendMessage);
 
             return [
                 'success'   => true,
-                'message'   => 'Terima kasih telah subscribe',
+                'message'   => 'Email anda   telah dikirim'
             ];
         }
 
         return [
             'success'   => true,
-            'message'   => 'Subscribe telah berhasil',
-            'data'      => new SubsribeResource($subscribe)
+            'message'   => 'Pesan berhasil dikirim',
+            'data'      => new MessageResource($message),
         ];
-
     }
 
     /**
@@ -92,13 +104,7 @@ class SubscribeController extends Controller
      */
     public function show($id)
     {
-        $data = Subscribe::findOrFail($id);
-
-        return response()->json([
-            'success'   => true,
-            'message'   => 'Data subscribe berhasil ditampilkan',
-            'data'      => new SubsribeResource($data)
-        ], 200);
+        //
     }
 
     /**
@@ -121,27 +127,7 @@ class SubscribeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = Subscribe::findOrFail($id);
-
-        if($data->status == 1)
-        {
-            $data->update([
-                'status'    => 0,
-            ]);
-
-            return response()->json([
-                'success'   => true,
-                'message'   => 'Anda berhasil unsubscribe',
-                'data'      => new SubsribeResource($data),
-            ], 200);
-        } 
-        
-
-        return response()->json([
-            'success'   => true,
-            'message'   => 'Anda berhasil subscribe',
-            'data'      => new SubsribeResource($data),
-        ], 200);
+        //
     }
 
     /**
