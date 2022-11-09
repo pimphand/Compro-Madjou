@@ -70,7 +70,7 @@ class MessageController extends Controller
             'company'       => $request->company,
             'phone'         => $request->phone,
             'text'          => $request->text,
-            'requirement'    => $request->requirement,
+            'requirement'   => $request->requirement,
             'from'          => $request->from,
             'ip'            => $request->getClientIp(),
             'country'       => $request->country,

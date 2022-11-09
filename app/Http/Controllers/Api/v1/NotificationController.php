@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NotificationResource;
+use App\Jobs\SendNotifJobs;
 use App\Models\Notification as ModelsNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
@@ -53,7 +54,7 @@ class NotificationController extends Controller
         $data = Validator::make($request->all(),[
             'email'     => 'required|email',
             'body'      => 'required',
-            'image'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'image'     => 'required|image|mimes:jpg,jpeg,png|max:2048'
         ],[
             'email.required'    => 'Email tidak boleh kosong',
             'body.required'     => 'Konten tidak boleh kosong'
@@ -80,15 +81,10 @@ class NotificationController extends Controller
         $notif  = Notification::create([
             'email' => $request->email,
             'body'  => $request->body,
-            'image' => $fileName
+            'image' => $fileNameSave
         ]);
 
-        $subscribes = Subscribe::all();
-
-        foreach ($subscribes as $subscribe) {
-            Notification::route('mail', $subscribe->email)
-                    ->notify(new SubscribeNotification($notif));
-        }
+        // SendNotifJobs::dispatch($notif);
 
         return [
             'success'   => true,
@@ -164,12 +160,9 @@ class NotificationController extends Controller
             'image'             => $fileNameSave ?? $notif->image,
         ]);
 
-        $subscribes = Subscribe::all();
+        SendNotifJobs::dispatch($notif);
 
-        foreach ($subscribes as $subscribe) {
-            Notification::route('mail', $subscribe->email)
-                    ->notify(new SubscribeNotification($notif));
-        }
+        
 
         return [
             'success'   => true,

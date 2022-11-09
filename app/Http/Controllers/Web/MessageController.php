@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NotificationResource;
+use App\Mail\MailCustomer;
 use App\Models\Message;
 use App\Models\Notification;
 use Illuminate\Http\Request;
@@ -92,6 +93,19 @@ class MessageController extends Controller
             'text.required'         => 'Isi pesan tidak boleh kosong',
             'subject'               => 'Subject tidak boleh kosong',
         ]);
+
+        if($data->fails())
+        {
+            return response()->json([
+                'status'    => false,
+                'errors'    => $data->getMessageBag()->toArray()
+            ]);
+        }
+
+        $message    = Message::findOrFail($id);
+
+        $sendMessage = (new MailAdmin())
+
 
     }
 

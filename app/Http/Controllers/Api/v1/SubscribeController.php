@@ -62,11 +62,13 @@ class SubscribeController extends Controller
         ]);
 
         
+        // queue jobs
+        SendNotifJobs::dispatch($subscribe);
+
 
         if($subscribe)
         {
-            Notification::send($request->email, new SubscribeNotification($subscribe));
-            dispatch(new SendNotifJobs($data));
+              
 
             return [
                 'success'   => true,

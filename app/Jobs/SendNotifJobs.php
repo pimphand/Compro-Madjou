@@ -10,8 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
-
-
+use Illuminate\Support\Facades\Notification;
 
 class SendNotifJobs implements ShouldQueue
 {
@@ -22,11 +21,11 @@ class SendNotifJobs implements ShouldQueue
      *
      * @return void
      */
-    private $data;
+    public $subscribe;
 
-    public function __construct($data)
+    public function __construct($subscribe)
     {
-        $this->data = $data;
+        $this->subscribe = $subscribe;
     }
 
     /**
@@ -36,6 +35,9 @@ class SendNotifJobs implements ShouldQueue
      */
     public function handle()
     {
-        //
+        // send to email user
+        
+        $email = new SubscribeNotification($this->subscribe);
+        Notification::send($this->subscribe, $email);
     }
 }
