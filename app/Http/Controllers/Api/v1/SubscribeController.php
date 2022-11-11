@@ -152,6 +152,11 @@ class SubscribeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Subscribe::destroy($id);
+
+        return [
+            'success'   => true,
+            'message'   => 'Data subscribe berhasil dihapus'
+        ];
     }
 }

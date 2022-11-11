@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Message;
+use App\Models\MessageHistory;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -11,7 +11,8 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 
-class MailCustomer extends Mailable implements ShouldQueue
+
+class ReplyCustomerMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -20,11 +21,12 @@ class MailCustomer extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public $message;
 
-    public function __construct(Message $message)
+    public $mail;
+
+    public function __construct(MessageHistory $mail)
     {
-        $this->message = $message;
+        $this->mail = $mail;
     }
 
     /**
@@ -35,8 +37,8 @@ class MailCustomer extends Mailable implements ShouldQueue
     public function envelope()
     {
         return new Envelope(
-            from: new Address($this->message->email),
-            subject: $this->message->requirement,
+            from: new Address('admin-madjou@test'),
+            subject: $this->subject,
         );
     }
 
@@ -48,9 +50,10 @@ class MailCustomer extends Mailable implements ShouldQueue
     public function content()
     {
         return new Content(
-            view: 'pages.email.index',
+            view: 'pages.email.admin',
             with: [
-                'text'  => $this->message->text,
+                'subject'   => $this->subject,
+                'comment'  => $this->mail->comment,
             ],
         );
     }

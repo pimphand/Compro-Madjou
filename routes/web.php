@@ -10,6 +10,7 @@ use App\Http\Controllers\Web\CarrerController;
 use App\Http\Controllers\Web\CategoryBlogController;
 use App\Http\Controllers\Web\CategoryTeamController;
 use App\Http\Controllers\Web\DetailServiceController;
+use App\Http\Controllers\Web\MessageController;
 use App\Http\Controllers\Web\OurClientController;
 use App\Http\Controllers\Web\ProgrammingLanguageController;
 use App\Http\Controllers\Web\ProjectController;
@@ -50,6 +51,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/project-types', ProjectTypeController::class);
         Route::resource('/project', ProjectController::class);
         Route::resource('/careers', CarrerController::class);
+        Route::resource('messages', MessageController::class);
         Route::resource('/user', MasterUserController::class);
     });
 });
