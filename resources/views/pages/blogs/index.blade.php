@@ -1,4 +1,4 @@
-@section('title', 'Madjou | Tags')
+@section('title', 'Madjou | Blogs')
 <x-app-layout>
     <div class="page-content">
         <div class="row">
@@ -18,10 +18,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Data blog</h4>
+                            <h4 class="card-title">Tabel data blog</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
                                 <i data-feather="plus"></i>
-                                Add Data
+                                Tambah Data
                             </button>
                         </div>
                         <div class="table-responsive">
@@ -29,13 +29,13 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Category Blog</th>
-                                        <th>Title</th>
-                                        <th>Body</th>
+                                        <th>Kategori Blog</th>
+                                        <th>Judul</th>
+                                        <th>Konten</th>
                                         <th>Tags</th>
-                                        <th>Author</th>
-                                        <th>Image</th>
-                                        <th>Action</th>
+                                        <th>Penulis</th>
+                                        <th>Gambar</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -44,10 +44,21 @@
                             </table>
                         </div>
 
+                        {{-- card list --}}
+                        {{-- <div id="card-container" data-url="{{ request()->url()}}">
+                            <div class="col">
+                              <div class="card">
+                                <img src="..." class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h5 class="card-title">Card title</h5>
+                                  <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                </div>
+                              </div>
+                            </div> 
+                        </div> --}}
+
 
                         {{-- modal --}}
-
-
                         <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
                             aria-labelledby="varyingModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -65,9 +76,9 @@
                                             @csrf
                                             <div id="put"></div>
                                             <div class="mb-3">
-                                                <label for="category_blog" class="form-label">Category blog </label>
+                                                <label for="category_blog" class="form-label">Kategori blog </label>
                                                 <select name="blog_category_id" id="blog_category_id" class="form-control">
-                                                    <option value="" disabled selected>Select category</option>
+                                                    <option value="" disabled selected>Pilih kategori</option>
 
                                                     @foreach ($category as $category)
                                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -76,15 +87,15 @@
                                                 <div class="text-danger" id="error-category_blog"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="title" class="form-label">Title </label>
+                                                <label for="title" class="form-label">Judul </label>
                                                 <input type="text" class="form-control" id="title" name="title"
-                                                    placeholder="Input title blog..." value="">
+                                                    placeholder="Masukkan judul blog..." value="">
                                                 <div class="text-danger" id="error-title"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="body" class="form-label">Content </label>
+                                                <label for="body" class="form-label">Konten </label>
                                                 <textarea class="form-control" id="body" name="body"
-                                                    placeholder="Input konten blog..." value="">
+                                                    placeholder="Masukkan konten blog..." value="">
                                                 </textarea>
                                                 <div class="text-danger" id="error-body"></div>
                                             </div>
@@ -99,7 +110,7 @@
                                                 <div class="text-danger" id="error-title"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="title" class="form-label">Image </label>
+                                                <label for="title" class="form-label">Gambar </label>
                                                 <input type="file" class="form-control" id="image" name="image"
                                                     value="">
                                                 <div class="text-danger" id="error-image"></div>
@@ -127,13 +138,14 @@
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Add data blog");
+                $("#title").html("Tambah data blog");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
                 $("#modalFormData").attr('action', "{{ route('blogs.store') }}");
             });
+
             // datatable
             showData = $('.table-data').DataTable({
                 processing: true,
@@ -199,6 +211,7 @@
                     }
                 }]
             })
+
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();

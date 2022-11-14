@@ -9,63 +9,63 @@
       </div>
       <div class="sidebar-body">
         <ul class="nav">
-          <li class="nav-item nav-category">Main</li>
+          <li class="nav-item nav-category">Utama</li>
           <li class="nav-item">
             <a href="{{ route('dashboard.index')}}" class="nav-link">
               <i class="link-icon" data-feather="box"></i>
               <span class="link-title">Dashboard</span>
             </a>
           </li>
-          <li class="nav-item nav-category">Notifications</li>
+          <li class="nav-item nav-category">Notifikasi dan langganan</li>
           
           <li class="nav-item">
-            <a href="pages/apps/chat.html" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="link-icon" data-feather="bell"></i>
-              <span class="link-title">Notification</span>
+              <span class="link-title">Notifikasi</span>
             </a>
           </li><li class="nav-item">
-            <a href="pages/apps/chat.html" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="link-icon" data-feather="bell"></i>
-              <span class="link-title">Subscribe</span>
+              <span class="link-title">Langganan</span>
             </a>
           </li>
-          <li class="nav-item nav-category">Service</li>
+          <li class="nav-item nav-category">Layanan</li>
           <li class="nav-item">
             <a href="{{ route('services.index')}}" class="nav-link">
               <i class="link-icon" data-feather="tool"></i>
-              <span class="link-title">Service</span>
+              <span class="link-title">Layanan</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="{{ route('detail-services.index')}}" class="nav-link">
               <i class="link-icon" data-feather="tool"></i>
-              <span class="link-title">Detail service</span>
+              <span class="link-title">Detail layanan</span>
             </a>
           </li>
-          <li class="nav-item nav-category">Projects</li>
+          <li class="nav-item nav-category">Projek</li>
           <li class="nav-item">
             <a href="{{ route('project-types.index')}}" class="nav-link">
               <i class="link-icon" data-feather="codepen"></i>
-              <span class="link-title">Project type</span>
+              <span class="link-title">Jenis projek</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="{{ route('project.index')}}" class="nav-link">
               <i class="link-icon" data-feather="folder"></i>
-              <span class="link-title">Data project</span>
+              <span class="link-title">Data projek</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="{{ route('clients.index')}}" class="nav-link">
               <i class="link-icon" data-feather="smile"></i>
-              <span class="link-title">Our clients</span>
+              <span class="link-title">Klien kami</span>
             </a>
           </li>
           <li class="nav-item nav-category">Blogs</li>
           <li class="nav-item">
             <a href="{{ route('category-blogs.index')}}" class="nav-link">
               <i class="link-icon" data-feather="grid"></i>
-              <span class="link-title">Category blog</span>
+              <span class="link-title">Kategori blog</span>
             </a>
           </li>
           <li class="nav-item">
@@ -74,24 +74,24 @@
               <span class="link-title">Data blog</span>
             </a>
           </li>
-          <li class="nav-item nav-category">Careers</li>
+          <li class="nav-item nav-category">Karir</li>
           <li class="nav-item">
             <a href="{{route('careers.index')}}" class="nav-link">
               <i class="link-icon" data-feather="dollar-sign"></i>
-              <span class="link-title">Data career</span>
+              <span class="link-title">Data karir</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="pages/apps/chat.html" class="nav-link">
               <i class="link-icon" data-feather="user-check"></i>
-              <span class="link-title">Employee Registrasions</span>
+              <span class="link-title">Pendaftaran karyawan</span>
             </a>
           </li>
           <li class="nav-item nav-category">Teams</li>
           <li class="nav-item">
             <a href="{{ route('category-teams.index')}}" class="nav-link">
               <i class="link-icon" data-feather="user-plus"></i>
-              <span class="link-title">Category team</span>
+              <span class="link-title">Kategori team</span>
             </a>
           </li>
           <li class="nav-item">
@@ -103,10 +103,10 @@
           <li class="nav-item">
             <a href="{{ route('languages.index')}}" class="nav-link">
               <i class="link-icon" data-feather="bookmark"></i>
-              <span class="link-title">Programming language</span>
+              <span class="link-title">Bahasa pemrograman</span>
             </a>
           </li>
-          <li class="nav-item nav-category">Super-Admin Menu</li>
+          <li class="nav-item nav-category">Menu Super-Admin</li>
           <li class="nav-item">
             <a href="{{route('user.index')}}" class="nav-link">
               <i class="link-icon" data-feather="users"></i>

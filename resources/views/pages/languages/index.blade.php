@@ -1,4 +1,4 @@
-@section('title', 'Madjou | Programming Languages')
+@section('title', 'Madjou | Bahasa pemrograman')
 <x-app-layout>
     <div class="page-content">
         <div class="row">
@@ -18,7 +18,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Table programming language</h4>
+                            <h4 class="card-title">Tabel data bahasa pemrograman</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
                             data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>

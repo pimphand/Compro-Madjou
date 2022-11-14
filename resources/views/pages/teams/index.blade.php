@@ -18,11 +18,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Table team</h4>
+                            <h4 class="card-title">Table data team</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
                             data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
-                                Add Data
+                                Tambah Data
                             </button>
                         </div>
                         <div class="table-responsive">
@@ -30,11 +30,11 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Category Team</th>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Image</th>
-                                        <th>Action</th>
+                                        <th>Kategori Team</th>
+                                        <th>Nama</th>
+                                        <th>Posisi</th>
+                                        <th>Gambar</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -63,10 +63,10 @@
                                             @csrf
                                             <div id="put"></div>
                                             <div class="mb-3">
-                                                <label for="category" class="form-label">Category Team </label>
+                                                <label for="category" class="form-label">Kategori Team </label>
                                                     
                                                     <select class="form-select form-control-lg form-control-solid" name="category_team_id" id="category_team_id">
-                                                        <option value="" disabled selected>Select category team</option>
+                                                        <option value="" disabled selected>Pilih kategori team</option>
 
                                                         @foreach ($data as $catTeam)
                                                         <option value="{{$catTeam->id}}">
@@ -78,19 +78,19 @@
                                                 <div class="text-danger" id="error-category_team_id"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="name" class="form-label">Name </label>
+                                                <label for="name" class="form-label">Nama </label>
                                                 <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Input name..." value="">
+                                                    placeholder="Masukkan nama ..." value="">
                                                 <div class="text-danger" id="error-name"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="position" class="form-label">Position </label>
+                                                <label for="position" class="form-label">Posisi </label>
                                                 <input type="text" class="form-control" id="position" name="position"
-                                                    placeholder="Input position team..." value="">
+                                                    placeholder="Masukkan posisi..." value="">
                                                 <div class="text-danger" id="error-position"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="image" class="form-label">Image </label>
+                                                <label for="image" class="form-label">Gambar </label>
                                                 <input type="file" name="image" id="image" class="form-control" value="">
                                                 <div class="text-danger" id="error-image"></div>
                                             </div>
@@ -117,7 +117,7 @@
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Add data team");
+                $("#title").html("Tambah data team");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");

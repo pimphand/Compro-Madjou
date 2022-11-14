@@ -1,4 +1,4 @@
-@section('title', 'Madjou | Messages')
+@section('title', 'Madjou | Pesan')
 <x-app-layout>
     <div class="page-content">
         <div class="row">
@@ -18,7 +18,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel message</h4>
+                            <h4 class="card-title">Tabel data pesan</h4>
                            
                         </div>
                         <div class="table-responsive">
@@ -27,9 +27,9 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Email</th>
-                                        <th>Company</th>
-                                        <th>Phone</th>
-                                        <th>Action</th>
+                                        <th>Perusahaan</th>
+                                        <th>Telpon</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -85,9 +85,9 @@
                                             @csrf
                                             <div id="put"></div>
                                             <div class="mb-3">
-                                                <label for="email" class="form-label">To </label>
+                                                <label for="email" class="form-label">Kirim ke </label>
                                                 <input type="email" class="form-control" id="emails" name="email"
-                                                    placeholder="Input email..." value="" disabled>
+                                                    placeholder="Masukkan email..." value="" disabled>
                                                 <div class="text-danger" id="error-email"></div>
                                             </div>
                                             <div class="mb-3">
@@ -96,15 +96,15 @@
                                                 <div class="text-danger" id="error-email"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="subject" class="form-label">Subject </label>
+                                                <label for="subject" class="form-label">Subjek </label>
                                                 <input type="text" class="form-control" id="subject" name="subject"
-                                                    placeholder="Input subject..." value="">
+                                                    placeholder="Masukkan subjek..." value="">
                                                 <div class="text-danger" id="error-subject"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="text" class="form-label">Message </label>
+                                                <label for="text" class="form-label">Pesan </label>
                                                 <textarea type="text" class="form-control" id="comment" name="comment"
-                                                    placeholder="Input you're message..." value=""></textarea>
+                                                    placeholder="Masukkan pesan..." value=""></textarea>
                                                 <div class="text-danger" id="error-comment"></div>
                                             </div>
                                           
@@ -112,7 +112,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-inverse-primary" id="btn-save"
-                                            value="add">Simpan data</button>
+                                            value="add">Kirim email</button>
                                         <input type="hidden" id="message_id" name="id" value="0">
                                     </div>
                                 </div>
