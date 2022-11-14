@@ -27,7 +27,7 @@ class EmployeeRegistrationController extends Controller
                     ->make(true);
         }
 
-        view('pages.employee.index')->with('employee');
+        return view('pages.employees.index')->with('employees');
     }
 
     /**

@@ -82,7 +82,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/apps/chat.html" class="nav-link">
+            <a href="{{route('employees.index')}}" class="nav-link">
               <i class="link-icon" data-feather="user-check"></i>
               <span class="link-title">Pendaftaran karyawan</span>
             </a>
