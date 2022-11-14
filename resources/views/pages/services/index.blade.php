@@ -261,6 +261,13 @@
                 })
             })
         })
+
+         // text editor
+         new EasyMDE({
+        autoDownloadFontAwesome: false,
+        element: document.getElementById('body'),
+        });
+
     </script>
     @endpush
 </x-app-layout>
