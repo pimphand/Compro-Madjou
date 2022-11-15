@@ -12,11 +12,14 @@ use App\Http\Controllers\Web\CategoryTeamController;
 use App\Http\Controllers\Web\DetailServiceController;
 use App\Http\Controllers\Web\EmployeeRegistrationController;
 use App\Http\Controllers\Web\MessageController;
+use App\Http\Controllers\Web\NotificationController;
 use App\Http\Controllers\Web\OurClientController;
 use App\Http\Controllers\Web\ProgrammingLanguageController;
 use App\Http\Controllers\Web\ProjectController;
 use App\Http\Controllers\Web\ProjectTypeController;
 use App\Http\Controllers\Web\ServiceController;
+use App\Http\Controllers\Web\SettingController;
+use App\Http\Controllers\Web\SubscribeController;
 use App\Http\Controllers\Web\TeamController;
 
 use Illuminate\Support\Facades\Route;
@@ -54,6 +57,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/careers', CarrerController::class);
         Route::resource('/employees', EmployeeRegistrationController::class);
         Route::resource('/messages', MessageController::class);
+        Route::resource('/notifications', NotificationController::class);
+        Route::resource('/subscribes', SubscribeController::class);
+        Route::resource('/settings', SettingController::class);
         Route::resource('/user', MasterUserController::class);
     });
 });

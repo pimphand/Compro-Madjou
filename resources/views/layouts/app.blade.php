@@ -15,6 +15,11 @@
 	<link rel="stylesheet" href="template/assets/vendors/easymde/easymde.min.css">
 	<!-- End plugin css for this page -->
 
+    <!-- Plugin css for this page -->
+	<link rel="stylesheet" href="/template/assets/vendors/prismjs/themes/prism.css">
+	<!-- End plugin css for this page -->
+
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -76,6 +81,8 @@
     <!-- core:js -->
     <script src="template/assets/vendors/core/core.js"></script>
     <!-- endinject -->
+
+    <script src="/template/assets/vendors/prismjs/prism.js"></script>
 
     <!-- Plugin js for this page -->
     <script src="/template/assets/vendors/flatpickr/flatpickr.min.js"></script>

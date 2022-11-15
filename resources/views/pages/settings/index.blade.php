@@ -1,48 +1,44 @@
-@section('title', 'Madjou | Layanan')
+@section('title', 'Madjou | Langganan')
 <x-app-layout>
     <div class="page-content">
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
-                @if( Session::has("success") )
-                <div class="alert alert-success alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("success") }}
-                </div>
-                @endif
-                @if( Session::has("error") )
-                <div class="alert alert-danger alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("error") }}
-                </div>
-                @endif
                 <div class="card">
                     <div class="card-body">
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Table data layanan</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
-                                data-bs-target="#tagEditorModal" id='btn-add'>
-                                <i data-feather="plus"></i>
-                                Tambah Data
-                            </button>
+                        <div class="example">
+                          <ul class="nav nav-tabs nav-tabs-line" id="lineTab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="home-line-tab" data-bs-toggle="tab" href="#line-home" role="tab" aria-controls="line-home" aria-selected="true">Home</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="profile-line-tab" data-bs-toggle="tab" href="#line-profile" role="tab" aria-controls="line-profile" aria-selected="false">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="contact-line-tab" data-bs-toggle="tab" href="#line-contact" role="tab" aria-controls="line-contact" aria-selected="false">Contact</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link disabled" id="disabled-line-tab" data-bs-toggle="tab" href="#line-disabled" role="tab" aria-controls="line-disabled" aria-selected="false">Disabled</a>
+                            </li>
+                          </ul>
+                          <div class="tab-content mt-3" id="lineTabContent">
+                            <div class="tab-pane fade show active" id="line-home" role="tabpanel" aria-labelledby="home-line-tab">
+                              <h6 class="mb-1">Home</h6>
+                              <p></p>
+                            </div>
+                            <div class="tab-pane fade" id="line-profile" role="tabpanel" aria-labelledby="profile-line-tab">
+                              <h6 class="mb-1">Profile</h6>
+                              <p></p>
+                            </div>
+                            <div class="tab-pane fade" id="line-contact" role="tabpanel" aria-labelledby="contact-line-tab">
+                              <h6 class="mb-1">Contact</h6>
+                              <p</p>
+                            </div>
+                            <div class="tab-pane fade" id="line-disabled" role="tabpanel" aria-labelledby="disabled-line-tab">
+                              <h6 class="mb-1">disabled</h6>
+                            </div>
+                          </div>
                         </div>
-                        <div class="table-responsive">
-                            <table data-url="{{ request()->url() }}" class="table-data table">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Diupload oleh</th>
-                                        <th>Judul</th>
-                                        <th>Tags</th>
-                                        <th>Konten</th>
-                                        <th>Gambar</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
+                      </div>
 
                         {{-- modal --}}
 
@@ -60,47 +56,31 @@
                                     </div>
                                     <div class="modal-body">
                                         <form id="modalFormData" name="modalFormData" class="form-horizontal"
-                                            novalidate="" enctype="multipart/form-data">
+                                            novalidate="">
                                             @csrf
                                             <div id="put"></div>
-
                                             <div class="mb-3">
-                                                <label for="title" class="form-label">Judul </label>
-                                                <input type="text" class="form-control" id="titles" name="title"
-                                                    placeholder="Masukkan judul layanan..." value="">
-                                                <div class="text-danger" id="error-title"></div>
+                                                <label for="type" class="form-label">Jenis tags </label>
+                                                    <select name="type" id="type" class="form-control">
+                                                        <option value="" selected disabled hidden>Pilih jenis tags</option>
+                                                        <option value="blog">Blog</option>
+                                                        <option value="service">Service</option>
+                                                        <option value="all">All</option>
+                                                    </select>
+                                                <div class="text-danger" id="error-type"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="body" class="form-label">Konten </label>
-                                                <textarea type="text" class="form-control" id="body" name="body"
-                                                    placeholder="Masukkan konten layanan..."></textarea>
-                                                <div class="text-danger" id="error-body"></div>
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label for="tags" class="form-label">Tags </label>
-                                                <select name="tags[]" id="tags" class="form-control"
-                                                    multiple="multiple">
-                                                    <option value="" disabled selected>Pilih Tags</option>
-                                                    @foreach ($tags as $tag)
-                                                    <option value="{{ $tag->name }}">{{ $tag->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <div class="text-danger" id="error-tag"></div>
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label for="image" class="form-label">Gambar </label>
-                                                <input type="file" name="image" id="image" class="form-control"
-                                                    value="">
-                                                <div class="text-danger" id="error-image"></div>
+                                                <label for="name" class="form-label">Nama </label>
+                                                <input type="text" class="form-control" id="name" name="name"
+                                                    placeholder="Masukkan nama tag..." value="">
+                                                <div class="text-danger" id="error-name"></div>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-inverse-primary" id="btn-save"
                                             value="add">Simpan data</button>
-                                        <input type="hidden" id="service_id" name="id" value="0">
+                                        <input type="hidden" id="tag_id" name="id" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -116,17 +96,16 @@
     <script>
         let showData;
         $(() => {
-            $('#btn-add').click(function (e) { 
-                e.preventDefault();
-                $("#title").html("Tambah data layanan");
-                $("#btn-save").val("add");
-                $("#put").html("");
-                $("#modalFormData").trigger("reset");
-                $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('services.store') }}");
-            });
-
-
+            // $('#btn-add').click(function (e) { 
+            //     e.preventDefault();
+            //     $("#title").html("Tambah data tag");
+            //     $("#btn-save").val("add");
+            //     $("#put").html("");
+            //     $("#modalFormData").trigger("reset");
+            //     $("#tagEditorModal").modal("show");
+            //     $("#modalFormData").attr('action', "{{ route('tags.store') }}");
+            // });
+            
             // datatable
             showData = $('.table-data').DataTable({
                 processing: true,
@@ -139,7 +118,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 6],
+                        targets: [0, 3],
                         className: 'text-center'
                     },
                     {
@@ -158,23 +137,11 @@
                         return DT_RowIndex + '.';
                     }
                 }, {
-                    data: 'getUser',
-                    name: 'getUser',
+                    data: 'email',
+                    name: 'email',
                 }, {
-                    data: 'title',
-                    name: 'title',
-                }, {
-                    data: 'tags',
-                    name: 'tags',
-                }, {
-                    data: 'body',
-                    name: 'body',
-                }, {
-                    data: 'image',
-                    name: 'image',
-                    render: function ( data) {
-                        return `<img src="{{asset('storage/service')}}/${data}" width="40px">`;
-                    }
+                    data: 'status',
+                    name: 'status',
                 }, {
                     data: 'id',
                     name: 'id',
@@ -209,20 +176,20 @@
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('services.update',':id') }}"
+                let url = "{{ route('tags.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
-                $("#title").html("Edit " + row.title);
+                $("#title").html("Edit "+ row.title);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
-                $("#titles").val(row.title);
-                $("#body").val(row.body);
+                $("#type").val(row.type);
+                $("#name").val(row.name);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('services.destroy',':id') }}"
+                let url = "{{ route('tags.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({
@@ -258,13 +225,6 @@
                 })
             })
         })
-
-         // text editor
-         new EasyMDE({
-        autoDownloadFontAwesome: false,
-        element: document.getElementById('body'),
-        });
-
     </script>
     @endpush
 </x-app-layout>

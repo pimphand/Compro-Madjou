@@ -26,6 +26,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Career</th>
                                         <th>Nama</th>
                                         <th>E-mail</th>
                                         <th>Telpon</th>
@@ -127,7 +128,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 5],
+                        targets: [0, 10],
                         className: 'text-center'
                     },
                     {
@@ -146,8 +147,8 @@
                         return DT_RowIndex + '.';
                     }
                 }, {
-                    data: 'getCareerId',
-                    name: 'getCareerId',
+                    data: 'getCareer',
+                    name: 'getCareer',
                 }, {
                     data: 'name',
                     name: 'name',
@@ -155,20 +156,23 @@
                     data: 'email',
                     name: 'email',
                 }, {
+                    data: 'phone',
+                    name: 'phone',
+                }, {
                     data: 'address',
                     name: 'address',
                 }, {
-                    data: 'province_code',
-                    name: 'province_code',
+                    data: 'getProvince',
+                    name: 'getProvince',
                 }, {
-                    data: 'city_code',
-                    name: 'city_code',
+                    data: 'getCity',
+                    name: 'getCity',
                 },  {
-                    data: 'district_code',
-                    name: 'district_code',
+                    data: 'getDistrict',
+                    name: 'getDistrict',
                 },{
-                    data: 'village_code',
-                    name: 'village_code',
+                    data: 'getVillage',
+                    name: 'getVillage',
                 }, {
                     data: 'id',
                     name: 'id',
@@ -193,7 +197,7 @@
                             class: 'btn-group btn-group-sm',
                             role: 'group',
                             html: () => {
-                                return [button_edit, button_delete]
+                                return [ button_delete]
                             }
                         })
                         return button_group.prop('outerHTML')
@@ -254,11 +258,7 @@
             })
         })
 
-         // text editor
-         new EasyMDE({
-        autoDownloadFontAwesome: false,
-        element: document.getElementById('body'),
-        });
+        
         
     </script>
     @endpush
