@@ -15,4 +15,17 @@ class EmployeeRegistration extends Model
         'address', 'province_code', 'city_code',
         'district_code', 'village_code',
     ];
+
+
+    /**
+     * Get the user that owns the EmployeeRegistration
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function getCareer()
+    {
+        return $this->belongsTo(Career::class, 'career_id', 'id');
+    }
+
+   
 }

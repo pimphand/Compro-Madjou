@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Message extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'email', 'company', 'phone', 'text',
+        'ip', 'country', 'requirement', 'from'
+    ];
 }

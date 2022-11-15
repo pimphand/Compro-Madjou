@@ -1,4 +1,4 @@
-@section('title', 'Madjou | Detail - Service')
+@section('title', 'Madjou | Detail - Layanan')
 <x-app-layout>
     <div class="page-content">
         <div class="row">
@@ -18,11 +18,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Table detail service</h4>
+                            <h4 class="card-title">Tabel data detail layanan</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
                             data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
-                                Add Data
+                                Tambah Data
                             </button>
                         </div>
                         <div class="table-responsive">
@@ -30,11 +30,11 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>service</th>
-                                        <th>Title</th>
-                                        <th>Content</th>
-                                        <th>image</th>
-                                        <th>Action</th>
+                                        <th>Layanan</th>
+                                        <th>Judul</th>
+                                        <th>Konten</th>
+                                        <th>Gambar</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -64,7 +64,7 @@
                                             <div id="put"></div>
                                             
                                             <div class="mb-3">
-                                                <label for="body" class="form-label">Service </label>
+                                                <label for="body" class="form-label">Layanan </label>
                                                     <select name="service_id" id="service_id" class="form-control" >
                                                         <option value="" disabled selected>Select service</option>
                                                         @foreach ($services as $service)
@@ -75,19 +75,19 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="title" class="form-label">Title </label>
+                                                <label for="title" class="form-label">Judul </label>
                                                 <input type="text" class="form-control" id="titles" name="title"
-                                                    placeholder="Input title..." value="">
+                                                    placeholder="Masukkan judul detail layanan..." value="">
                                                 <div class="text-danger" id="error-title"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="body" class="form-label">Content </label>
-                                                <textarea type="text" class="form-control" id="body" name="body" placeholder="Input service content..."></textarea>
+                                                <label for="body" class="form-label">Konten </label>
+                                                <textarea type="text" class="form-control" id="body" name="body" placeholder="Masukkan konten detail layanan..."></textarea>
                                                 <div class="text-danger" id="error-body"></div>
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="image" class="form-label">Image </label>
+                                                <label for="image" class="form-label">Gambar </label>
                                                 <input type="file" name="image" id="image" class="form-control" value="">
                                                 <div class="text-danger" id="error-image"></div>
                                             </div>
@@ -114,7 +114,7 @@
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Add data detail service");
+                $("#title").html("Tambah detail layanan");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
@@ -166,7 +166,7 @@
                     data: 'image',
                     name: 'image',
                     render: function ( data) {
-              return `<img src="{{asset('storage/service')}}/${data}" width="40px">`;},
+              return `<img src="{{asset('storage/detail-services')}}/${data}" width="40px">`;},
                 }, {
                     data: 'id',
                     name: 'id',
@@ -251,6 +251,13 @@
                 })
             })
         })
+
+         // text editor
+         new EasyMDE({
+        autoDownloadFontAwesome: false,
+        element: document.getElementById('body'),
+        });
+        
     </script>
     @endpush
 </x-app-layout>

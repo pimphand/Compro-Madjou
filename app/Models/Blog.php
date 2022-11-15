@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\Json;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -43,12 +44,21 @@ class Blog extends Model
         'image', 'tags', 'lang', 'author'
     ];
 
+    protected $casts = [
+        'tags' => Json::class,
+    ];
+
     public function getCategories(){
         return $this->belongsTo(BlogCategory::class, 'blog_category_id', 'id');
     }
 
     public function getTags()
     {
-        return $this->belongsTo(Tag::class, 'tags_id', 'id');
+        return $this->belongsTo(Tag::class, 'tags', 'id');
+    }
+
+    public function getUsers()
+    {
+        return $this->belongsTo(User::class, 'author', 'id');
     }
 }

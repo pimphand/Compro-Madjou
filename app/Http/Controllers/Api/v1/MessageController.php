@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\EmployeeRegistrationResource;
-use App\Models\EmployeeRegistration;
+use App\Http\Resources\MessageResource;
+use App\Mail\MailCustomer;
+use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
-class EmployeeRegistrationController extends Controller
+
+class MessageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -38,47 +41,59 @@ class EmployeeRegistrationController extends Controller
      */
     public function store(Request $request)
     {
-        $data = Validator::make($request->all(),[
-            'career_id' => 'required|',
-            'name'      => 'required|unique:employee_registrations,id',
-            'email'     => 'required|unique:employee_registrations,id',
-            'phone'     => 'required|max:15',
-            'address'   => 'required|',
-        ], [
-            'career_id.required'    => 'Career tidak boleh kosong',
-            'name.required'         => 'Nama tidak boleh kosong',
-            'name.unique'           => 'Nama sudah digunakan',
-            'email.required'        => 'Email tidak boleh kosong', 
-            'email.unique'          => 'Email sudah digunakan',
-            'phone.required'        => 'Nomer telpon tidak boleh kosong',
-            'address.required'      => 'Alamat tidak boleh kosong',
+        $data = Validator::make($request->all(), [
+            'email'     => 'required|email',
+            'company'   => 'required',
+            'phone'     => 'required',
+            'text'      => 'required',
+            'requirement'   => 'required',
+            'from'          => 'required',
+        ],[
+            'email.required'    => 'Email tidak boleh kosong',
+            'company.required'  => 'Perusahaan tidak boleh kosong',
+            'phone.required'    => 'Telpon tidak boleh kosong',
+            'text.required'     => 'Isi pesan tidak boleh kosong',
+            'requirement.required'   => 'Kebutuhan tidak boleh kosong',
+            'from.required'         => 'Tidak boleh kosong',
         ]);
 
         if($data->fails())
         {
             return response()->json([
                 'status'    => false,
-                'errors'    => $data->getMessageBag()->toArray()
+                'message'   => $data->getMessageBag()->toArray()
             ]);
         }
 
-        $employee = EmployeeRegistration::create([
-            'career_id'     => $request->career_id,
-            'name'          => $request->name,
+        $message = Message::create([
             'email'         => $request->email,
+            'company'       => $request->company,
             'phone'         => $request->phone,
-            'address'       => $request->address,
-            'province_code' => $request->province_code,
-            'city_code'     => $request->city_code,
-            'district_code' => $request->district_code,
-            'village_code'  => $request->village_code,
+            'text'          => $request->text,
+            'requirement'   => $request->requirement,
+            'from'          => $request->from,
+            'ip'            => $request->getClientIp(),
+            'country'       => $request->country,
         ]);
 
-        return response()->json([
+        $sendMessage = (new MailCustomer($message))
+                ->onQueue('emails');
+
+        if($message)
+        {
+            Mail::to('admin-madjou@test.com')->queue($sendMessage);
+
+            return [
+                'success'   => true,
+                'message'   => 'Email anda   telah dikirim'
+            ];
+        }
+
+        return [
             'success'   => true,
-            'message'   => 'Data employee berhasil disimpan',
-            'data'      => new EmployeeRegistrationResource($employee)
-        ], 200);
+            'message'   => 'Pesan berhasil dikirim',
+            'data'      => new MessageResource($message),
+        ];
     }
 
     /**

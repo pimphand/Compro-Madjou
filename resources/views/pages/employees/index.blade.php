@@ -1,4 +1,4 @@
-@section('title', 'Madjou | Layanan')
+@section('title', 'Madjou | Pendaftaran - Karyawan')
 <x-app-layout>
     <div class="page-content">
         <div class="row">
@@ -18,23 +18,23 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Table data layanan</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
-                                data-bs-target="#tagEditorModal" id='btn-add'>
-                                <i data-feather="plus"></i>
-                                Tambah Data
-                            </button>
+                            <h4 class="card-title">Tabel data pendaftaran karyawan</h4>
+                            
                         </div>
                         <div class="table-responsive">
                             <table data-url="{{ request()->url() }}" class="table-data table">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Diupload oleh</th>
-                                        <th>Judul</th>
-                                        <th>Tags</th>
-                                        <th>Konten</th>
-                                        <th>Gambar</th>
+                                        <th>Career</th>
+                                        <th>Nama</th>
+                                        <th>E-mail</th>
+                                        <th>Telpon</th>
+                                        <th>Alamat</th>
+                                        <th>Provinsi</th>
+                                        <th>Kota</th>
+                                        <th>Daerah</th>
+                                        <th>Desa</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -47,7 +47,7 @@
                         {{-- modal --}}
 
 
-                        <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
+                        {{-- <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
                             aria-labelledby="varyingModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -63,36 +63,33 @@
                                             novalidate="" enctype="multipart/form-data">
                                             @csrf
                                             <div id="put"></div>
-
+                                            
                                             <div class="mb-3">
-                                                <label for="title" class="form-label">Judul </label>
-                                                <input type="text" class="form-control" id="titles" name="title"
-                                                    placeholder="Masukkan judul layanan..." value="">
-                                                <div class="text-danger" id="error-title"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="body" class="form-label">Konten </label>
-                                                <textarea type="text" class="form-control" id="body" name="body"
-                                                    placeholder="Masukkan konten layanan..."></textarea>
-                                                <div class="text-danger" id="error-body"></div>
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label for="tags" class="form-label">Tags </label>
-                                                <select name="tags[]" id="tags" class="form-control"
-                                                    multiple="multiple">
-                                                    <option value="" disabled selected>Pilih Tags</option>
-                                                    @foreach ($tags as $tag)
-                                                    <option value="{{ $tag->name }}">{{ $tag->name }}</option>
-                                                    @endforeach
-                                                </select>
+                                                <label for="body" class="form-label">Layanan </label>
+                                                    <select name="service_id" id="service_id" class="form-control" >
+                                                        <option value="" disabled selected>Select service</option>
+                                                        @foreach ($services as $service)
+                                                            <option value="{{ $service->id }}">{{ $service->title }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 <div class="text-danger" id="error-tag"></div>
                                             </div>
 
                                             <div class="mb-3">
+                                                <label for="title" class="form-label">Judul </label>
+                                                <input type="text" class="form-control" id="titles" name="title"
+                                                    placeholder="Masukkan judul detail layanan..." value="">
+                                                <div class="text-danger" id="error-title"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="body" class="form-label">Konten </label>
+                                                <textarea type="text" class="form-control" id="body" name="body" placeholder="Masukkan konten detail layanan..."></textarea>
+                                                <div class="text-danger" id="error-body"></div>
+                                            </div>
+
+                                            <div class="mb-3">
                                                 <label for="image" class="form-label">Gambar </label>
-                                                <input type="file" name="image" id="image" class="form-control"
-                                                    value="">
+                                                <input type="file" name="image" id="image" class="form-control" value="">
                                                 <div class="text-danger" id="error-image"></div>
                                             </div>
                                         </form>
@@ -104,7 +101,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>
@@ -116,15 +113,7 @@
     <script>
         let showData;
         $(() => {
-            $('#btn-add').click(function (e) { 
-                e.preventDefault();
-                $("#title").html("Tambah data layanan");
-                $("#btn-save").val("add");
-                $("#put").html("");
-                $("#modalFormData").trigger("reset");
-                $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('services.store') }}");
-            });
+           
 
 
             // datatable
@@ -139,7 +128,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 6],
+                        targets: [0, 10],
                         className: 'text-center'
                     },
                     {
@@ -158,23 +147,32 @@
                         return DT_RowIndex + '.';
                     }
                 }, {
-                    data: 'getUser',
-                    name: 'getUser',
+                    data: 'getCareer',
+                    name: 'getCareer',
                 }, {
-                    data: 'title',
-                    name: 'title',
+                    data: 'name',
+                    name: 'name',
                 }, {
-                    data: 'tags',
-                    name: 'tags',
+                    data: 'email',
+                    name: 'email',
                 }, {
-                    data: 'body',
-                    name: 'body',
+                    data: 'phone',
+                    name: 'phone',
                 }, {
-                    data: 'image',
-                    name: 'image',
-                    render: function ( data) {
-                        return `<img src="{{asset('storage/service')}}/${data}" width="40px">`;
-                    }
+                    data: 'address',
+                    name: 'address',
+                }, {
+                    data: 'getProvince',
+                    name: 'getProvince',
+                }, {
+                    data: 'getCity',
+                    name: 'getCity',
+                },  {
+                    data: 'getDistrict',
+                    name: 'getDistrict',
+                },{
+                    data: 'getVillage',
+                    name: 'getVillage',
                 }, {
                     data: 'id',
                     name: 'id',
@@ -199,7 +197,7 @@
                             class: 'btn-group btn-group-sm',
                             role: 'group',
                             html: () => {
-                                return [button_edit, button_delete]
+                                return [ button_delete]
                             }
                         })
                         return button_group.prop('outerHTML')
@@ -209,11 +207,12 @@
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('services.update',':id') }}"
+                let url = "{{ route('detail-services.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
                 $("#title").html("Edit " + row.title);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
+                $("#tags").val(row.tags)
                 $("#titles").val(row.title);
                 $("#body").val(row.body);
                 $('.error').empty();
@@ -222,7 +221,7 @@
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('services.destroy',':id') }}"
+                let url = "{{ route('detail-services.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({
@@ -259,12 +258,8 @@
             })
         })
 
-         // text editor
-         new EasyMDE({
-        autoDownloadFontAwesome: false,
-        element: document.getElementById('body'),
-        });
-
+        
+        
     </script>
     @endpush
 </x-app-layout>

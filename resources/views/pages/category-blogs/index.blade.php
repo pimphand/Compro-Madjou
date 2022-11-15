@@ -1,4 +1,4 @@
-@section('title', 'Madjou | Category-blog')
+@section('title', 'Madjou | Kategori-blog')
 <x-app-layout>
     <div class="page-content">
         <div class="row">
@@ -18,7 +18,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel Categories blog</h4>
+                            <h4 class="card-title">Tabel data kategori blog</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
                             data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
@@ -30,8 +30,8 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Name</th>
-                                        <th>Action</th>
+                                        <th>Nama</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -61,9 +61,9 @@
                                             <div id="put"></div>
                                           
                                             <div class="mb-3">
-                                                <label for="name" class="form-label">Name </label>
+                                                <label for="name" class="form-label">Nama </label>
                                                 <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Input name category blog..." value="">
+                                                    placeholder="Masukkan nama kategori blog..." value="">
                                                 <div class="text-danger" id="error-name"></div>
                                             </div>
                                         </form>
@@ -90,7 +90,7 @@
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("add data category blog");
+                $("#title").html("Tambah data kategori blog");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");

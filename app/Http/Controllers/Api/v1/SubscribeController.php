@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SubsribeResource;
+use App\Jobs\SendNotifJobs;
 use App\Models\Subscribe;
+use App\Notifications\SubscribeNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class SubscribeController extends Controller
@@ -57,11 +61,26 @@ class SubscribeController extends Controller
             'location'  => $request->getClientIp(),
         ]);
 
-        return response()->json([
+        
+        // queue jobs
+        SendNotifJobs::dispatch($subscribe);
+
+
+        if($subscribe)
+        {
+              
+
+            return [
+                'success'   => true,
+                'message'   => 'Terima kasih telah subscribe',
+            ];
+        }
+
+        return [
             'success'   => true,
             'message'   => 'Subscribe telah berhasil',
             'data'      => new SubsribeResource($subscribe)
-        ], 200);
+        ];
 
     }
 
@@ -133,6 +152,11 @@ class SubscribeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Subscribe::destroy($id);
+
+        return [
+            'success'   => true,
+            'message'   => 'Data subscribe berhasil dihapus'
+        ];
     }
 }

@@ -9,6 +9,17 @@
 
     <title>@yield('title')</title>
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Plugin css for this page -->
+	<link rel="stylesheet" href="template/assets/vendors/easymde/easymde.min.css">
+	<!-- End plugin css for this page -->
+
+    <!-- Plugin css for this page -->
+	<link rel="stylesheet" href="/template/assets/vendors/prismjs/themes/prism.css">
+	<!-- End plugin css for this page -->
+
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -71,6 +82,8 @@
     <script src="template/assets/vendors/core/core.js"></script>
     <!-- endinject -->
 
+    <script src="/template/assets/vendors/prismjs/prism.js"></script>
+
     <!-- Plugin js for this page -->
     <script src="/template/assets/vendors/flatpickr/flatpickr.min.js"></script>
     <script src="/template/assets/vendors/apexcharts/apexcharts.min.js"></script>
@@ -96,6 +109,8 @@
 
     <script src="/template/assets/vendors/feather-icons/feather.min.js"></script>
 	<script src="/template/assets/js/template.js"></script>
+
+    <script src="/template/assets/vendors/easymde/easymde.min.js"></script>
 
     @stack('js')
 
@@ -144,6 +159,8 @@
             }
         });
     })
+
+  
     
 </script>
 

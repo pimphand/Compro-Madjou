@@ -1,4 +1,4 @@
-@section('title', 'Madjou | Master - users')
+@section('title', 'Madjou | Master - Users')
 <x-app-layout>
     <div class="page-content">
         <div class="row">
@@ -18,7 +18,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel User</h4>
+                            <h4 class="card-title">Tabel data user</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
                                 Tambah Data
@@ -29,9 +29,9 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Name</th>
+                                        <th>Nama</th>
                                         <th>E-mail</th>
-                                        <th>Action</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>

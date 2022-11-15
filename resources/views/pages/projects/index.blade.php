@@ -1,4 +1,4 @@
-@section('title', 'Madjou | Project')
+@section('title', 'Madjou | Projek')
 <x-app-layout>
     <div class="page-content">
         <div class="row">
@@ -18,11 +18,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel project</h4>
+                            <h4 class="card-title">Tabel data projek</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
                             data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
-                                Add Data
+                                Tambah Data
                             </button>
                         </div>
                         <div class="table-responsive">
@@ -30,13 +30,13 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Project type</th>
-                                        <th>Programming</th>
-                                        <th>Title</th>
-                                        <th>Content</th>
-                                        <th>Url</th>
-                                        <th>Location</th>
-                                        <th>Action</th>
+                                        <th>Jenis projek</th>
+                                        <th>Pemrograman</th>
+                                        <th>Judul</th>
+                                        <th>Konten</th>
+                                        <th>Alamat url</th>
+                                        <th>Lokasi</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -65,9 +65,9 @@
                                             @csrf
                                             <div id="put"></div>
                                             <div class="mb-3">
-                                                <label for="project_type" class="form-label">Project type </label>
+                                                <label for="project_type" class="form-label">Jenis projek </label>
                                                     <select name="project_type_id" id="project_type_id" class="form-control">
-                                                        <option value="" selected disabled>Select project type</option>
+                                                        <option value="" selected disabled>Pilih jenis projek</option>
 
                                                         @foreach ($projectType as $type)
                                                             <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -76,32 +76,32 @@
                                                 <div class="text-danger" id="error-project_type_id"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="titles" class="form-label">Title </label>
+                                                <label for="titles" class="form-label">Judul </label>
                                                 <input type="text" class="form-control" id="titles" name="title"
-                                                    placeholder="Input project title..." value="">
+                                                    placeholder="Masukkan judul projek..." value="">
                                                 <div class="text-danger" id="error-title"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="programing" class="form-label">Programing </label>
+                                                <label for="programing" class="form-label">Pemrograman </label>
                                                 <input type="text" class="form-control" id="programings" name="programing"
-                                                    placeholder="Input project programing..." value="">
+                                                    placeholder="Masukkan jenis pemrograman projek..." value="">
                                                 <div class="text-danger" id="error-programing"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="body" class="form-label">Content </label>
-                                                <textarea type="text" name="body" id="body" cols="30" rows="10" class="form-control" value="" placeholder="Input you're content"></textarea>
+                                                <label for="body" class="form-label">Konten </label>
+                                                <textarea type="text" name="body" id="body" cols="30" rows="10" class="form-control" value="" placeholder="Masukkan konten projek..."></textarea>
                                                 <div class="text-danger" id="error-body"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="url" class="form-label">Url </label>
+                                                <label for="url" class="form-label">Alamat url </label>
                                                 <input type="text" class="form-control" id="url" name="url"
-                                                    placeholder="Input project url..." value="">
+                                                    placeholder="Masukkan alamat projek ..." value="">
                                                 <div class="text-danger" id="error-url"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="location" class="form-label">Location </label>
+                                                <label for="location" class="form-label">Lokasi </label>
                                                 <input type="text" class="form-control" id="location" name="location"
-                                                    placeholder="Input project location..." value="">
+                                                    placeholder="Masukkan lokasi projek..." value="">
                                                 <div class="text-danger" id="error-location"></div>
                                             </div>
                                         </form>
@@ -127,7 +127,7 @@
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Add data project");
+                $("#title").html("Tambah data projek");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
@@ -269,6 +269,13 @@
                 })
             })
         })
+
+         // text editor
+         new EasyMDE({
+        autoDownloadFontAwesome: false,
+        element: document.getElementById('body'),
+        });
+
     </script>
     @endpush
 </x-app-layout>
