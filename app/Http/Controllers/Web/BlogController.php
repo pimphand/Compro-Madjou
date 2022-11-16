@@ -21,30 +21,25 @@ class BlogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $category   = BlogCategory::all();
         $tag        = Tag::all();
-
+        
         if(request()->ajax())
         {
-            $dataBlog = Blog::with('getCategories', 'getTags', 'getUsers')->latest()->get();
-            return DataTables::of($dataBlog)
-                    ->addColumn('getCategories', function($dataCat){
-                        return $dataCat->getCategories->name;
-                    })
-                    ->addColumn('getUsers', function($user){
-                        return $user->getUsers->name;
-                    })
-                    ->addIndexColumn()
-                    ->make(true);
+            $data = Blog::with('getCategories', 'getTags', 'getUsers')->where('title','LIKE','%'.$request->search."%")->latest()->get();
+            return response()->json([
+                'success'   => true,
+                'message'   => 'Data blog berhasil ditampilkan',
+                'data'      => BlogResource::collection($data),
+            ]);
         }
-
 
         return view('pages.blogs.index',[
             'category'  => $category,
-            'tag'       => $tag,
-        ])->with('blogs');
+            'tag'       => $tag
+        ]);
     }
 
     /**
