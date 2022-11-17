@@ -19,7 +19,8 @@
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h4 class="card-title">Tabel data blog</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
+                            <button type="button" class="btn btn-inverse-success"
+                            data-bs-target="#tagEditorModal" data-bs-toggle="modal" id='btn-add'>
                                 <i data-feather="plus"></i>
                                 Tambah Data
                             </button>
@@ -31,12 +32,12 @@
                         </div>
 
                         {{-- card list --}}
-                        <div class="row row-cols-2 row-cols-md-4 g-4 show-data">
-                            
+                        <div class="row row-cols-2 row-cols-md-3 g-4 show-data">
+            
                         </div>
 
 
-                        {{-- modal --}}
+                        {{-- modal store / edit --}}
                         <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
                             aria-labelledby="varyingModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -104,6 +105,27 @@
                             </div>
                         </div>
 
+
+                        <!-- Modal view -->
+                        <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="titleBlog"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="btn-close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -113,9 +135,19 @@
     @push('js')
     <script>
        $(document).ready(function() {
-          // clear button
+        $('#btn-add').click(function (e) { 
+                e.preventDefault();
+                $("#title").html("Tambah data kategori blog");
+                $("#btn-save").val("add");
+                $("#put").html("");
+                $("#modalFormData").trigger("reset");
+                $("#tagEditorModal").modal("show");
+                $("#modalFormData").attr('action', "{{ route('blogs.store') }}");
+            });
+
+          // search data
                 $('#search').on('keyup', function(){
-                    showData().val('#search');
+                    showData(search);
                 });
                 showData();
         function showData() {
@@ -124,27 +156,43 @@
                 type: "GET",
                 url: "{{route('blogs.index')}}",
                 data: {
-                    'search': $('#search').val(),
+                    search: $('#search').val(),
                 },
                 success: function (response) {
-                    $('.show-data').html();
-                    $.each(response.data, function (key, item) {
-                      $('.show-data').append(
-                                    "<div class='col'>"+
-                                      "<div class='card'>"+
-                                        "<img src='{{asset('storage/blogs')}}/"+item.image+"' class='card-img-top' alt=''>"+
-                                        "<div class='card-body'>"+
-                                          "<h5 class='card-title'>"+item.title+"</h5>"+
-                                          "<p class='card-text'>"+item.body+"</p>"+
+                    $('.show-data').html(response.data);
+                        $.each(response.data, function (key, item) {
+                        $('.show-data').append(
+                                        "<div class='col'>"+
+                                        "<div class='card'>"+
+                                            "<img src='{{asset('storage/blogs')}}/"+item.image+"' class='card-img-top' alt=''>"+
+                                            "<div class='card-body'>"+
+                                            "<h5 class='card-title'>"+item.title+"</h5>"+
+                                            "<span class='badge bg-light text-dark'>"+item.tags+"</span>"+
+                                            "<p class='card-text mt-2'>"+item.body+"</p>"+
+                                            "<button type='button' name='id' class='btn btn-primary' id='btn-view' data-toggle='modal' data-target='#viewModal' value='"+item.id+"'>"+
+                                                "View blogs"+
+                                                "</button>"+
+                                            "</div>"+
+                                            "<div class='card-footer'>"+
+                                            "<p class='card-text' style='font-size:10px;text-align:left;'>Publish : "
+                                                +item.created+
+                                                "</p>"+
+                                            "</div>"+
                                         "</div>"+
-                                      "</div>"+
-                                    "</div>"
+                                        "</div>"
                                 );
-                  });
-              }
-            });
-        }
-    });
+                        
+                                console.log(item);
+                        });
+                    }
+                });
+                
+            }
+});
+
+       
+        
+       
 
     </script>
     @endpush

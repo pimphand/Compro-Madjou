@@ -28,7 +28,9 @@ class BlogController extends Controller
         
         if(request()->ajax())
         {
-            $data = Blog::with('getCategories', 'getTags', 'getUsers')->where('title','LIKE','%'.$request->search."%")->latest()->get();
+            $data = Blog::with('getCategories', 'getTags', 'getUsers')
+                    ->where('title','like','%'.substr($request->search, 2).'%')
+                    ->latest()->get();
             return response()->json([
                 'success'   => true,
                 'message'   => 'Data blog berhasil ditampilkan',
@@ -114,7 +116,13 @@ class BlogController extends Controller
      */
     public function show($id)
     {
-        //
+        $blog = Blog::findOrFail($id);
+
+        return response()->json([
+            'success'   => true,
+            'message'   => 'Data blog berhasil ditampilkan',
+            'data'      => new BlogResource($blog)
+        ]);
     }
 
     /**
