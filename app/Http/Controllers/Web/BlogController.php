@@ -149,7 +149,7 @@ class BlogController extends Controller
             'blog_category_id'  => 'required|',
             'title'             => 'required|string|max:50',
             'body'              => 'required|string|',
-            'image'             => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image'             => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ], [
             'blog_category_id.required'     => 'Kategori blog tidak boleh kosong!',
             'title.required'                => 'Judul tidak boleh kosong!',
@@ -180,7 +180,7 @@ class BlogController extends Controller
         }
 
         $blog->update([
-            'blog_category_id'      => $request->blog_category_id,
+            'blog_category_id'      => $blog->blog_category_id ?? $request->blog_category_id,
             'title'                 => $request->title,
             'slug'                  => Str::slug($request->title),
             'body'                  => $request->body,

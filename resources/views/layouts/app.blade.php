@@ -28,11 +28,11 @@
     <!-- End fonts -->
 
     <!-- core:css -->
-    <link rel="stylesheet" href="/template/assets/vendors/core/core.css" />
+    <link rel="stylesheet" href="{{url('template/assets/vendors/core/core.css')}}" />
     <!-- endinject -->
 
     <!-- Plugin css for this page -->
-    <link rel="stylesheet" href="/template/assets/vendors/flatpickr/flatpickr.min.css" />
+    <link rel="stylesheet" href="template/assets/vendors/flatpickr/flatpickr.min.css" />
     <!-- End plugin css for this page -->
 
     <!-- inject:css -->
@@ -49,6 +49,8 @@
     <link rel="stylesheet" href="/template/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
+
+   
     <style>
         .size-18 {
             width: 14px;
@@ -111,6 +113,7 @@
 	<script src="/template/assets/js/template.js"></script>
 
     <script src="/template/assets/vendors/easymde/easymde.min.js"></script>
+    {{-- <script src="/template/assets/vendors/core/perfect-scrollbar.min.js.map"></script> --}}
 
     @stack('js')
 

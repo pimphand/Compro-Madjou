@@ -67,15 +67,14 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="title" class="form-label">Judul </label>
-                                                <input type="text" class="form-control" id="title" name="title"
+                                                <input type="text" class="form-control" id="titles" name="title"
                                                     placeholder="Masukkan judul blog..." value="">
                                                 <div class="text-danger" id="error-title"></div>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="body" class="form-label">Konten </label>
                                                 <textarea class="form-control" id="body" name="body"
-                                                    placeholder="Masukkan konten blog..." value="">
-                                                </textarea>
+                                                    placeholder="Masukkan konten blog..." value=""></textarea>
                                                 <div class="text-danger" id="error-body"></div>
                                             </div>
                                             <div class="mb-3">
@@ -107,25 +106,28 @@
 
 
                         <!-- Modal view -->
-                        <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h5 class="modal-title" id="titleBlog"></h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        <div class="modal fade bd-example-modal-xl" id="viewModal" tabindex="-1" aria-labelledby="varyingModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="varyingModalLabel">
+                                            <span id="titleBlog"></span>
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="btn-close"></button>
+                                    </div>
+                                    <div class="modal-body d-flex align-items-start">
+                                        <div id="imageBlog"></div>
+                                        <p id="bodyBlog"></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" id="btn-delete">Edit blog</button>
+                                        <button type="button" class="btn btn-secondary" id="btn-delete">Hapus blog</button>
+                                        <input type="hidden" id="tag_id" name="id" value="0">
+                                    </div>
                                 </div>
-                                <div class="modal-body">
-                                    
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                                </div>
-                            </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -134,7 +136,9 @@
 
     @push('js')
     <script>
+        let showData;
        $(document).ready(function() {
+
         $('#btn-add').click(function (e) { 
                 e.preventDefault();
                 $("#title").html("Tambah data kategori blog");
@@ -150,6 +154,9 @@
                     showData(search);
                 });
                 showData();
+
+               
+
         function showData() {
             $.ajax({
                 // show data  on page reload
@@ -160,40 +167,113 @@
                 },
                 success: function (response) {
                     $('.show-data').html(response.data);
-                        $.each(response.data, function (key, item) {
-                        $('.show-data').append(
+                      $.each(response.data, function (key, item) {
+                             $('.show-data').append(
                                         "<div class='col'>"+
                                         "<div class='card'>"+
                                             "<img src='{{asset('storage/blogs')}}/"+item.image+"' class='card-img-top' alt=''>"+
                                             "<div class='card-body'>"+
-                                            "<h5 class='card-title'>"+item.title+"</h5>"+
-                                            "<span class='badge bg-light text-dark'>"+item.tags+"</span>"+
-                                            "<p class='card-text mt-2'>"+item.body+"</p>"+
-                                            "<button type='button' name='id' class='btn btn-primary' id='btn-view' data-toggle='modal' data-target='#viewModal' value='"+item.id+"'>"+
-                                                "View blogs"+
-                                                "</button>"+
+                                                    "<h5 class='card-title'>"+item.title+"</h5>"+
+                                                        "<span class='badge bg-light text-dark'>"+item.tags+"</span>"+
+                                                    "<p class='card-text mt-2 mb-2'>"+"</p>"+
+                                                "<div class='btn-group btn-group-sm' role='group' aria-label='Basic example'>"+
+                                                    "<button type='button' name='id' class='btn btn-primary btn-view' id='"+item.id+"' data-toggle='modal' data-target='#viewModal' value='"+item.id+"'>"+
+                                                        "View blogs"+
+                                                    "</button>"+
+                                                    "<button type='button' name='id' class='btn btn-secondary btn-edit' id='"+item.id+"' data-toggle='modal' value='"+item.id+"'>"+
+                                                        "Edit blogs"+
+                                                    "</button>"+
+                                                    "<button type='button' name='id' class='btn btn-danger btn-view' id='"+item.id+"' data-toggle='modal' data-target='#viewModal' value='"+item.id+"'>"+
+                                                        "Delete blogs"+
+                                                    "</button>"+
+                                                "</div>"+
                                             "</div>"+
                                             "<div class='card-footer'>"+
-                                            "<p class='card-text' style='font-size:10px;text-align:left;'>Publish : "
-                                                +item.created+
+                                                "<p class='card-text' style='font-size:10px;text-align:left;'>Publish : "
+                                                    +item.created+
                                                 "</p>"+
                                             "</div>"+
                                         "</div>"+
                                         "</div>"
                                 );
-                        
                                 console.log(item);
                         });
+
+                        
                     }
                 });
                 
             }
+
+            // show detail
+            $('.show-data').on('click', '.btn-view', function(){
+                let id = $(this).attr('id');
+                let url = "{{route('blogs.show',':id')}}";
+                    url = url.replace(':id', id);
+                $.ajax({
+                    type: 'GET',
+                    url:  url,
+                    data:{
+                        id:id
+                    },
+                    success: function(data){
+                       
+                        $("#titleBlog").html(data.data.title);
+                        $('#imageBlog').html("<img src='{{asset('storage/blogs')}}/"+data.data.image+"' class='align-self-start wd-100 wd-sm-150 me-3   '  alt=''>");
+                        // $('#image').attr('src', '{{asset("storage/blogs")}}/,'+data.img);
+                        $("#bodyBlog").html(data.data.body);
+                        $('#viewModal').modal('show');
+                       
+                    }
+                });         
+            });
+
+            // edit blog
+            
+             $('.show-data').on('click', '.btn-edit', function(){
+                let id = $(this).attr('id');
+                let url = "{{route('blogs.update',':id')}}";
+                    url = url.replace(':id', id);
+                $('#tagEditorModal').modal('show');
+                $.ajax({
+                    type: 'GET',
+                    url:  url,
+                    data:{
+                        id:id
+                    },
+                    success: function(data){
+                        $("#modalFormData").attr('action', url);
+                        $("#title").html("Edit "+ data.data.title);
+                        $("#put").html('<input type="hidden" name="_method" value="put">');
+                        $("#blog_category_id").val(data.data.blog_category_id);
+                        $("#titles").val(data.data.title);
+                        $("#body").val(data.data.body);
+                        $("#tags").val(data.data.tags);
+                        $('.error').empty();
+                        $('#tagEditorModal').modal('show');
+                       console.log(data.data.id)
+                       
+                    }
+                });        
+                
+            });
 });
 
        
         
-       
+        // text editor
+        new EasyMDE({
+        autoDownloadFontAwesome: false,
+        element: document.getElementById('body'),
+        });
 
     </script>
     @endpush
 </x-app-layout>
+
+
+
+
+
+
+
