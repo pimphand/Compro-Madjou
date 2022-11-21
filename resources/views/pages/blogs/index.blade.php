@@ -28,11 +28,11 @@
                         
                         <div class="mb-3">
                             <label for="search" class="form-label">Cari : </label>
-                            <input type="text" class="form-control" id="search" name="search"></input>
+                            <input type="text" class="form-control" id="search" name="search">
                         </div>
 
                         {{-- card list --}}
-                        <div class="row row-cols-2 row-cols-md-3 g-4 show-data">
+                        <div class="row row-cols-2 row-cols-md-3 g-4 show-datas">
             
                         </div>
 
@@ -79,7 +79,7 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="tags" class="form-label">Tags </label>
-                                                <select name="tags" id="tags" class="form-control" multiple="">
+                                                <select name="tags[]" id="tags" class="form-control" multiple="">
                                                     <option value="" disabled selected>Selected tags</option>
                                                     @foreach ($tag as $tag)
                                                     <option value="{{$tag->name}}">{{$tag->name}}</option>
@@ -121,9 +121,6 @@
                                         <p id="bodyBlog"></p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" id="btn-delete">Edit blog</button>
-                                        <button type="button" class="btn btn-secondary" id="btn-delete">Hapus blog</button>
-                                        <input type="hidden" id="tag_id" name="id" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -136,17 +133,37 @@
 
     @push('js')
     <script>
-        let showData;
        $(document).ready(function() {
 
+        let editor;
+
+        let ckEditor = ClassicEditor
+            .create( document.querySelector( '#body' ) )
+            .then( newEditor => {
+                editor = newEditor;
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
+
+            document.querySelector( '#btn-save' ).addEventListener( 'click', () => {
+                const editorData = editor.getData();
+                $('#body').val(editorData);
+
+                
+                
+            } );
+            
         $('#btn-add').click(function (e) { 
                 e.preventDefault();
+                $('#body').val(editor.getData());
                 $("#title").html("Tambah data kategori blog");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
                 $("#modalFormData").attr('action', "{{ route('blogs.store') }}");
+                
             });
 
           // search data
@@ -166,12 +183,12 @@
                     search: $('#search').val(),
                 },
                 success: function (response) {
-                    $('.show-data').html(response.data);
+                    $('.show-datas').html(response.data);
                       $.each(response.data, function (key, item) {
-                             $('.show-data').append(
+                             $('.show-datas').append(
                                         "<div class='col'>"+
                                         "<div class='card'>"+
-                                            "<img src='{{asset('storage/blogs')}}/"+item.image+"' class='card-img-top' alt=''>"+
+                                            "<img src='{{asset('storage/blogs')}}/"+item.image+"' class='card-img-top' height='200px' alt=''>"+
                                             "<div class='card-body'>"+
                                                     "<h5 class='card-title'>"+item.title+"</h5>"+
                                                         "<span class='badge bg-light text-dark'>"+item.tags+"</span>"+
@@ -183,7 +200,7 @@
                                                     "<button type='button' name='id' class='btn btn-secondary btn-edit' id='"+item.id+"' data-toggle='modal' value='"+item.id+"'>"+
                                                         "Edit blogs"+
                                                     "</button>"+
-                                                    "<button type='button' name='id' class='btn btn-danger btn-view' id='"+item.id+"' data-toggle='modal' data-target='#viewModal' value='"+item.id+"'>"+
+                                                    "<button type='button' name='id' class='btn btn-danger btn-remove' id='"+item.id+"' data-toggle='modal' data-target='#viewModal' value='"+item.id+"'>"+
                                                         "Delete blogs"+
                                                     "</button>"+
                                                 "</div>"+
@@ -192,21 +209,25 @@
                                                 "<p class='card-text' style='font-size:10px;text-align:left;'>Publish : "
                                                     +item.created+
                                                 "</p>"+
+                                                "<p class='card-text' style='font-size:10px;text-align:left;'>Created by : "
+                                                    +item.author.name+
+                                                "</p>"+
                                             "</div>"+
                                         "</div>"+
                                         "</div>"
                                 );
-                                console.log(item);
+                            //    console.log(item.author.name)
+
+                            
                         });
 
-                        
                     }
                 });
                 
             }
 
             // show detail
-            $('.show-data').on('click', '.btn-view', function(){
+            $('.show-datas').on('click', '.btn-view', function(){
                 let id = $(this).attr('id');
                 let url = "{{route('blogs.show',':id')}}";
                     url = url.replace(':id', id);
@@ -230,10 +251,11 @@
 
             // edit blog
             
-             $('.show-data').on('click', '.btn-edit', function(){
-                let id = $(this).attr('id');
-                let url = "{{route('blogs.update',':id')}}";
-                    url = url.replace(':id', id);
+             $('.show-datas').on('click', '.btn-edit', function(){
+                 let id = $(this).attr('id');
+                 $('#body').val(editor.getData());
+                 let url = "{{route('blogs.update',':id')}}";
+                 url = url.replace(':id', id);
                 $('#tagEditorModal').modal('show');
                 $.ajax({
                     type: 'GET',
@@ -247,25 +269,76 @@
                         $("#put").html('<input type="hidden" name="_method" value="put">');
                         $("#blog_category_id").val(data.data.blog_category_id);
                         $("#titles").val(data.data.title);
-                        $("#body").val(data.data.body);
+                        $("#body").val(editor.setData(data.data.body));
                         $("#tags").val(data.data.tags);
                         $('.error').empty();
                         $('#tagEditorModal').modal('show');
-                       console.log(data.data.id)
-                       
+                        
                     }
                 });        
                 
             });
+
+            //  delete blog
+
+            $('.show-datas').on('click', '.btn-remove', function() {
+                let id = $(this).attr('id');
+                let url = "{{ route('blogs.destroy',':id') }}"
+                    url = url.replace(':id', id);
+                    $.ajax({
+                    type: 'GET',
+                    url:  url,
+                    data:{
+                        id:id
+                    },
+                    success: function(data){
+                    Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: "Data "+data.data.title+" akan terhapus!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya!',
+                    cancelButtonText: 'Batal!'
+                }).then((result) => {
+                    if (result.value) {
+                        $.post(url, {
+                            _token:"{{ csrf_token() }}",
+                            _method: 'delete'
+                        }).done((res) => {
+                            if (res.success == true) {
+                                Swal.fire(
+                                    data.data.title,
+                                    'Data berhasil di hapus.',
+                                    'success'
+                                )
+                                setInterval(() => {
+                                    location.reload();
+                                    
+                                }, 2000);
+                            } else {
+                                swal({
+                                    type: 'error',
+                                    text: res.mssg
+                                });
+                            }
+                        })
+                    }
+                })
+                        
+                    }
+                });        
+
+                
+            })
 });
 
        
+    
+    
         
-        // text editor
-        new EasyMDE({
-        autoDownloadFontAwesome: false,
-        element: document.getElementById('body'),
-        });
+    
 
     </script>
     @endpush

@@ -28,7 +28,7 @@ class BlogController extends Controller
         
         if(request()->ajax())
         {
-            $data = Blog::with('getCategories', 'getTags', 'getUsers')
+            $data = Blog::with('getCategories', 'getUsers')
                     ->where('title','like','%'.substr($request->search, 2).'%')
                     ->latest()->get();
             return response()->json([

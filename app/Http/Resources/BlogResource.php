@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class BlogResource extends JsonResource
 {
@@ -22,7 +23,7 @@ class BlogResource extends JsonResource
             'body'                  => $this->body,
             'image'                 => $this->image,
             'tags'                  => $this->tags,
-            'author'                => $this->author,
+            'author'                => Auth::user(),
             'created'               => $this->created_at,
         ];
     }
