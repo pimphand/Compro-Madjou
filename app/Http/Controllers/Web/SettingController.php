@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SettingResource;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
@@ -14,6 +16,18 @@ class SettingController extends Controller
      */
     public function index()
     {
+        
+        if(request()->ajax())
+        {
+            $setting = Setting::all();
+
+            return response()->json([
+                'success'   => true,
+                'message'   => 'Pengaturang berhasil ditampilkan',
+                'data'      => SettingResource::collection($setting)
+            ]);
+        }
+
         return view('pages.settings.index');
     }
 

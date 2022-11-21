@@ -69,17 +69,19 @@
 			@include('layouts.topbar')
 			<!-- partial -->
 
-			
+            <div class="page-content">
+                    @yield('content')
 
-                    {{ $slot }}
+                      
+            </div>
 
-
-
-			<!-- partial:../../partials/_footer.html -->
+             <!-- partial:../../partials/_footer.html -->
 			@include('layouts.footer')
-			<!-- partial -->
-	
+			<!-- partial -->  
+
 		</div>
+
+       
 	</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>

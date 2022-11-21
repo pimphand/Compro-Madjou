@@ -16,16 +16,14 @@ class SettingSeeder extends Seeder
      */
     public function run()
     {
-        $contact = Setting::create([
+        Setting::create([
             "code"  => 'contact',
             "name"  => 'contact',
             "slug"  => Str::slug(request()->name),
-            ""      => '',
+            "body"      => '',
             "image" => '',
             "lang"  => 'id',
-        ]);
-
-        $header = Setting::create([
+        ], [
             "code"  => 'header',
             "name"  => 'header',
             "slug"  => Str::slug(request()->name),
@@ -33,5 +31,7 @@ class SettingSeeder extends Seeder
             "image" => '',
             "lang"  => 'id',
         ]);
+
+       
     }
 }

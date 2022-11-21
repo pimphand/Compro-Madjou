@@ -1,10 +1,15 @@
-@section('title', 'Madjou | Langganan')
-<x-app-layout>
-    <div class="page-content">
+@extends('layouts.app')
+@section('title', 'Madjou | Pengaturan')
+
+@section('content')
+    
         <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
+            
+                
+                
                 <div class="card">
                     <div class="card-body">
+                        
                         <div class="example">
                           <ul class="nav nav-tabs nav-tabs-line" id="lineTab" role="tablist">
                             <li class="nav-item">
@@ -40,58 +45,17 @@
                         </div>
                       </div>
 
-                        {{-- modal --}}
+                     
 
-
-                        <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
-                            aria-labelledby="varyingModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="varyingModalLabel">
-                                            <span id="title"></span>
-                                        </h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="btn-close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="modalFormData" name="modalFormData" class="form-horizontal"
-                                            novalidate="">
-                                            @csrf
-                                            <div id="put"></div>
-                                            <div class="mb-3">
-                                                <label for="type" class="form-label">Jenis tags </label>
-                                                    <select name="type" id="type" class="form-control">
-                                                        <option value="" selected disabled hidden>Pilih jenis tags</option>
-                                                        <option value="blog">Blog</option>
-                                                        <option value="service">Service</option>
-                                                        <option value="all">All</option>
-                                                    </select>
-                                                <div class="text-danger" id="error-type"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="name" class="form-label">Nama </label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Masukkan nama tag..." value="">
-                                                <div class="text-danger" id="error-name"></div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-inverse-primary" id="btn-save"
-                                            value="add">Simpan data</button>
-                                        <input type="hidden" id="tag_id" name="id" value="0">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                       
 
                     </div>
                 </div>
-            </div>
+            </div>  
+            
         </div>
-    </div>
-
+        @endsection
+   
     @push('js')
     <script>
         let showData;
@@ -227,4 +191,4 @@
         })
     </script>
     @endpush
-</x-app-layout>
+   
