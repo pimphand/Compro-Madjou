@@ -35,13 +35,13 @@
           <li class="nav-item nav-category">Layanan</li>
 
           <li class="nav-item">
-            <a href="{{ route('services.index')}}" class="nav-link">
+            <a href="{{route('services.index')}}" class="nav-link">
               <i class="fa-sharp fa-solid fa-toolbox"></i>
               <span class="link-title">Layanan</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('detail-services.index')}}" class="nav-link">
+            <a href="{{route('detail-services.index')}}" class="nav-link">
               <i class="fa-sharp fa-solid fa-screwdriver-wrench"></i>
               <span class="link-title">Detail layanan</span>
             </a>
@@ -49,32 +49,32 @@
           
           <li class="nav-item nav-category">Projek</li>
           <li class="nav-item">
-            <a href="{{ route('project-types.index')}}" class="nav-link">
+            <a href="{{route('project-types.index')}}" class="nav-link">
               <i class="fa-solid fa-cart-plus"></i>
               <span class="link-title">Jenis projek</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('project.index')}}" class="nav-link">
+            <a href="{{route('project.index')}}" class="nav-link">
               <i class="fa-solid fa-store"></i>
               <span class="link-title">Data projek</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('clients.index')}}" class="nav-link">
+            <a href="{{route('clients.index')}}" class="nav-link">
               <i class="fa-sharp fa-solid fa-face-smile"></i>
               <span class="link-title">Klien kami</span>
             </a>
           </li>
           <li class="nav-item nav-category">Blogs</li>
           <li class="nav-item">
-            <a href="{{ route('category-blogs.index')}}" class="nav-link">
+            <a href="{{route('category-blogs.index')}}" class="nav-link">
               <i class="fa-solid fa-layer-group"></i>
               <span class="link-title">Kategori blog</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('blogs.index')}}" class="nav-link">
+            <a href="{{route('blogs.index')}}" class="nav-link">
               <i class="fa-solid fa-book-open"></i>
               <span class="link-title">Data blog</span>
             </a>
@@ -94,19 +94,19 @@
           </li>
           <li class="nav-item nav-category">Teams</li>
           <li class="nav-item">
-            <a href="{{ route('category-teams.index')}}" class="nav-link">
+            <a href="{{route('category-teams.index')}}" class="nav-link">
               <i class="fa-solid fa-user-plus"></i>
               <span class="link-title">Kategori team</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('teams.index')}}" class="nav-link">
+            <a href="{{route('teams.index')}}" class="nav-link">
               <i class="fa-solid fa-users"></i>
               <span class="link-title">Data team</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('languages.index')}}" class="nav-link">
+            <a href="{{route('languages.index')}}" class="nav-link">
               <i class="fa-solid fa-language"></i>
               <span class="link-title">Bahasa pemrograman</span>
             </a>
