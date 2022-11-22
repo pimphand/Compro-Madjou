@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ContactResource;
 use App\Http\Resources\SettingResource;
+use App\Models\Contact;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
@@ -23,8 +25,19 @@ class SettingController extends Controller
 
             return response()->json([
                 'success'   => true,
-                'message'   => 'Pengaturang berhasil ditampilkan',
+                'message'   => 'Pengaturan berhasil ditampilkan',
                 'data'      => SettingResource::collection($setting)
+            ]);
+        }
+
+        if(request()->ajax())
+        {
+            $contact = Contact::latest()->get();
+
+            return response()->json([
+                'success'   => true,
+                'message'   => 'Kontak berhasil ditampilkan',
+                'data'      => ContactResource::collection($contact),
             ]);
         }
 

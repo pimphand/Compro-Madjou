@@ -17,27 +17,34 @@ class ContactSeeder extends Seeder
     {
         Contact::create([
             'name'  => 'gmaps',
-            'image' => null,
-            'url'   => null,
-        ], [
+            'images' => '',
+            'url'   => '',
+        ]);
+        
+        Contact::create([
             'name'  => 'instagram',
-            'image' => null,
+            'images' => '',
             'url'   => 'https://www.instagram.com/themadjou/'
-        ], [
+        ]);
+
+        Contact::create([
             'name'  => 'facebook',
-            'image' => null,
+            'images' => '',
             'url'   => 'https://www.facebook.com/profile.php?id=100085220725132'
-        ], [
+        ]); 
+        Contact::create([
             'name'      => 'linkedin',
-            'image'     => null,
+            'images'     => '',
             'url'       => 'https://www.linkedin.com/company/themadjou/',
-        ] , [
+        ]);  
+        Contact::create([
             'name'      => 'email',
-            'image'     => null,
+            'images'     => '',
             'url'       => 'info@madjou.com'
-        ], [
+        ]); 
+        Contact::create([
             'name'      => 'whatsapp',
-            'image'     => null,
+            'images'     => '',
             'url'       => 'https://api.whatsapp.com/send?phone=6282141217580&text=Halo,%20Saya%20ingin%20konsultasi%20dengan%20Madjou%20terkait%20rencana%20digitalisasi/%20Hello,%20I%20would%20like%20to%20consult%20with%20Madjou%20regarding%20the%20digitization%20plan'
         ]);
     }

@@ -9,6 +9,7 @@ use App\Http\Controllers\Web\BlogController;
 use App\Http\Controllers\Web\CarrerController;
 use App\Http\Controllers\Web\CategoryBlogController;
 use App\Http\Controllers\Web\CategoryTeamController;
+use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\Web\DetailServiceController;
 use App\Http\Controllers\Web\EmployeeRegistrationController;
 use App\Http\Controllers\Web\MessageController;
@@ -60,6 +61,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/notifications', NotificationController::class);
         Route::resource('/subscribes', SubscribeController::class);
         Route::resource('/settings', SettingController::class);
+        Route::resource('/contacts', ContactController::class);
         Route::resource('/user', MasterUserController::class);
     });
 });

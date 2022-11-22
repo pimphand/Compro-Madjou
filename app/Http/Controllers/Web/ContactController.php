@@ -121,7 +121,8 @@ class ContactController extends Controller
     {
         $data     = Validator::make($request->all(), [
             'name'      => 'required|string|unique:contacts,id'.$id,
-            'url'       => 'requiered',
+            'url'       => 'required',
+            'images'    => 'nullable|image|mimes:png,svg|max:1048'
         ], [
             'name.required' => 'Nama tidak boleh kosong',
             'name.unique'   => 'Nama sudah digunakan',
