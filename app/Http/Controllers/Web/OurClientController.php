@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class OurClientController extends Controller
 {
@@ -72,7 +73,7 @@ class OurClientController extends Controller
             $fileNameWithExt    = $image->getClientOriginalName();
             $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext                = $image->getClientOriginalExtension();
-            $fileNameSave       = $fileName.'.'.$ext;
+            $fileNameSave       = Str::uuid();
             $path               = $image->storeAs('public/clients', $fileNameSave);
         }
 
@@ -146,7 +147,7 @@ class OurClientController extends Controller
             $fileNameWithExt        = $request->file('image')->getClientOriginalName();
             $fileName               = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext                    = $request->file('image')->getClientOriginalExtension();
-            $fileNameSave           = $fileName.'.'.$ext;
+            $fileNameSave           = Str::uuid();
             $path                   = $request->file('image')->storeAs('public/clients', $fileNameSave);
         }
 

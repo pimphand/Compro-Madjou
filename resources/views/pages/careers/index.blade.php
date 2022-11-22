@@ -1,6 +1,9 @@
-@section('title', 'Madjou | Career')
-<x-app-layout>
-    <div class="page-content">
+@extends('layouts.app')
+@section('title', 'Madjou | Karir')
+@section('content')
+    
+
+    
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
                 @if( Session::has("success") )
@@ -18,11 +21,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel career</h4>
+                            <h4 class="card-title">Tabel data karir</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
                             data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
-                                Add Data
+                                Tambah Data
                             </button>
                         </div>
                         <div class="table-responsive">
@@ -30,13 +33,13 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Name</th>
-                                        <th>Content</th>
-                                        <th>Location</th>
-                                        <th>Department</th>
-                                        <th>Minimum experience</th>
-                                        <th>Emplpoyment type</th>
-                                        <th>Action</th>
+                                        <th>Nama</th>
+                                        <th>Konten</th>
+                                        <th>Lokasi</th>
+                                        <th>Bagian</th>
+                                        <th>Minimal pengalaman</th>
+                                        <th>Jenis karyawan</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -66,40 +69,40 @@
                                             <div id="put"></div>
                                             
                                             <div class="mb-3">
-                                                <label for="name" class="form-label">Name </label>
+                                                <label for="name" class="form-label">Nama </label>
                                                 <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Input career name..." value="">
+                                                    placeholder="Masukkan nama pekerjaan..." value="">
                                                 <div class="text-danger" id="error-name"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="body" class="form-label">Content </label>
-                                                <textarea type="text" name="body" id="body" cols="30" rows="10" class="form-control" value="" placeholder="Input you're content"></textarea>
+                                                <label for="body" class="form-label">Konten </label>
+                                                <textarea type="text" name="body" id="body" cols="30" rows="10" class="form-control" value="" placeholder="Masukkan deskripsi pekerjaan..."></textarea>
                                                 <div class="text-danger" id="error-body"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="location" class="form-label">Location </label>
+                                                <label for="location" class="form-label">Lokasi </label>
                                                 <input type="text" class="form-control" id="location" name="location"
-                                                    placeholder="Input project location..." value="">
+                                                    placeholder="Masukkan lokasi..." value="">
                                                 <div class="text-danger" id="error-location"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="department" class="form-label">Department </label>
+                                                <label for="department" class="form-label">Bagian </label>
                                                 <input type="text" class="form-control" id="department" name="department"
-                                                    placeholder="Input career department..." value="">
+                                                    placeholder="Masukkan bagian pekerjaan..." value="">
                                                 <div class="text-danger" id="error-department"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="minimum_experience" class="form-label">Minimum experience </label>
+                                                <label for="minimum_experience" class="form-label">Pengalaman minimal </label>
                                                 <input type="text" class="form-control" id="minimum_experience" name="minimum_experience"
-                                                    placeholder="Input career minimum experience..." value="">
+                                                    placeholder="Masukkan pengalaman minimal..." value="">
                                                 <div class="text-danger" id="error-minimum_experience"></div>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="employment_type" class="form-label">Emplpoyment type </label>
                                                     <select name="employment_type" id="employment_type">
-                                                        <option value="" selected disabled>Select employment type</option>
-                                                        <option value="Contract">Contract</option>
-                                                        <option value="Permanent">Permanent</option>
+                                                        <option value="" selected disabled>Pilih jenis karyawan</option>
+                                                        <option value="Contract">Kontrak</option>
+                                                        <option value="Permanent">Pegawai tetap</option>
                                                     </select>
                                                 <div class="text-danger" id="error-employment_type"></div>
                                             </div>
@@ -118,7 +121,7 @@
                 </div>
             </div>
         </div>
-    </div>
+        @endsection 
 
     @push('js')
     <script>
@@ -126,7 +129,7 @@
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Add data career");
+                $("#title").html("Tambah data karir");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
@@ -268,6 +271,11 @@
                 })
             })
         })
+
+         // text editor
+         new EasyMDE({
+        autoDownloadFontAwesome: false,
+        element: document.getElementById('body'),
+        });
     </script>
     @endpush
-</x-app-layout>

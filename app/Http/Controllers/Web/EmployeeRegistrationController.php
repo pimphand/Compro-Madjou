@@ -23,11 +23,26 @@ class EmployeeRegistrationController extends Controller
             $dataEmployee = EmployeeRegistration::latest()->get();
 
             return DataTables::of($dataEmployee)
+                    ->addColumn('getProvinceAtributeName', function($career){
+                        return $career->getCareer->name;
+                    })
+                    ->addColumn('getVillage', function($village){
+                        return $village->village_code;
+                    })
+                    ->addColumn('getDistrict', function($district){
+                        return $district->district_code;
+                    })
+                    ->addColumn('getProvince', function($province){
+                        return $province->province_code;
+                    })
+                    ->addColumn('getCity', function($city){
+                        return $city->city_code;
+                    })
                     ->addIndexColumn()
                     ->make(true);
         }
 
-        view('pages.employee.index')->with('employee');
+        return view('pages.employees.index')->with('employees');
     }
 
     /**

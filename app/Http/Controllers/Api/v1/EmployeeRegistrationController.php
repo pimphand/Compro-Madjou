@@ -42,8 +42,8 @@ class EmployeeRegistrationController extends Controller
             'career_id' => 'required|',
             'name'      => 'required|unique:employee_registrations,id',
             'email'     => 'required|unique:employee_registrations,id',
-            'phone'     => 'required|number|max:15',
-            'address'   => 'requried|',
+            'phone'     => 'required|max:15',
+            'address'   => 'required|',
         ], [
             'career_id.required'    => 'Career tidak boleh kosong',
             'name.required'         => 'Nama tidak boleh kosong',

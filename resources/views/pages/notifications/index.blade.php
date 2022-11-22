@@ -1,4 +1,5 @@
-@section('title', 'Madjou | Detail - Layanan')
+@extends('layouts.app')
+@section('title', 'Madjou | Notifikasi')
 @section('content')
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
@@ -17,21 +18,20 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel data detail layanan</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
+                            <h4 class="card-title">Table data notifikasi</h4>
+                            {{-- <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
                             data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
                                 Tambah Data
-                            </button>
+                            </button> --}}
                         </div>
                         <div class="table-responsive">
                             <table data-url="{{ request()->url() }}" class="table-data table">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Layanan</th>
-                                        <th>Judul</th>
-                                        <th>Konten</th>
+                                        <th>E-mail</th>
+                                        <th>Body</th>
                                         <th>Gambar</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -58,33 +58,21 @@
                                     </div>
                                     <div class="modal-body">
                                         <form id="modalFormData" name="modalFormData" class="form-horizontal"
-                                            novalidate="" enctype="multipart/form-data">
+                                            novalidate="">
                                             @csrf
                                             <div id="put"></div>
-                                            
                                             <div class="mb-3">
-                                                <label for="body" class="form-label">Layanan </label>
-                                                    <select name="service_id" id="service_id" class="form-control" >
-                                                        <option value="" disabled selected>Select service</option>
-                                                        @foreach ($services as $service)
-                                                            <option value="{{ $service->id }}">{{ $service->title }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                <div class="text-danger" id="error-tag"></div>
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label for="title" class="form-label">Judul </label>
-                                                <input type="text" class="form-control" id="titles" name="title"
-                                                    placeholder="Masukkan judul detail layanan..." value="">
-                                                <div class="text-danger" id="error-title"></div>
+                                                <label for="name" class="form-label">Email </label>
+                                                <input type="text" class="form-control" id="email" name="email"
+                                                    placeholder="Masukkan email..." value="">
+                                                <div class="text-danger" id="error-name"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="body" class="form-label">Konten </label>
-                                                <textarea type="text" class="form-control" id="body" name="body" placeholder="Masukkan konten detail layanan..."></textarea>
+                                                <label for="body" class="form-label">Body </label>
+                                                <textarea type="text" class="form-control" id="body" name="body"
+                                                    placeholder="Masukkan body pesan..."></textarea>
                                                 <div class="text-danger" id="error-body"></div>
                                             </div>
-
                                             <div class="mb-3">
                                                 <label for="image" class="form-label">Gambar </label>
                                                 <input type="file" name="image" id="image" class="form-control" value="">
@@ -95,7 +83,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-inverse-primary" id="btn-save"
                                             value="add">Simpan data</button>
-                                        <input type="hidden" id="service_id" name="id" value="0">
+                                        <input type="hidden" id="client_id" name="id" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -106,19 +94,20 @@
             </div>
         </div>
 @endsection
+
     @push('js')
     <script>
         let showData;
         $(() => {
-            $('#btn-add').click(function (e) { 
-                e.preventDefault();
-                $("#title").html("Tambah detail layanan");
-                $("#btn-save").val("add");
-                $("#put").html("");
-                $("#modalFormData").trigger("reset");
-                $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('detail-services.store') }}");
-            });
+            // $('#btn-add').click(function (e) { 
+            //     e.preventDefault();
+            //     $("#title").html("Tambah data klien");
+            //     $("#btn-save").val("add");
+            //     $("#put").html("");
+            //     $("#modalFormData").trigger("reset");
+            //     $("#tagEditorModal").modal("show");
+            //     $("#modalFormData").attr('action', "{{ route('clients.store') }}");
+            // });
 
 
             // datatable
@@ -133,7 +122,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 5],
+                        targets: [0, 4],
                         className: 'text-center'
                     },
                     {
@@ -152,11 +141,8 @@
                         return DT_RowIndex + '.';
                     }
                 }, {
-                    data: 'getService',
-                    name: 'getService',
-                }, {
-                    data: 'title',
-                    name: 'title',
+                    data: 'email',
+                    name: 'email',
                 }, {
                     data: 'body',
                     name: 'body',
@@ -164,7 +150,7 @@
                     data: 'image',
                     name: 'image',
                     render: function ( data) {
-              return `<img src="{{asset('storage/detail-services')}}/${data}" width="40px">`;},
+              return `<img src="{{asset('storage/clients')}}/${data}" width="40px">`;},
                 }, {
                     data: 'id',
                     name: 'id',
@@ -198,14 +184,14 @@
             })
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
+                
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('detail-services.update',':id') }}"
+                let url = "{{ route('clients.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
-                $("#title").html("Edit " + row.title);
+                $("#title").html("Edit "+ row.name);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
-                $("#tags").val(row.tags)
-                $("#titles").val(row.title);
+                $("#email").val(row.email);
                 $("#body").val(row.body);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
@@ -213,7 +199,7 @@
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('detail-services.destroy',':id') }}"
+                let url = "{{ route('clients.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({
@@ -250,12 +236,10 @@
             })
         })
 
-         // text editor
-         new EasyMDE({
+        // text editor
+        new EasyMDE({
         autoDownloadFontAwesome: false,
         element: document.getElementById('body'),
         });
-        
     </script>
     @endpush
-</x-app-layout>

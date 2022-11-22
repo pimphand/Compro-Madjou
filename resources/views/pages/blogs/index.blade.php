@@ -1,226 +1,303 @@
-@section('title', 'Madjou | Tags')
-<x-app-layout>
-    <div class="page-content">
-        <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                @if( Session::has("success") )
-                <div class="alert alert-success alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("success") }}
-                </div>
-                @endif
-                @if( Session::has("error") )
-                <div class="alert alert-danger alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("error") }}
-                </div>
-                @endif
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Data blog</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
-                                <i data-feather="plus"></i>
-                                Add Data
-                            </button>
-                        </div>
-                        <div class="table-responsive">
-                            <table data-url="{{ request()->url() }}" class="table-data table">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Category Blog</th>
-                                        <th>Title</th>
-                                        <th>Body</th>
-                                        <th>Tags</th>
-                                        <th>Author</th>
-                                        <th>Image</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+@extends('layouts.app')
 
-                                </tbody>
-                            </table>
-                        </div>
+@section('title', 'Madjou | Blogs')
+@section('content')
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            @if( Session::has("success") )
+            <div class="alert alert-success alert-block" role="alert">
+                <button class="close" data-dismiss="alert"></button>
+                {{ Session::get("success") }}
+            </div>
+            @endif
+            @if( Session::has("error") )
+            <div class="alert alert-danger alert-block" role="alert">
+                <button class="close" data-dismiss="alert"></button>
+                {{ Session::get("error") }}
+            </div>
+            @endif
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h4 class="card-title">Tabel data blog</h4>
+                        <button type="button" class="btn btn-inverse-success"
+                        data-bs-target="#tagEditorModal" data-bs-toggle="modal" id='btn-add'>
+                            <i data-feather="plus"></i>
+                            Tambah Data
+                        </button>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="search" class="form-label">Cari : </label>
+                        <input type="text" class="form-control" id="search" name="search">
+                    </div>
+
+                    {{-- card list --}}
+                    <div class="row row-cols-2 row-cols-md-3 g-4 show-datas">
+        
+                    </div>
 
 
-                        {{-- modal --}}
+                    {{-- modal store / edit --}}
+                    <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
+                        aria-labelledby="varyingModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="varyingModalLabel">
+                                        <span id="title"></span>
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="btn-close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="modalFormData" name="modalFormData" class="form-horizontal"
+                                        novalidate="">
+                                        @csrf
+                                        <div id="put"></div>
+                                        <div class="mb-3">
+                                            <label for="category_blog" class="form-label">Kategori blog </label>
+                                            <select name="blog_category_id" id="blog_category_id" class="form-control">
+                                                <option value="" disabled selected>Pilih kategori</option>
 
-
-                        <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
-                            aria-labelledby="varyingModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="varyingModalLabel">
-                                            <span id="title"></span>
-                                        </h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="btn-close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="modalFormData" name="modalFormData" class="form-horizontal"
-                                            novalidate="">
-                                            @csrf
-                                            <div id="put"></div>
-                                            <div class="mb-3">
-                                                <label for="category_blog" class="form-label">Category blog </label>
-                                                <select name="blog_category_id" id="blog_category_id" class="form-control">
-                                                    <option value="" disabled selected>Select category</option>
-
-                                                    @foreach ($category as $category)
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <div class="text-danger" id="error-category_blog"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="title" class="form-label">Title </label>
-                                                <input type="text" class="form-control" id="title" name="title"
-                                                    placeholder="Input title blog..." value="">
-                                                <div class="text-danger" id="error-title"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="body" class="form-label">Content </label>
-                                                <textarea class="form-control" id="body" name="body"
-                                                    placeholder="Input konten blog..." value="">
-                                                </textarea>
-                                                <div class="text-danger" id="error-body"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="tags" class="form-label">Tags </label>
-                                                <select name="tags" id="tags" class="form-control" multiple="">
-                                                    <option value="" disabled selected>Selected tags</option>
-                                                    @foreach ($tag as $tag)
-                                                    <option value="{{$tag->name}}">{{$tag->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <div class="text-danger" id="error-title"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="title" class="form-label">Image </label>
-                                                <input type="file" class="form-control" id="image" name="image"
-                                                    value="">
-                                                <div class="text-danger" id="error-image"></div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-inverse-primary" id="btn-save"
-                                            value="add">Simpan data</button>
-                                        <input type="hidden" id="blog_id" name="id" value="0">
-                                    </div>
+                                                @foreach ($category as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="text-danger" id="error-category_blog"></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="title" class="form-label">Judul </label>
+                                            <input type="text" class="form-control" id="titles" name="title"
+                                                placeholder="Masukkan judul blog..." value="">
+                                            <div class="text-danger" id="error-title"></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="body" class="form-label">Konten </label>
+                                            <textarea class="form-control" id="body" name="body"
+                                                placeholder="Masukkan konten blog..." value=""></textarea>
+                                            <div class="text-danger" id="error-body"></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="tags" class="form-label">Tags </label>
+                                            <select name="tags[]" id="tags" class="form-control" multiple="">
+                                                <option value="" disabled selected>Selected tags</option>
+                                                @foreach ($tag as $tag)
+                                                <option value="{{$tag->name}}">{{$tag->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="text-danger" id="error-title"></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="title" class="form-label">Gambar </label>
+                                            <input type="file" class="form-control" id="image" name="image"
+                                                value="">
+                                            <div class="text-danger" id="error-image"></div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-inverse-primary" id="btn-save"
+                                        value="add">Simpan data</button>
+                                    <input type="hidden" id="blog_id" name="id" value="0">
                                 </div>
                             </div>
                         </div>
+                    </div>
 
+
+                    <!-- Modal view -->
+                    <div class="modal fade bd-example-modal-xl" id="viewModal" tabindex="-1" aria-labelledby="varyingModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="varyingModalLabel">
+                                        <span id="titleBlog"></span>
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="btn-close"></button>
+                                </div>
+                                <div class="modal-body d-flex align-items-start">
+                                    <div id="imageBlog"></div>
+                                    <p id="bodyBlog"></p>
+                                </div>
+                                <div class="modal-footer">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+@endsection
+    
+
     @push('js')
     <script>
-        let showData;
-        $(() => {
-            $('#btn-add').click(function (e) { 
+       $(document).ready(function() {
+
+        let editor;
+
+        let ckEditor = ClassicEditor
+            .create( document.querySelector( '#body' ) )
+            .then( newEditor => {
+                editor = newEditor;
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
+
+            document.querySelector( '#btn-save' ).addEventListener( 'click', () => {
+                const editorData = editor.getData();
+                $('#body').val(editorData);
+
+                
+                
+            } );
+            
+        $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Add data blog");
+                $('#body').val(editor.getData());
+                $("#title").html("Tambah data kategori blog");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
                 $("#modalFormData").attr('action', "{{ route('blogs.store') }}");
-            });
-            // datatable
-            showData = $('.table-data').DataTable({
-                processing: true,
-                serverSide: true,
-                destroy: true,
-                ajax: $('.table-data').data('url'),
-               
-                columns: [{
-                    name: 'DT_RowIndex',
-                    data: 'DT_RowIndex',
-                    render: (DT_RowIndex) => {
-                        return DT_RowIndex + '.';
-                    }
-                }, {
-                    data: 'getCategories',
-                    name: 'getCategories',
-                }, {
-                    data: 'title',
-                    name: 'title',
-                },  {
-                    data: 'body',
-                    name: 'body',
-                }, {
-                    data: 'tags',
-                    name: 'tags',
-                }, {
-                    data: 'getUsers',
-                    name: 'getUsers',
-                }, {
-                    data: 'image',
-                    name: 'image',
-                    render: function (data) {
-                        return `<img src="{{asset('storage/blogs')}}/${data}" width="40px">`;
-                    }
-                }, {
-                    data: 'id',
-                    name: 'id',
-                    render: (id, type, row) => {
-                        const button_edit = $('<button>', {
-                            html: $('<i>', {
-                                class: 'fa fa-pencil'
-                            }).prop('outerHTML'),
-                            class: 'btn btn-secondary btn-edit',
-                            'data-id': id,
-                            title: `Edit Data`,
-                        })
-                        const button_delete = $('<button>', {
-                            html: $('<i>', {
-                                class: 'fa fa-trash'
-                            }).prop('outerHTML'),
-                            class: 'btn btn-danger btn-remove',
-                            'data-id': id,
-                            title: `Hapus Data`,
-                        })
-                        const button_group = $('<div>', {
-                            class: 'btn-group btn-group-sm',
-                            role: 'group',
-                            html: () => {
-                                return [button_edit, button_delete]
-                            }
-                        })
-                        return button_group.prop('outerHTML')
-                    }
-                }]
-            })
-            // edit
-            $('.table-data').on('click', '.btn-edit', function() {
-                let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('tags.update',':id') }}"
-                    url = url.replace(':id', row.id);
-                $("#modalFormData").attr('action', url);
-                $("#title").html("Edit "+ row.title);
-                $("#put").html('<input type="hidden" name="_method" value="put">');
-                $("#type").val(row.type);
-                $("#title").val(row.title);
-                $('.error').empty();
-                $('#tagEditorModal').modal('show');
-            })
-            // Delete
-            $('.table-data').on('click', '.btn-remove', function() {
-                let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('tags.destroy',':id') }}"
-                    url = url.replace(':id', row.id);
                 
-                Swal.fire({
+            });
+
+          // search data
+                $('#search').on('keyup', function(){
+                    showData(search);
+                });
+                showData();
+
+               
+
+        function showData() {
+            $.ajax({
+                // show data  on page reload
+                type: "GET",
+                url: "{{route('blogs.index')}}",
+                data: {
+                    search: $('#search').val(),
+                },
+                success: function (response) {
+                    $('.show-datas').html(response.data);
+                      $.each(response.data, function (key, item) {
+                             $('.show-datas').append(
+                                        "<div class='col'>"+
+                                        "<div class='card'>"+
+                                            "<img src='{{asset('storage/blogs')}}/"+item.image+"' class='card-img-top' height='200px' alt=''>"+
+                                            "<div class='card-body'>"+
+                                                    "<h5 class='card-title'>"+item.title+"</h5>"+
+                                                        "<span class='badge bg-light text-dark'>"+item.tags+"</span>"+
+                                                    "<p class='card-text mt-2 mb-2'>"+"</p>"+
+                                                "<div class='btn-group btn-group-sm' role='group' aria-label='Basic example'>"+
+                                                    "<button type='button' name='id' class='btn btn-primary btn-view' id='"+item.id+"' data-toggle='modal' data-target='#viewModal' value='"+item.id+"'>"+
+                                                        "View blogs"+
+                                                    "</button>"+
+                                                    "<button type='button' name='id' class='btn btn-secondary btn-edit' id='"+item.id+"' data-toggle='modal' value='"+item.id+"'>"+
+                                                        "Edit blogs"+
+                                                    "</button>"+
+                                                    "<button type='button' name='id' class='btn btn-danger btn-remove' id='"+item.id+"' data-toggle='modal' data-target='#viewModal' value='"+item.id+"'>"+
+                                                        "Delete blogs"+
+                                                    "</button>"+
+                                                "</div>"+
+                                            "</div>"+
+                                            "<div class='card-footer'>"+
+                                                "<p class='card-text' style='font-size:10px;text-align:left;'>Publish : "
+                                                    +item.created+
+                                                "</p>"+
+                                                "<p class='card-text' style='font-size:10px;text-align:left;'>Created by : "
+                                                    +item.author.name+
+                                                "</p>"+
+                                            "</div>"+
+                                        "</div>"+
+                                        "</div>"
+                                );
+                            //    console.log(item.author.name)
+
+                            
+                        });
+
+                    }
+                });
+                
+            }
+
+            // show detail
+            $('.show-datas').on('click', '.btn-view', function(){
+                let id = $(this).attr('id');
+                let url = "{{route('blogs.show',':id')}}";
+                    url = url.replace(':id', id);
+                $.ajax({
+                    type: 'GET',
+                    url:  url,
+                    data:{
+                        id:id
+                    },
+                    success: function(data){
+                       
+                        $("#titleBlog").html(data.data.title);
+                        $('#imageBlog').html("<img src='{{asset('storage/blogs')}}/"+data.data.image+"' class='align-self-start wd-100 wd-sm-150 me-3   '  alt=''>");
+                        // $('#image').attr('src', '{{asset("storage/blogs")}}/,'+data.img);
+                        $("#bodyBlog").html(data.data.body);
+                        $('#viewModal').modal('show');
+                       
+                    }
+                });         
+            });
+
+            // edit blog
+            
+             $('.show-datas').on('click', '.btn-edit', function(){
+                 let id = $(this).attr('id');
+                 $('#body').val(editor.getData());
+                 let url = "{{route('blogs.update',':id')}}";
+                 url = url.replace(':id', id);
+                $('#tagEditorModal').modal('show');
+                $.ajax({
+                    type: 'GET',
+                    url:  url,
+                    data:{
+                        id:id
+                    },
+                    success: function(data){
+                        $("#modalFormData").attr('action', url);
+                        $("#title").html("Edit "+ data.data.title);
+                        $("#put").html('<input type="hidden" name="_method" value="put">');
+                        $("#blog_category_id").val(data.data.blog_category_id);
+                        $("#titles").val(data.data.title);
+                        $("#body").val(editor.setData(data.data.body));
+                        $("#tags").val(data.data.tags);
+                        $('.error').empty();
+                        $('#tagEditorModal').modal('show');
+                        
+                    }
+                });        
+                
+            });
+
+            //  delete blog
+
+            $('.show-datas').on('click', '.btn-remove', function() {
+                let id = $(this).attr('id');
+                let url = "{{ route('blogs.destroy',':id') }}"
+                    url = url.replace(':id', id);
+                    $.ajax({
+                    type: 'GET',
+                    url:  url,
+                    data:{
+                        id:id
+                    },
+                    success: function(data){
+                    Swal.fire({
                     title: 'Apakah anda yakin?',
-                    text: "Data "+row.title+" akan terhapus!",
+                    text: "Data "+data.data.title+" akan terhapus!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -235,11 +312,14 @@
                         }).done((res) => {
                             if (res.success == true) {
                                 Swal.fire(
-                                    row.title,
+                                    data.data.title,
                                     'Data berhasil di hapus.',
                                     'success'
                                 )
-                                showData.ajax.reload();
+                                setInterval(() => {
+                                    location.reload();
+                                    
+                                }, 2000);
                             } else {
                                 swal({
                                     type: 'error',
@@ -249,9 +329,27 @@
                         })
                     }
                 })
+                        
+                    }
+                });        
+
+                
             })
-        })
+});
+
+       
+    
+    
+        
+    
 
     </script>
     @endpush
-</x-app-layout>
+
+
+
+
+
+
+
+

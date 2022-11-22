@@ -1,6 +1,6 @@
-@section('title', 'Madjou | Programming Languages')
-<x-app-layout>
-    <div class="page-content">
+@extends('layouts.app')
+@section('title', 'Madjou | Bahasa pemrograman')
+@section('content')
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
                 @if( Session::has("success") )
@@ -18,7 +18,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Table programming language</h4>
+                            <h4 class="card-title">Tabel data bahasa pemrograman</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
                             data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
@@ -88,8 +88,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
+@endsection
     @push('js')
     <script>
         let showData;
@@ -226,4 +225,3 @@
         })
     </script>
     @endpush
-</x-app-layout>

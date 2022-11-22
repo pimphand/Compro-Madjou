@@ -27,9 +27,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::group(["prefix" => 'v1'], function(){
-    
-// });
+Route::group(["prefix" => 'v1'], function(){
 
 Route::resource('/notifications', NotificationController::class);
 
@@ -37,7 +35,7 @@ Route::resource('/category-blogs', CategoryBlog::class);
 
 Route::resource('/blogs', Blog::class);
 
-Route::resource('/employee', EmployeeRegistrationController::class);
+Route::resource('/employees', EmployeeRegistrationController::class);
 
 Route::resource('/clients', OurClientController::class);
 
@@ -45,21 +43,24 @@ Route::resource('/services', ServiceController::class);
 
 Route::resource('/detail-services', DetailServiceController::class);
 
-Route::resource('/project-type', ProjectTypeController::class);
+Route::resource('/project-types', ProjectTypeController::class);
 
 Route::resource('/projects', ProjectController::class);
 
 Route::resource('/careers', CarrerController::class);
 
-Route::resource('/category-team', CategoryTeamController::class);
+Route::resource('/category-teams', CategoryTeamController::class);
 
-Route::resource('/team', TeamController::class);
+Route::resource('/teams', TeamController::class);
 
 Route::resource('/tags', TagController::class);
 
 route::resource('/subscribes', SubscribeController::class);
 
 route::resource('/messages', MessageController::class);
+
+});
+
 
 
 

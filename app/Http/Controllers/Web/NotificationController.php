@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NotificationResource;
 use App\Jobs\SendNotifJobs;
 use App\Models\Notification as ModelsNotification;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Notifications\Notifiable;
-use App\Models\Subscribe;
-use App\Notifications\SubscribeNotification;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 
 class NotificationController extends Controller
 {
@@ -24,13 +22,15 @@ class NotificationController extends Controller
      */
     public function index()
     {
-       $notif   = ModelsNotification::where('lang', request()->header('lang') ?? 'id');
+        if(request()->ajax())
+        {
+            $notif = ModelsNotification::latest()->get(); 
+            return DataTables::of($notif)
+                    ->addIndexColumn()
+                    ->make(true);
+        }
 
-
-       return NotificationResource::collection($notif->paginate(10))->additional([
-            'success'   => true,
-            'message'   => 'Notifikasi berhasil ditampilkan'
-       ]);
+        return view('pages.notifications.index')->with('notifications');
     }
 
     /**
@@ -51,46 +51,7 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
-        $data = Validator::make($request->all(),[
-            'email'     => 'required|email',
-            'body'      => 'required',
-            'image'     => 'required|image|mimes:jpg,jpeg,png|max:2048'
-        ],[
-            'email.required'    => 'Email tidak boleh kosong',
-            'body.required'     => 'Konten tidak boleh kosong'
-        ]);
-
-        if($data->fails())
-        {
-            return response()->json([
-                'status'    => false,
-                'errors'    => $data->getMessageBag()->toArray(),
-            ]);
-        }
-
-        if($image = $request->file('image'))
-        {
-            $fileNameWithExt   = $image->getClientOriginalName();
-            $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            $ext               = $image->getClientOriginalExtension();
-            $fileNameSave      = Str::uuid();
-            $path              = $image->storeAs('public/notifications', $fileNameSave);
-
-        }
-
-        $notif  = Notification::create([
-            'email' => $request->email,
-            'body'  => $request->body,
-            'image' => $fileNameSave
-        ]);
-
-        // SendNotifJobs::dispatch($notif);
-
-        return [
-            'success'   => true,
-            'message'   => 'Notification berhasil dikirim',
-            'data'      => new NotificationResource($notif)
-        ];
+        //
     }
 
     /**
@@ -177,11 +138,14 @@ class NotificationController extends Controller
      */
     public function destroy($id)
     {
-        ModelsNotification::destroy($id);
+        $notif = ModelsNotification::findOrFail($id);
+        $notif->delete();
+        Storage::delete('public/notifications/'.$notif->image);
 
         return [
             'success'   => true,
             'message'   => 'Notifikasi berhasil dihapus',
         ];
+
     }
 }

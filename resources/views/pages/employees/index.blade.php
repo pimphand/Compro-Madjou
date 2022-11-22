@@ -1,5 +1,7 @@
-@section('title', 'Madjou | Detail - Layanan')
+@extends('layouts.app')
+@section('title', 'Madjou | Pendaftaran - Karyawan')
 @section('content')
+    <div class="page-content">
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
                 @if( Session::has("success") )
@@ -17,22 +19,23 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel data detail layanan</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
-                            data-bs-target="#tagEditorModal" id='btn-add'>
-                                <i data-feather="plus"></i>
-                                Tambah Data
-                            </button>
+                            <h4 class="card-title">Tabel data pendaftaran karyawan</h4>
+                            
                         </div>
                         <div class="table-responsive">
                             <table data-url="{{ request()->url() }}" class="table-data table">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Layanan</th>
-                                        <th>Judul</th>
-                                        <th>Konten</th>
-                                        <th>Gambar</th>
+                                        <th>Career</th>
+                                        <th>Nama</th>
+                                        <th>E-mail</th>
+                                        <th>Telpon</th>
+                                        <th>Alamat</th>
+                                        <th>Provinsi</th>
+                                        <th>Kota</th>
+                                        <th>Daerah</th>
+                                        <th>Desa</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -45,7 +48,7 @@
                         {{-- modal --}}
 
 
-                        <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
+                        {{-- <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
                             aria-labelledby="varyingModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -99,26 +102,19 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 @endsection
     @push('js')
     <script>
         let showData;
         $(() => {
-            $('#btn-add').click(function (e) { 
-                e.preventDefault();
-                $("#title").html("Tambah detail layanan");
-                $("#btn-save").val("add");
-                $("#put").html("");
-                $("#modalFormData").trigger("reset");
-                $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('detail-services.store') }}");
-            });
+           
 
 
             // datatable
@@ -133,7 +129,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 5],
+                        targets: [0, 10],
                         className: 'text-center'
                     },
                     {
@@ -152,19 +148,32 @@
                         return DT_RowIndex + '.';
                     }
                 }, {
-                    data: 'getService',
-                    name: 'getService',
+                    data: 'getCareer',
+                    name: 'getCareer',
                 }, {
-                    data: 'title',
-                    name: 'title',
+                    data: 'name',
+                    name: 'name',
                 }, {
-                    data: 'body',
-                    name: 'body',
+                    data: 'email',
+                    name: 'email',
                 }, {
-                    data: 'image',
-                    name: 'image',
-                    render: function ( data) {
-              return `<img src="{{asset('storage/detail-services')}}/${data}" width="40px">`;},
+                    data: 'phone',
+                    name: 'phone',
+                }, {
+                    data: 'address',
+                    name: 'address',
+                }, {
+                    data: 'getProvince',
+                    name: 'getProvince',
+                }, {
+                    data: 'getCity',
+                    name: 'getCity',
+                },  {
+                    data: 'getDistrict',
+                    name: 'getDistrict',
+                },{
+                    data: 'getVillage',
+                    name: 'getVillage',
                 }, {
                     data: 'id',
                     name: 'id',
@@ -189,7 +198,7 @@
                             class: 'btn-group btn-group-sm',
                             role: 'group',
                             html: () => {
-                                return [button_edit, button_delete]
+                                return [ button_delete]
                             }
                         })
                         return button_group.prop('outerHTML')
@@ -250,12 +259,7 @@
             })
         })
 
-         // text editor
-         new EasyMDE({
-        autoDownloadFontAwesome: false,
-        element: document.getElementById('body'),
-        });
+        
         
     </script>
     @endpush
-</x-app-layout>

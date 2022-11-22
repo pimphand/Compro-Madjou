@@ -1,6 +1,6 @@
-@section('title', 'Madjou | Service')
-<x-app-layout>
-    <div class="page-content">
+@extends('layouts.app')
+@section('title', 'Madjou | Layanan')
+@section('content')
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
                 @if( Session::has("success") )
@@ -18,11 +18,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Table data service</h4>
+                            <h4 class="card-title">Table data layanan</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
                                 data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
-                                Add Data
+                                Tambah Data
                             </button>
                         </div>
                         <div class="table-responsive">
@@ -30,13 +30,12 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Upload by</th>
-                                        <th>Title</th>
-                                        <th>slug</th>
-                                        <th>tags</th>
-                                        <th>body</th>
-                                        <th>image</th>
-                                        <th>Action</th>
+                                        <th>Diupload oleh</th>
+                                        <th>Judul</th>
+                                        <th>Tags</th>
+                                        <th>Konten</th>
+                                        <th>Gambar</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -66,23 +65,23 @@
                                             <div id="put"></div>
 
                                             <div class="mb-3">
-                                                <label for="title" class="form-label">Title </label>
+                                                <label for="title" class="form-label">Judul </label>
                                                 <input type="text" class="form-control" id="titles" name="title"
-                                                    placeholder="Input title..." value="">
+                                                    placeholder="Masukkan judul layanan..." value="">
                                                 <div class="text-danger" id="error-title"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="body" class="form-label">Content </label>
+                                                <label for="body" class="form-label">Konten </label>
                                                 <textarea type="text" class="form-control" id="body" name="body"
-                                                    placeholder="Input service content..."></textarea>
+                                                    placeholder="Masukkan konten layanan..."></textarea>
                                                 <div class="text-danger" id="error-body"></div>
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="body" class="form-label">Tags </label>
+                                                <label for="tags" class="form-label">Tags </label>
                                                 <select name="tags[]" id="tags" class="form-control"
                                                     multiple="multiple">
-                                                    <option value="" disabled selected>Select Tags</option>
+                                                    <option value="" disabled selected>Pilih Tags</option>
                                                     @foreach ($tags as $tag)
                                                     <option value="{{ $tag->name }}">{{ $tag->name }}</option>
                                                     @endforeach
@@ -91,7 +90,7 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="image" class="form-label">Image </label>
+                                                <label for="image" class="form-label">Gambar </label>
                                                 <input type="file" name="image" id="image" class="form-control"
                                                     value="">
                                                 <div class="text-danger" id="error-image"></div>
@@ -111,15 +110,14 @@
                 </div>
             </div>
         </div>
-    </div>
-
+@endsection
     @push('js')
     <script>
         let showData;
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Add data service");
+                $("#title").html("Tambah data layanan");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
@@ -140,7 +138,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 7],
+                        targets: [0, 6],
                         className: 'text-center'
                     },
                     {
@@ -164,9 +162,6 @@
                 }, {
                     data: 'title',
                     name: 'title',
-                }, {
-                    data: 'slug',
-                    name: 'slug',
                 }, {
                     data: 'tags',
                     name: 'tags',
@@ -262,6 +257,12 @@
                 })
             })
         })
+
+         // text editor
+         new EasyMDE({
+        autoDownloadFontAwesome: false,
+        element: document.getElementById('body'),
+        });
+
     </script>
     @endpush
-</x-app-layout>

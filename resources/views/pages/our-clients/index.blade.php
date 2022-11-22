@@ -1,6 +1,6 @@
-@section('title', 'Madjou | Our - Client')
-<x-app-layout>
-    <div class="page-content">
+@extends('layouts.app')
+@section('title', 'Madjou | Klien Kami')
+@section('content')
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
                 @if( Session::has("success") )
@@ -18,11 +18,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Table client</h4>
+                            <h4 class="card-title">Table data klien</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
                             data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
-                                Add Data
+                                Tambah Data
                             </button>
                         </div>
                         <div class="table-responsive">
@@ -30,10 +30,10 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Name</th>
-                                        <th>url</th>
-                                        <th>Image</th>
-                                        <th>Action</th>
+                                        <th>Nama</th>
+                                        <th>Alamat url</th>
+                                        <th>Gambar</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -62,19 +62,19 @@
                                             @csrf
                                             <div id="put"></div>
                                             <div class="mb-3">
-                                                <label for="name" class="form-label">Name </label>
+                                                <label for="name" class="form-label">Nama </label>
                                                 <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Input client name..." value="">
+                                                    placeholder="Masukkan nama klien..." value="">
                                                 <div class="text-danger" id="error-name"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="url" class="form-label">Url </label>
+                                                <label for="url" class="form-label">Alamat url </label>
                                                 <input type="text" class="form-control" id="url" name="url"
-                                                    placeholder="Input client url..." value="">
+                                                    placeholder="Masukkan alamat url klien..." value="">
                                                 <div class="text-danger" id="error-url"></div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="image" class="form-label">Image </label>
+                                                <label for="image" class="form-label">Gambar </label>
                                                 <input type="file" name="image" id="image" class="form-control" value="">
                                                 <div class="text-danger" id="error-image"></div>
                                             </div>
@@ -93,7 +93,7 @@
                 </div>
             </div>
         </div>
-    </div>
+@endsection
 
     @push('js')
     <script>
@@ -101,7 +101,7 @@
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Add data Client");
+                $("#title").html("Tambah data klien");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
@@ -237,4 +237,3 @@
         })
     </script>
     @endpush
-</x-app-layout>

@@ -1,6 +1,6 @@
-@section('title', 'Madjou | Project type')
-<x-app-layout>
-    <div class="page-content">
+@extends('layouts.app')
+@section('title', 'Madjou | Jenis Projek')
+@section('content')
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
                 @if( Session::has("success") )
@@ -18,10 +18,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel project type</h4>
+                            <h4 class="card-title">Tabel data jenis projek</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
                                 <i data-feather="plus"></i>
-                                Add Data
+                                Tambah Data
                             </button>
                         </div>
                         <div class="table-responsive">
@@ -29,8 +29,8 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Name</th>
-                                        <th>Action</th>
+                                        <th>Nama</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -59,9 +59,9 @@
                                             @csrf
                                             <div id="put"></div>
                                             <div class="mb-3">
-                                                <label for="name" class="form-label">Name </label>
+                                                <label for="name" class="form-label">Nama </label>
                                                 <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Input name project type..." value="">
+                                                    placeholder="Masukkan nama jenis projek..." value="">
                                                 <div class="text-danger" id="error-name"></div>
                                             </div>
                                         </form>
@@ -79,15 +79,14 @@
                 </div>
             </div>
         </div>
-    </div>
-
+@endsection
     @push('js')
     <script>
         let showData;
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Add data project type");
+                $("#title").html("Tambah data jenis projek");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
@@ -211,4 +210,3 @@
         })
     </script>
     @endpush
-</x-app-layout>
