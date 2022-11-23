@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\v1\CarrerController;
 use App\Http\Controllers\Api\v1\EmployeeRegistrationController;
 use App\Http\Controllers\Api\v1\MessageController;
 use App\Http\Controllers\Api\v1\NotificationController;
+use App\Http\Controllers\Api\v1\ProfileController;
 use App\Http\Controllers\Api\v1\ProjectController;
 use App\Http\Controllers\Api\v1\ProjectTypeController;
 use App\Http\Controllers\Api\v1\SubscribeController;
@@ -55,13 +56,17 @@ Route::resource('/teams', TeamController::class);
 
 Route::resource('/tags', TagController::class);
 
-route::resource('/subscribes', SubscribeController::class);
+Route::resource('/subscribes', SubscribeController::class);
 
-route::resource('/messages', MessageController::class);
+Route::resource('/messages', MessageController::class);
 
 });
 
-
+Route::group(['middleware'=>'auth'], function() {
+    Route::middleware(['role:superadmin|dev|admin'])->group(function () {
+        Route::resource('/profile', ProfileController::class);
+    });
+});
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

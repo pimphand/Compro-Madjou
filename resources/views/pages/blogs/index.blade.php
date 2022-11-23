@@ -69,12 +69,12 @@
                                         <div class="mb-3">
                                             <label for="title" class="form-label">Judul </label>
                                             <input type="text" class="form-control" id="titles" name="title"
-                                                placeholder="Masukkan judul blog..." value="">
+                                                placeholder="Masukkan judul blog...">
                                             <div class="text-danger" id="error-title"></div>
                                         </div>
                                         <div class="mb-3">
                                             <label for="body" class="form-label">Konten </label>
-                                            <textarea class="form-control" id="body" name="body"
+                                            <textarea class="form-control" id="content" name="body"
                                                 placeholder="Masukkan konten blog..." value=""></textarea>
                                             <div class="text-danger" id="error-body"></div>
                                         </div>
@@ -139,27 +139,25 @@
        $(document).ready(function() {
 
         let editor;
+        let showData;
 
-        let ckEditor = ClassicEditor
-            .create( document.querySelector( '#body' ) )
+        ClassicEditor
+            .create( document.querySelector( '#content' ) )
             .then( newEditor => {
                 editor = newEditor;
             } )
             .catch( error => {
                 console.error( error );
             } );
-
-            document.querySelector( '#btn-save' ).addEventListener( 'click', () => {
+            
+            $('#btn-save').on('click', () => {
                 const editorData = editor.getData();
-                $('#body').val(editorData);
+                 $("#content").val(editorData);
+            });
 
-                
-                
-            } );
             
         $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $('#body').val(editor.getData());
                 $("#title").html("Tambah data kategori blog");
                 $("#btn-save").val("add");
                 $("#put").html("");
@@ -169,25 +167,26 @@
                 
             });
 
-          // search data
-                $('#search').on('keyup', function(){
-                    showData(search);
-                });
-                showData();
+        // search data
+        $('#search').on('keyup', function(){
+            displayData(search);
+        });
+        displayData();
 
                
 
-        function showData() {
+        function displayData() {
             $.ajax({
                 // show data  on page reload
                 type: "GET",
                 url: "{{route('blogs.index')}}",
+                dataype: 'json',
                 data: {
                     search: $('#search').val(),
                 },
                 success: function (response) {
-                    $('.show-datas').html(response.data);
-                      $.each(response.data, function (key, item) {
+                    $('.show-datas').html('');
+                        $.each(response.data, function (key, item) {
                              $('.show-datas').append(
                                         "<div class='col'>"+
                                         "<div class='card'>"+
@@ -241,13 +240,11 @@
                         id:id
                     },
                     success: function(data){
-                       
                         $("#titleBlog").html(data.data.title);
                         $('#imageBlog').html("<img src='{{asset('storage/blogs')}}/"+data.data.image+"' class='align-self-start wd-100 wd-sm-150 me-3   '  alt=''>");
                         // $('#image').attr('src', '{{asset("storage/blogs")}}/,'+data.img);
                         $("#bodyBlog").html(data.data.body);
                         $('#viewModal').modal('show');
-                       
                     }
                 });         
             });
@@ -256,7 +253,6 @@
             
              $('.show-datas').on('click', '.btn-edit', function(){
                  let id = $(this).attr('id');
-                 $('#body').val(editor.getData());
                  let url = "{{route('blogs.update',':id')}}";
                  url = url.replace(':id', id);
                 $('#tagEditorModal').modal('show');
@@ -267,12 +263,13 @@
                         id:id
                     },
                     success: function(data){
+                        // $("#content").val(editorData);
                         $("#modalFormData").attr('action', url);
                         $("#title").html("Edit "+ data.data.title);
                         $("#put").html('<input type="hidden" name="_method" value="put">');
                         $("#blog_category_id").val(data.data.blog_category_id);
                         $("#titles").val(data.data.title);
-                        $("#body").val(editor.setData(data.data.body));
+                        $("#content").val(editor.setData(data.data.body));
                         $("#tags").val(data.data.tags);
                         $('.error').empty();
                         $('#tagEditorModal').modal('show');

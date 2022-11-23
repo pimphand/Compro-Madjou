@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ContactResource;
-use App\Http\Resources\SettingResource;
-use App\Models\Contact;
-use App\Models\Setting;
+use App\Http\Resources\MasterUserResource;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class SettingController extends Controller
+class ProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,30 +17,13 @@ class SettingController extends Controller
      */
     public function index()
     {
-        
-        if(request()->ajax())
-        {
-            $setting = Setting::all();
+        $user = User::findOrFail(Auth::id());
 
-            return response()->json([
-                'success'   => true,
-                'message'   => 'Pengaturan berhasil ditampilkan',
-                'data'      => SettingResource::collection($setting)
-            ]);
-        }
-
-        if(request()->ajax())
-        {
-            $contact = Contact::latest()->get();
-
-            return response()->json([
-                'success'   => true,
-                'message'   => 'Kontak berhasil ditampilkan',
-                'data'      => ContactResource::collection($contact),
-            ]);
-        }
-
-        return view('pages.settings.index');
+        return [
+            'success'   => true,
+            'message'   => 'Profile berhasil ditampilkan',
+            'data'      => MasterUserResource::collection($user),
+        ];
     }
 
     /**

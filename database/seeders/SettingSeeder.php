@@ -19,14 +19,16 @@ class SettingSeeder extends Seeder
         Setting::create([
             "code"  => 'contact',
             "name"  => 'contact',
-            "slug"  => Str::slug(request()->name),
+            "slug"  => 'contact',
             "body"      => '',
             "image" => '',
-            "lang"  => 'id',
-        ], [
+            "lang"  => 'id', 
+        ]);
+
+        Setting::create([
             "code"  => 'header',
             "name"  => 'header',
-            "slug"  => Str::slug(request()->name),
+            "slug"  => 'header',
             "body"  => '',
             "image" => '',
             "lang"  => 'id',
