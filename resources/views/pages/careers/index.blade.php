@@ -1,9 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Madjou | Karir')
 @section('content')
-    
-
-    
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
                 @if( Session::has("success") )
@@ -121,7 +118,7 @@
                 </div>
             </div>
         </div>
-        @endsection 
+@endsection 
 
     @push('js')
     <script>

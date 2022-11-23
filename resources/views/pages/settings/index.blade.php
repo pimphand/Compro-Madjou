@@ -5,27 +5,36 @@
     
         {{-- show data setting --}}
         <div class="row">
-            
-                
-                
-                <div class="card">
-                    <div class="card-body">
-                        
-                        <div class="example">
-                          <ul class="nav nav-tabs nav-tabs-line" id="lineTab" role="tablist">
-                            
-                            
+            <div class="card">
+                <div class="card-header">
+                    <h4>Setting</h4>
+                </div>
+                <div class="card-body">
+                        <ul class="nav nav-tabs nav-tabs-line" id="lineTab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="home" aria-selected="true">Contact</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="profile-line-tab" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Script Header</a>
+                            </li>
                           </ul>
-                          <div class="tab-content mt-3" id="lineTabContent">
-                            <div class="tab-pane fade show active" id="line-contact" role="tabpanel" aria-labelledby="contact-line-tab">
+                        <div class="tab-content mt-3" id="lineTabContent">
+                            <div class="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact">
+                                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                    <h4 class="card-title">Tabel data Contact</h4>
+                                    <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" data-bs-target="#tagEditorModal" id='btn-add'>
+                                        <i data-feather="plus"></i>
+                                        Tambah Data
+                                    </button>
+                                </div>
                                 <div class="table-responsive">
-                                    <table data-url="{{ route('contacts.index') }}" class="table-data table">
+                                    <table data-url="{{route('contacts.index')}}" class="table-data table">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
                                                 <th>Nama</th>
                                                 <th>Url</th>
-                                                <th>Gambar</th>
+                                                <th>Image</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -35,46 +44,28 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="line-header" role="tabpanel" aria-labelledby="header-line-tab">
-                                {{-- add code head --}}
-                                <div class="formCode">
-                                    <form id="modalFormCode" name="modalFormCode" class="form-horizontal"
-                                    novalidate="" enctype="multipart/form-data">
-                                    @csrf
-                                        <div id="put"></div>
-                                        <div class="mb-3">
-                                            <label for="title" class="form-label">Url </label>
-                                            <textarea type="text" class="form-control" id="code" name="code"
-                                                placeholder="Masukkan code..." value=""></textarea>
-                                            <div class="text-danger" id="error-code"></div>
-                                        </div>
-                                        <button type="button" class="btn btn-inverse-primary" id="btn-save"
-                                        value="add">Simpan</button>
-                                    </form>
-                                </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-line-tab">
+                                <form action="">
+                                    <div class="mb-3">
+                                      <label for="script" class="form-label"><h4>Tambah script</h4></label>
+                                      <textarea type="text" 
+                                      class="form-control" 
+                                      id="script" name="script" 
+                                      aria-describedby="script"
+                                      rows="3"></textarea>
+                                      
+                                    </div>
+                                   
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                  </form>
                             </div>
-                            <div class="tab-pane fade" id="line-contact" role="tabpanel" aria-labelledby="contact-line-tab">
-                              <h6 class="mb-1">Contact</h6>
-                              <p</p>
-                            </div>
-                            <div class="tab-pane fade" id="line-disabled" role="tabpanel" aria-labelledby="disabled-line-tab">
-                              <h6 class="mb-1">disabled</h6>
-                            </div>
-                          </div>
                         </div>
-                      </div>
-
-                     
-
-                       
-
-                    </div>
                 </div>
-            </div>  
-            
+            </div>
         </div>
+           
 
-        {{-- edit contact --}}
+        {{-- store/edit contact --}}
     <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
         aria-labelledby="varyingModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -116,7 +107,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-inverse-primary" id="btn-save"
                         value="add">Simpan data</button>
-                    <input type="hidden" id="service_id" name="id" value="0">
+                    <input type="hidden" id="contacts_id" name="id" value="0">
                 </div>
             </div>
         </div>
@@ -129,35 +120,20 @@
     @push('js')
     <script>
        let showData;
+         // add data contact
+         $('#btn-add').click(function (e) { 
+                e.preventDefault();
+                $("#title").html("Tambah data kontak");
+                $("#btn-save").val("add");
+                $("#put").html("");
+                $("#modalFormData").trigger("reset");
+                $("#tagEditorModal").modal("show");
+                $("#modalFormData").attr('action', "{{ route('contacts.store') }}");
+            });
+
         $(document).ready(function(){
-            showSetting();
-            dataContact();
-            header();
-
-            function showSetting(){
-                $.ajax({
-                    // show data
-                    type: "GET",
-                    url: "{{route('settings.index')}}",
-                    success: function(response){
-                       $('#lineTab').html(response.data);
-                       $.each(response.data, function (key, item){
-                        $('#lineTab').append(`<li class="nav-item">
-                              <a class="nav-link" id="`+item.name+`-line-tab"
-                               data-bs-toggle="tab"
-                                href="#line-`+item.name+`"
-                                 role="tab" 
-                                 aria-controls="line-`+item.name+`" 
-                                 aria-selected="true">`+item.name+`</a>
-                            </li>`);
-                        console.log(item.name)
-                       })
-                    }
-                })
-            }
-
-            
-            function dataContact(){
+            // show data contact
+            $('#contactTab').ready(function(){
                 showData = $('.table-data').DataTable({
                     processing: true,
                     serverSide: true,
@@ -194,10 +170,10 @@
                         data: 'url',
                         name: 'url',
                     }, {
-                        data: 'image',
-                        name: 'image',
+                        data: 'images',
+                        name: 'images',
                         render: function ( data) {
-                            return `<img src="{{asset('storage/contact')}}/${data}" width="40px">`;
+                            return `<img src="{{asset('storage/contacts')}}/${data}" width="40px">`;
                         }
                     }, {
                         data: 'id',
@@ -283,10 +259,27 @@
                         }
                     })
                 })
-            }
+            })
+  
+        })
 
-           
-    })
+        // text editor
+        let editor;
+
+        let ckEditor = ClassicEditor
+            .create( document.querySelector( '#script' ) )
+            .then( newEditor => {
+                editor = newEditor;
+                editor.ui.view.editable.element.style.height = '500px';
+            })
+            .catch( error => {
+                console.error( error );
+            });
+
+            document.querySelector( '#btn-save' ).addEventListener( 'click', () => {
+                const editorData = editor.getData();
+                $('#script').val(editorData);
+            });
 
     </script>
     @endpush
