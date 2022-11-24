@@ -113,11 +113,16 @@
           </li>
 
           <li class="nav-item nav-category">Event</li>
-          
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{route('events.index')}}" class="nav-link">
               <i class="fa-sharp fa-solid fa-folder-open"></i>
               <span class="link-title">Event</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('event-registers.index')}}" class="nav-link">
+              <i class="fa-regular fa-registered"></i>
+              <span class="link-title">Peserta Event</span>
             </a>
           </li>
 

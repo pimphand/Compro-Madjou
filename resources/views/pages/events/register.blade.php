@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Madjou | Bahasa pemrograman')
+@section('title', 'Madjou | Event-Register')
 @section('content')
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
@@ -18,11 +18,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel data bahasa pemrograman</h4>
+                            <h4 class="card-title">Tabel data peserta event</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
                             data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
-                                Tambah data
+                                Tambah Data
                             </button>
                         </div>
                         <div class="table-responsive">
@@ -30,8 +30,11 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Event</th>
                                         <th>Nama</th>
-                                        <th>Gambar</th>
+                                        <th>Email</th>
+                                        <th>No. Hp</th>
+                                        <th>Instansi</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -42,8 +45,6 @@
                         </div>
 
                         {{-- modal --}}
-
-
                         <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
                             aria-labelledby="varyingModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -60,25 +61,44 @@
                                             novalidate="">
                                             @csrf
                                             <div id="put"></div>
-                                            
+                                           
+                                            <div class="mb-3">
+                                                {{-- <label for="event" class="form-label">Event </label> --}}
+                                                <input type="text" class="form-control" id="event_id" name="event_id"
+                                                    placeholder="Masukkan nama pendaftar..." value="" hidden>
+                                                <div class="text-danger" id="error-event_id"></div>
+                                            </div>
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">Nama </label>
                                                 <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Input name language..." value="">
+                                                    placeholder="Masukkan nama pendaftar..." value="">
                                                 <div class="text-danger" id="error-name"></div>
                                             </div>
-
                                             <div class="mb-3">
-                                                <label for="image" class="form-label">Gambar </label>
-                                                <input type="file" name="image" id="image" class="form-control" value="">
-                                                <div class="text-danger" id="error-image"></div>
+                                                <label for="email" class="form-label">E-mail </label>
+                                                <input type="text" class="form-control" id="email" name="email"
+                                                    placeholder="Masukkan email pendaftar..." value="">
+                                                <div class="text-danger" id="error-email"></div>
                                             </div>
+                                            <div class="mb-3">
+                                                <label for="phone" class="form-label">No. Hp </label>
+                                                <input type="text" class="form-control" id="phone" name="phone"
+                                                    placeholder="Masukkan No hp pendaftar..." value="">
+                                                <div class="text-danger" id="error-phone"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="agency" class="form-label">Instansi</label>
+                                                <input type="text" class="form-control" id="agency" name="agency"
+                                                    placeholder="Masukkan Instansi pendaftar..." value="">
+                                                <div class="text-danger" id="error-agency"></div>
+                                            </div>
+                                            
                                         </form>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-inverse-primary" id="btn-save"
                                             value="add">Simpan data</button>
-                                        <input type="hidden" id="programing_language_id" name="id" value="0">
+                                        <input type="hidden" id="event_registers_id" name="id" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -88,19 +108,20 @@
                 </div>
             </div>
         </div>
-@endsection
+ @endsection
+
     @push('js')
     <script>
         let showData;
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Tambah data bahasa pemrograman");
+                $("#title").html("Tambah data event");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('languages.store') }}");
+                $("#modalFormData").attr('action', "{{ route('event-registers.store') }}");
             });
             // datatable
             showData = $('.table-data').DataTable({
@@ -114,7 +135,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 3],
+                        targets: [0, 6],
                         className: 'text-center'
                     },
                     {
@@ -133,13 +154,20 @@
                         return DT_RowIndex + '.';
                     }
                 }, {
+                    data: 'event',
+                    name: 'getEvent.id',
+                },{
                     data: 'name',
                     name: 'name',
                 }, {
-                    data: 'image',
-                    name: 'image',
-                    render: function ( data) {
-              return `<img src="{{asset('storage/languages')}}/${data}" width="40px">`;},
+                    data: 'email',
+                    name: 'email',
+                }, {
+                    data: 'phone',
+                    name: 'phone',
+                }, {
+                    data: 'agency',
+                    name: 'agency',
                 }, {
                     data: 'id',
                     name: 'id',
@@ -164,7 +192,7 @@
                             class: 'btn-group btn-group-sm',
                             role: 'group',
                             html: () => {
-                                return [button_edit, button_delete]
+                                return [button_edit,button_delete]
                             }
                         })
                         return button_group.prop('outerHTML')
@@ -174,20 +202,25 @@
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('languages.update',':id') }}"
+                let url = "{{ route('event-registers.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
                 $("#title").html("Edit "+ row.name);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
+                $("#event_id").val(row.getEvent);
                 $("#name").val(row.name);
-                // $("#image").val(row.image);
+                $("#email").val(row.email)
+                $("#phone").val(row.phone);
+                $("#agency").val(row.agency);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
+    
+
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('languages.destroy',':id') }}"
+                let url = "{{ route('event-registers.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Madjou | Bahasa pemrograman')
+@section('title', 'Madjou | Event')
 @section('content')
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
@@ -18,11 +18,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel data bahasa pemrograman</h4>
+                            <h4 class="card-title">Tabel data event</h4>
                             <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
                             data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
-                                Tambah data
+                                Tambah Data
                             </button>
                         </div>
                         <div class="table-responsive">
@@ -30,7 +30,9 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama</th>
+                                        <th>Judul</th>
+                                        <th>Lokasi</th>
+                                        <th>Tanggal</th>
                                         <th>Gambar</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -42,8 +44,6 @@
                         </div>
 
                         {{-- modal --}}
-
-
                         <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
                             aria-labelledby="varyingModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -60,15 +60,38 @@
                                             novalidate="">
                                             @csrf
                                             <div id="put"></div>
-                                            
+                                           
                                             <div class="mb-3">
-                                                <label for="name" class="form-label">Nama </label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Input name language..." value="">
-                                                <div class="text-danger" id="error-name"></div>
+                                                <label for="title" class="form-label">Judul </label>
+                                                <input type="text" class="form-control" id="titles" name="title"
+                                                    placeholder="Masukkan judul event..." value="">
+                                                <div class="text-danger" id="error-titles"></div>
                                             </div>
-
                                             <div class="mb-3">
+                                                <label for="body" class="form-label">Konten </label>
+                                                <textarea type="text" class="form-control" id="body" name="body"
+                                                    placeholder="Masukkan konten event..." value=""></textarea>
+                                                <div class="text-danger" id="error-body"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="location" class="form-label">Lokasi </label>
+                                                <input type="text" class="form-control" id="location" name="location"
+                                                    placeholder="Masukkan lokasi event..." value="">
+                                                <div class="text-danger" id="error-location"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="date" class="form-label">Tanggal </label>
+                                                <input type="date" class="form-control" id="date" name="date"
+                                                    placeholder="Masukkan tanggal event..." value="">
+                                                <div class="text-danger" id="error-date"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="time" class="form-label">Jam </label>
+                                                <input type="time" class="form-control" id="time" name="time"
+                                                    placeholder="Masukkan tanggal event..." value="">
+                                                <div class="text-danger" id="error-time"></div>
+                                            </div>
+                                             <div class="mb-3">
                                                 <label for="image" class="form-label">Gambar </label>
                                                 <input type="file" name="image" id="image" class="form-control" value="">
                                                 <div class="text-danger" id="error-image"></div>
@@ -78,29 +101,52 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-inverse-primary" id="btn-save"
                                             value="add">Simpan data</button>
-                                        <input type="hidden" id="programing_language_id" name="id" value="0">
+                                        <input type="hidden" id="event_id" name="id" value="0">
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        {{-- show detail --}}
+                        <div class="modal fade bd-example-modal-xl" id="viewModal" tabindex="-1" aria-labelledby="varyingModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="varyingModalLabel">
+                                            <span id="titleEvent"></span>
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="btn-close"></button>
+                                    </div>
+                                    <div class="modal-body d-flex align-items-start">
+                                        <div id="imageEvent"></div>
+                                        <p id="bodyEvent"></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
         </div>
-@endsection
+ @endsection
+
     @push('js')
     <script>
         let showData;
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Tambah data bahasa pemrograman");
+                $("#title").html("Tambah data event");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('languages.store') }}");
+                $("#modalFormData").attr('action', "{{ route('events.store') }}");
             });
             // datatable
             showData = $('.table-data').DataTable({
@@ -114,7 +160,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 3],
+                        targets: [0, 5],
                         className: 'text-center'
                     },
                     {
@@ -133,13 +179,19 @@
                         return DT_RowIndex + '.';
                     }
                 }, {
-                    data: 'name',
-                    name: 'name',
+                    data: 'title',
+                    name: 'title',
+                }, {
+                    data: 'location',
+                    name: 'location',
+                }, {
+                    data: 'date',
+                    name: 'date',
                 }, {
                     data: 'image',
                     name: 'image',
                     render: function ( data) {
-              return `<img src="{{asset('storage/languages')}}/${data}" width="40px">`;},
+              return `<img src="{{asset('storage/events')}}/${data}" width="40px">`;},
                 }, {
                     data: 'id',
                     name: 'id',
@@ -160,11 +212,19 @@
                             'data-id': id,
                             title: `Hapus Data`,
                         })
+                         const button_view = $('<button>', {
+                            html: $('<i>', {
+                            class: 'fa-solid fa-circle-info'
+                            }).prop('outerHTML'),
+                            class: 'btn btn-success btn-view',
+                            'data-id': id,
+                            title: `Show Data`,
+                        })
                         const button_group = $('<div>', {
                             class: 'btn-group btn-group-sm',
                             role: 'group',
                             html: () => {
-                                return [button_edit, button_delete]
+                                return [button_edit, button_view,button_delete]
                             }
                         })
                         return button_group.prop('outerHTML')
@@ -174,25 +234,40 @@
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('languages.update',':id') }}"
+                let url = "{{ route('events.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
-                $("#title").html("Edit "+ row.name);
+                $("#title").html("Edit "+ row.title);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
-                $("#name").val(row.name);
-                // $("#image").val(row.image);
+                $("#titles").val(row.title);
+                $("#body").val(row.body)
+                $("#location").val(row.location);
+                $("#date").val(row.date);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
+
+            // detail
+            $('.table-data').on('click', '.btn-view', function(){
+                let row = showData.row($(this).closest('tr')).data();
+                let url = "{{route('events.show',':id')}}";
+                    url = url.replace(':id', row.id);
+                        $("#titleEvent").html(row.title);
+                        $('#imageEvent').html("<img src='{{asset('storage/events')}}/"+row.image+"' class='align-self-start wd-100 wd-sm-150 me-3   '  alt=''>");
+                        // $('#image').attr('src', '{{asset("storage/blogs")}}/,'+data.img);
+                        $("#bodyEvent").html(row.body);
+                        $('#viewModal').modal('show');
+                });    
+
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('languages.destroy',':id') }}"
+                let url = "{{ route('events.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({
                     title: 'Apakah anda yakin?',
-                    text: "Data "+row.name+" akan terhapus!",
+                    text: "Data "+row.title+" akan terhapus!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -207,7 +282,7 @@
                         }).done((res) => {
                             if (res.success == true) {
                                 Swal.fire(
-                                    row.name,
+                                    row.title,
                                     'Data berhasil di hapus.',
                                     'success'
                                 )

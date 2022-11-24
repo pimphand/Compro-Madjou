@@ -141,8 +141,10 @@
         let editor;
         let showData;
 
-        ClassicEditor
-            .create( document.querySelector( '#content' ) )
+        let ckeditor = ClassicEditor
+            .create( document.querySelector( '#content' ), {
+                updateSourceElementOnDestroy: true
+            })
             .then( newEditor => {
                 editor = newEditor;
             } )
@@ -152,7 +154,7 @@
             
             $('#btn-save').on('click', () => {
                 const editorData = editor.getData();
-                 $("#content").val(editorData);
+                //  $("#content").val(editorData);
             });
 
             
@@ -333,13 +335,6 @@
                 
             })
 });
-
-       
-    
-    
-        
-    
-
     </script>
     @endpush
 

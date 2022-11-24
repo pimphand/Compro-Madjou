@@ -117,6 +117,9 @@
 
     <script src="{{asset('template/assets/vendors/feather-icons/feather.min.js')}}"></script>
     {{-- <script src="{{asset('template/assets/js/template.js')}}"></script> --}}
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/ckeditor.js"></script>
+
     @stack('js')
 
     <script>
@@ -152,7 +155,6 @@
                         }else{
                             setInterval(() => {
                                 location.reload();
-                                
                             }, 2000);
                         }
 

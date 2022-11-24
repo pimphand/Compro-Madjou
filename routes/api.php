@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\v1\ServiceController;
 use App\Http\Controllers\Api\v1\CarrerController;
 use App\Http\Controllers\Api\v1\CategoryBlogController;
 use App\Http\Controllers\Api\v1\EmployeeRegistrationController;
+use App\Http\Controllers\Api\v1\EventController;
+use App\Http\Controllers\Api\v1\EventRegisterController;
 use App\Http\Controllers\Api\v1\MessageController;
 use App\Http\Controllers\Api\v1\NotificationController;
 use App\Http\Controllers\Api\v1\ProfileController;
@@ -61,6 +63,10 @@ Route::group(["prefix" => 'v1', "middleware" => 'lang'], function () {
     Route::resource('/subscribes', SubscribeController::class);
 
     Route::resource('/messages', MessageController::class);
+
+    Route::resource('/event-registers', EventRegisterController::class);
+
+    Route::resource('/events', EventController::class);
 });
 
 Route::group(['middleware' => 'auth'], function () {

@@ -12,6 +12,8 @@ use App\Http\Controllers\Web\CategoryTeamController;
 use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\Web\DetailServiceController;
 use App\Http\Controllers\Web\EmployeeRegistrationController;
+use App\Http\Controllers\Web\EventController;
+use App\Http\Controllers\Web\EventRegisterController;
 use App\Http\Controllers\Web\MessageController;
 use App\Http\Controllers\Web\NotificationController;
 use App\Http\Controllers\Web\OurClientController;
@@ -62,6 +64,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/subscribes', SubscribeController::class);
         Route::resource('/settings', SettingController::class);
         Route::resource('/contacts', ContactController::class);
+        Route::resource('/events', EventController::class);
+        Route::resource('/event-registers', EventRegisterController::class);
         Route::resource('/user', MasterUserController::class);
     });
 });
