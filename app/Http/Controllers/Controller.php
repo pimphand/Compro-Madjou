@@ -21,7 +21,7 @@ class Controller extends BaseController
     {
         $log = PageLog::whereIp(request()->getClientIp())->where('created_at', ">", now()->subSecond(15))->count();
 
-        if ($log <= 0)
+        if ($log <= 0) {
             if (strpos(request()->getRequestUri(), 'api') == true) {
                 PageLog::create([
                     "page" => \Str::substr(request()->getRequestUri(), 5),
@@ -36,5 +36,6 @@ class Controller extends BaseController
                     "os" => null,
                 ]);
             }
+        }
     }
 }

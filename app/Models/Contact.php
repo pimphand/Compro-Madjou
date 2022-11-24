@@ -11,6 +11,6 @@ class Contact extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name', 'image', 'url'
+        'name', 'images', 'url'
     ];
 }

@@ -52,7 +52,7 @@ class ContactController extends Controller
     {
         $data   = Validator::make($request->all(),[
             'name'      => 'required|string|unique:contacts',
-            'image'     => 'nullable|image|mimes:png,svg|max:1048',
+            'images'     => 'required|image|mimes:png,svg|max:1048',
             'url'       => 'required',
         ], [
             'name.required'     => 'Nama tidak boleh kosong',
@@ -68,7 +68,7 @@ class ContactController extends Controller
             ]);
         }
 
-        if($image = $request->file('image'))
+        if($image = $request->file('images'))
         {
             $fileNameWithExt    = $image->getClientOriginalName();
             $fileNameSave       = Str::uuid();
@@ -76,9 +76,9 @@ class ContactController extends Controller
         }
 
         $contact    = Contact::create([
-            'name'  => $request->name,
-            'image' => $fileNameSave,
-            'url'   => $request->url,
+            'name'   => $request->name,
+            'url'    => $request->url,
+            'images' => $fileNameSave,
         ]);
 
         return [
@@ -120,8 +120,9 @@ class ContactController extends Controller
     public function update(Request $request, $id)
     {
         $data     = Validator::make($request->all(), [
-            'name'      => 'required|string|unique:contacts,id'.$id,
-            'url'       => 'requiered',
+            'name'      => 'required|string|unique:contacts,id,'.$id,
+            'url'       => 'required',
+            'images'    => 'nullable|image|mimes:png,svg|max:1048'
         ], [
             'name.required' => 'Nama tidak boleh kosong',
             'name.unique'   => 'Nama sudah digunakan',
@@ -138,13 +139,13 @@ class ContactController extends Controller
 
         $contact    = Contact::findOrFail($id);
 
-        if($request->hasFile('image') && $request->file('image') != null)
+        if($request->hasFile('images') && $request->file('images') != null)
         {
             Storage::delete('public/contacts/'.$contact->image);
             
-            $fileNameWithExt   = $request->file('image')->getClientOriginalName();
+            $fileNameWithExt   = $request->file('images')->getClientOriginalName();
             $fileNameSave      = Str::uuid();
-            $path               = $request->file('image')->storeAs('public/contacs', $fileNameSave);
+            $path               = $request->file('images')->storeAs('public/contacts', $fileNameSave);
         }
 
         $contact->update([

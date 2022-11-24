@@ -28,4 +28,9 @@ class Service extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function detail()
+    {
+        return $this->hasMany(ServiceDetail::class, 'service_id', 'id');
+    }
 }

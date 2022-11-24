@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="sidebar">
+<nav class="sidebar">
     <div class="sidebar-header">
         <a href="{{route('dashboard.index')}}" class="sidebar-brand"> Madjou <span>Web</span> </a>
         <div class="sidebar-toggler not-active">
@@ -12,127 +12,138 @@
           <li class="nav-item nav-category">Utama</li>
           <li class="nav-item">
             <a href="{{ route('dashboard.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="box"></i>
+              <i class="fa-solid fa-box"></i>
               <span class="link-title">Dashboard</span>
             </a>
           </li>
+          
           <li class="nav-item nav-category">Notifikasi dan langganan</li>
           
           <li class="nav-item">
             <a href="{{route('notifications.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="message-square"></i>
+              <i class="fa-sharp fa-solid fa-envelope"></i>
               <span class="link-title">Notifikasi</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="{{route('subscribes.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="bell"></i>
+              <i class="fa-sharp fa-solid fa-bell"></i>
               <span class="link-title">Langganan</span>
             </a>
           </li>
 
           <li class="nav-item nav-category">Layanan</li>
+
           <li class="nav-item">
-            <a href="{{ route('services.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="tool"></i>
+            <a href="{{route('services.index')}}" class="nav-link">
+              <i class="fa-sharp fa-solid fa-toolbox"></i>
               <span class="link-title">Layanan</span>
             </a>
           </li>
-
           <li class="nav-item">
-            <a href="{{ route('detail-services.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="tool"></i>
+            <a href="{{route('detail-services.index')}}" class="nav-link">
+              <i class="fa-sharp fa-solid fa-screwdriver-wrench"></i>
               <span class="link-title">Detail layanan</span>
             </a>
           </li>
           
           <li class="nav-item nav-category">Projek</li>
           <li class="nav-item">
-            <a href="{{ route('project-types.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="codepen"></i>
+            <a href="{{route('project-types.index')}}" class="nav-link">
+              <i class="fa-solid fa-cart-plus"></i>
               <span class="link-title">Jenis projek</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('project.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="folder"></i>
+            <a href="{{route('project.index')}}" class="nav-link">
+              <i class="fa-solid fa-store"></i>
               <span class="link-title">Data projek</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('clients.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="smile"></i>
+            <a href="{{route('clients.index')}}" class="nav-link">
+              <i class="fa-sharp fa-solid fa-face-smile"></i>
               <span class="link-title">Klien kami</span>
             </a>
           </li>
           <li class="nav-item nav-category">Blogs</li>
           <li class="nav-item">
-            <a href="{{ route('category-blogs.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="grid"></i>
+            <a href="{{route('category-blogs.index')}}" class="nav-link">
+              <i class="fa-solid fa-layer-group"></i>
               <span class="link-title">Kategori blog</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('blogs.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="book-open"></i>
+            <a href="{{route('blogs.index')}}" class="nav-link">
+              <i class="fa-solid fa-book-open"></i>
               <span class="link-title">Data blog</span>
             </a>
           </li>
           <li class="nav-item nav-category">Karir</li>
           <li class="nav-item">
             <a href="{{route('careers.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="dollar-sign"></i>
+              <i class="fa-solid fa-sack-dollar"></i>
               <span class="link-title">Data karir</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="{{route('employees.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="user-check"></i>
+              <i class="fa-solid fa-user-check"></i>
               <span class="link-title">Pendaftaran karyawan</span>
             </a>
           </li>
           <li class="nav-item nav-category">Teams</li>
           <li class="nav-item">
-            <a href="{{ route('category-teams.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="user-plus"></i>
+            <a href="{{route('category-teams.index')}}" class="nav-link">
+              <i class="fa-solid fa-user-plus"></i>
               <span class="link-title">Kategori team</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('teams.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="folder"></i>
+            <a href="{{route('teams.index')}}" class="nav-link">
+              <i class="fa-solid fa-users"></i>
               <span class="link-title">Data team</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('languages.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="bookmark"></i>
+            <a href="{{route('languages.index')}}" class="nav-link">
+              <i class="fa-solid fa-language"></i>
               <span class="link-title">Bahasa pemrograman</span>
             </a>
           </li>
+
+          <li class="nav-item nav-category">Event</li>
+          
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fa-sharp fa-solid fa-folder-open"></i>
+              <span class="link-title">Event</span>
+            </a>
+          </li>
+
           <li class="nav-item nav-category">Menu Super-Admin</li>
           <li class="nav-item">
             <a href="{{route('user.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="users"></i>
+              <i class="fa-solid fa-user-plus"></i>
               <span class="link-title">Master User</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="{{ route('roles.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="lock"></i>
+              <i class="fa-solid fa-lock"></i>
               <span class="link-title">Role & Privilage</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="{{ route('tags.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="tag"></i>
+              <i class="fa-solid fa-tags"></i>
               <span class="link-title">Tags</span>
             </a>
           </li>
 
           <li class="nav-item">
             <a href="{{route('settings.index')}}" class="nav-link">
-              <i class="link-icon" data-feather="settings"></i>
+              <i class="fa-solid fa-gear"></i>
               <span class="link-title">Settings</span>
             </a>
           </li>
@@ -143,112 +154,7 @@
 
   <!-- partial -->
 
-  <div class="page-wrapper">
+ 
     <!-- partial:partials/_navbar.html -->
-    <nav class="navbar">
-      <a href="#" class="sidebar-toggler">
-        <i data-feather="menu"></i>
-      </a>
-      <div class="navbar-content">
-        <ul class="navbar-nav">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="flag-icon flag-icon-us mt-1" title="us"></i> <span class="ms-1 me-1 d-none d-md-inline-block">English</span>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="languageDropdown">
-              <a href="javascript:;" class="dropdown-item py-2"><i class="flag-icon flag-icon-us" title="us" id="us"></i> <span class="ms-1"> English </span></a>
-              <a href="javascript:;" class="dropdown-item py-2"><i class="flag-icon flag-icon-id" title="fr" id="fr"></i> <span class="ms-1"> Indonesian </span></a>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="appsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i data-feather="grid"></i>
-            </a>
-            <div class="dropdown-menu p-0" aria-labelledby="appsDropdown">
-              <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
-                <p class="mb-0 fw-bold">Web Apps</p>
-                <a href="javascript:;" class="text-muted">Edit</a>
-              </div>
-              <div class="row g-0 p-1">
-                <div class="col-3 text-center">
-                  <a href="pages/apps/chat.html" class="dropdown-item d-flex flex-column align-items-center justify-content-center wd-70 ht-70"
-                    ><i data-feather="message-square" class="icon-lg mb-1"></i>
-                    <p class="tx-12">Chat</p></a
-                  >
-                </div>
-                <div class="col-3 text-center">
-                  <a href="pages/apps/calendar.html" class="dropdown-item d-flex flex-column align-items-center justify-content-center wd-70 ht-70"
-                    ><i data-feather="calendar" class="icon-lg mb-1"></i>
-                    <p class="tx-12">Calendar</p></a
-                  >
-                </div>
-                <div class="col-3 text-center">
-                  <a href="pages/email/inbox.html" class="dropdown-item d-flex flex-column align-items-center justify-content-center wd-70 ht-70"
-                    ><i data-feather="mail" class="icon-lg mb-1"></i>
-                    <p class="tx-12">Email</p></a
-                  >
-                </div>
-                <div class="col-3 text-center">
-                  <a href="pages/general/profile.html" class="dropdown-item d-flex flex-column align-items-center justify-content-center wd-70 ht-70"
-                    ><i data-feather="instagram" class="icon-lg mb-1"></i>
-                    <p class="tx-12">Profile</p></a
-                  >
-                </div>
-              </div>
-              <div class="px-3 py-2 d-flex align-items-center justify-content-center border-top">
-                <a href="javascript:;">View all</a>
-              </div>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{route('messages.index')}}">
-              <i data-feather="mail"></i>
-            </a>
-          </li>
-         
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img class="wd-30 ht-30 rounded-circle" src="https://via.placeholder.com/30x30" alt="profile" />
-            </a>
-            <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
-              <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
-                <div class="mb-3">
-                  <img class="wd-80 ht-80 rounded-circle" src="https://via.placeholder.com/80x80" alt="" />
-                </div>
-                <div class="text-center">
-                  <p class="tx-16 fw-bolder">{{ Auth::user()->name }}</p>
-                </div>
-              </div>
-              <ul class="list-unstyled p-1">
-                <li class="dropdown-item py-2">
-                  <a href="pages/general/profile.html" class="text-body ms-0">
-                    <i class="me-2 icon-md" data-feather="user"></i>
-                    <span>Profile</span>
-                  </a>
-                </li>
-                <li class="dropdown-item py-2">
-                  <a href="javascript:;" class="text-body ms-0">
-                    <i class="me-2 icon-md" data-feather="edit"></i>
-                    <span>Edit Profile</span>
-                  </a>
-                </li>
-               
-                <div class="d-flex align-item-center justify-content-center px-5 py-3">
-                
-                  <!-- Authentication -->
-                  <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                        <button class="btn btn-primary">
-                            <i class="me-2 icon-md" data-feather="log-out"></i>
-                            <span>Log Out</span>
-                        </button>
-                    </form>
-                
-                </div>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
+  
     <!-- partial -->

@@ -6,6 +6,7 @@ use App\Casts\Json;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 class Blog extends Model
 {
@@ -60,5 +61,10 @@ class Blog extends Model
     public function getUsers()
     {
         return $this->belongsTo(User::class, 'author', 'id');
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('D, Y-m-d');
     }
 }

@@ -1,6 +1,6 @@
+@extends('layouts.app')
 @section('title', 'Madjou | Team')
-<x-app-layout>
-    <div class="page-content">
+@section('content')
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
                 @if( Session::has("success") )
@@ -109,8 +109,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
+@endsection
     @push('js')
     <script>
         let showData;
@@ -258,4 +257,3 @@
         })
     </script>
     @endpush
-</x-app-layout>

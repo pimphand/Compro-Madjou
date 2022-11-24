@@ -21,30 +21,27 @@ class BlogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $category   = BlogCategory::all();
         $tag        = Tag::all();
-
+        
         if(request()->ajax())
         {
-            $dataBlog = Blog::with('getCategories', 'getTags', 'getUsers')->latest()->get();
-            return DataTables::of($dataBlog)
-                    ->addColumn('getCategories', function($dataCat){
-                        return $dataCat->getCategories->name;
-                    })
-                    ->addColumn('getUsers', function($user){
-                        return $user->getUsers->name;
-                    })
-                    ->addIndexColumn()
-                    ->make(true);
+            $data = Blog::with('getCategories', 'getUsers')
+                    ->where('title','like','%'.substr($request->search, 2).'%')
+                    ->latest()->get();
+            return response()->json([
+                'success'   => true,
+                'message'   => 'Data blog berhasil ditampilkan',
+                'data'      => BlogResource::collection($data),
+            ]);
         }
-
 
         return view('pages.blogs.index',[
             'category'  => $category,
-            'tag'       => $tag,
-        ])->with('blogs');
+            'tag'       => $tag
+        ]);
     }
 
     /**
@@ -119,7 +116,13 @@ class BlogController extends Controller
      */
     public function show($id)
     {
-        //
+        $blog = Blog::findOrFail($id);
+
+        return response()->json([
+            'success'   => true,
+            'message'   => 'Data blog berhasil ditampilkan',
+            'data'      => new BlogResource($blog)
+        ]);
     }
 
     /**
@@ -146,7 +149,7 @@ class BlogController extends Controller
             'blog_category_id'  => 'required|',
             'title'             => 'required|string|max:50',
             'body'              => 'required|string|',
-            'image'             => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image'             => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ], [
             'blog_category_id.required'     => 'Kategori blog tidak boleh kosong!',
             'title.required'                => 'Judul tidak boleh kosong!',
@@ -177,7 +180,7 @@ class BlogController extends Controller
         }
 
         $blog->update([
-            'blog_category_id'      => $request->blog_category_id,
+            'blog_category_id'      => $blog->blog_category_id ?? $request->blog_category_id,
             'title'                 => $request->title,
             'slug'                  => Str::slug($request->title),
             'body'                  => $request->body,

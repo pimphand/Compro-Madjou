@@ -1,5 +1,6 @@
+@extends('layouts.app')
 @section('title', 'Madjou | Pendaftaran - Karyawan')
-<x-app-layout>
+@section('content')
     <div class="page-content">
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
@@ -108,7 +109,7 @@
             </div>
         </div>
     </div>
-
+@endsection
     @push('js')
     <script>
         let showData;
@@ -262,4 +263,3 @@
         
     </script>
     @endpush
-</x-app-layout>

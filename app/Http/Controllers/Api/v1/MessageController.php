@@ -42,23 +42,23 @@ class MessageController extends Controller
     public function store(Request $request)
     {
         $data = Validator::make($request->all(), [
-            'email'     => 'required|email',
-            'company'   => 'required',
-            'phone'     => 'required',
-            'text'      => 'required',
-            'requirement'   => 'required',
-            'from'          => 'required',
-        ],[
-            'email.required'    => 'Email tidak boleh kosong',
-            'company.required'  => 'Perusahaan tidak boleh kosong',
-            'phone.required'    => 'Telpon tidak boleh kosong',
-            'text.required'     => 'Isi pesan tidak boleh kosong',
-            'requirement.required'   => 'Kebutuhan tidak boleh kosong',
+            'email'                 => 'required|email',
+            'company'               => 'required',
+            'phone'                 => 'required',
+            'text'                  => 'required',
+            'requirement'           => 'required',
+            'from'                  => 'nullable',
+        ], [
+            'email.required'        => 'Email tidak boleh kosong',
+            'email.email'           => 'Email tidak valid',
+            'company.required'      => 'Perusahaan tidak boleh kosong',
+            'phone.required'        => 'Telpon tidak boleh kosong',
+            'text.required'         => 'Isi pesan tidak boleh kosong',
+            'requirement.required'  => 'Kebutuhan tidak boleh kosong',
             'from.required'         => 'Tidak boleh kosong',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
                 'message'   => $data->getMessageBag()->toArray()
@@ -76,23 +76,13 @@ class MessageController extends Controller
             'country'       => $request->country,
         ]);
 
-        $sendMessage = (new MailCustomer($message))
-                ->onQueue('emails');
+        $sendMessage = (new MailCustomer($message))->onQueue('emails');
 
-        if($message)
-        {
-            Mail::to('admin-madjou@test.com')->queue($sendMessage);
-
-            return [
-                'success'   => true,
-                'message'   => 'Email anda   telah dikirim'
-            ];
-        }
+        Mail::to('admin-madjou@test.com')->queue($sendMessage);
 
         return [
             'success'   => true,
             'message'   => 'Pesan berhasil dikirim',
-            'data'      => new MessageResource($message),
         ];
     }
 

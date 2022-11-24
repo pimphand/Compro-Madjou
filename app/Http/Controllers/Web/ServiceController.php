@@ -24,19 +24,18 @@ class ServiceController extends Controller
     {
         $tags    = Tag::all();
 
-        if(request()->ajax())
-        {
+        if (request()->ajax()) {
             $dataService    = Service::with('getUser')->latest()->get();
 
             return DataTables::of($dataService)
-                    ->addColumn('getUser', function($user){
-                        return $user->getUser->name;
-                    })
-                    ->addIndexColumn()
-                    ->make(true);
+                ->addColumn('getUser', function ($user) {
+                    return $user->getUser->name;
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
 
-        return view('pages.services.index',[
+        return view('pages.services.index', [
             'tags'   => $tags,
         ])->with('services');
     }
@@ -59,7 +58,7 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        $data   = Validator::make($request->all(),[
+        $data   = Validator::make($request->all(), [
             'title'     => 'required|max:50|',
             'body'      => 'required|string|',
             'image'     => 'required|image|mimes:jpg,jpeg,png|max:2048',
@@ -69,21 +68,19 @@ class ServiceController extends Controller
             'image.required'    => 'Gambar tidak boleh kosong',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
                 'errors'    => $data->getMessageBag()->toArray(),
             ]);
         }
 
-        if($image = $request->file('image'))
-        {
+        if ($image = $request->file('image')) {
             $fileNameWithExt   = $image->getClientOriginalName();
             $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext               = $image->getClientOriginalExtension();
             $fileNameSave      = Str::uuid();
-            $path              = $image->storeAs('public/service', $fileNameSave);  
+            $path              = $image->storeAs('public/service', $fileNameSave);
         }
 
         $service    = Service::create([
@@ -136,7 +133,7 @@ class ServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data   = Validator::make($request->all(),[
+        $data   = Validator::make($request->all(), [
             'title'     => 'required|max:50',
             'body'      => 'required|',
             'image'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
@@ -146,8 +143,7 @@ class ServiceController extends Controller
             'body.required'     => 'Konten tidak boleh kosong',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
                 'errors'    => $data->getMessageBag()->toArray()
@@ -156,10 +152,9 @@ class ServiceController extends Controller
 
         $service    = Service::findOrFail($id);
 
-        if($request->hasFile('image') && $request->file('image') != null)
-        {
-            Storage::delete('public/service/'.$service->image);
-            
+        if ($request->hasFile('image') && $request->file('image') != null) {
+            Storage::delete('public/service/' . $service->image);
+
 
             $fileNameWithExt    = $request->file('image')->getClientOriginalName();
             $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
@@ -183,7 +178,6 @@ class ServiceController extends Controller
             'message'   => 'Data layanan berhasil diubah!',
             'data'      => new ServiceResource($service),
         ];
-
     }
 
     /**
@@ -195,13 +189,12 @@ class ServiceController extends Controller
     public function destroy($id)
     {
         $service    = Service::findOrFail($id);
-        Storage::delete('public/service/'.$service->image);
+        Storage::delete('public/service/' . $service->image);
         $service->delete();
 
         return [
             'success'   => true,
             'message'   => 'Data layanan berhasil dihapus!',
         ];
-
     }
 }
