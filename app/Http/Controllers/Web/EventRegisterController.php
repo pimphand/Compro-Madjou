@@ -19,17 +19,15 @@ class EventRegisterController extends Controller
      */
     public function index()
     {
-
-        if(request()->ajax())
-        {
+        if (request()->ajax()) {
             $eventRegister = EventRegister::with('getEvent')->latest()->get();
 
             return DataTables::of($eventRegister)
-                    ->addColumn('event', function ($event){
-                        return $event->getEvent->id;
-                    })
-                    ->addIndexColumn()
-                    ->make(true);
+                ->addColumn('event', function ($event) {
+                    return $event->getEvent->title;
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
 
         return view('pages.events.register')->with('registers', 'getEvent');
@@ -53,7 +51,40 @@ class EventRegisterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = Validator::make($request->all(), [
+            // 'event_id'  => 'required',
+            'name'      => 'required|',
+            'email'     => 'required|',
+            'phone'     => 'required|',
+            'agency'    => 'required',
+        ], [
+            'event_id.required' => 'Event tidak boleh kosong!',
+            'name.required'     => 'Nama tidak boleh kosong!',
+            'email.required'    => 'E-mail tidak boleh kosong!',
+            'phone.required'    => 'Nomor telpon tidak boleh kosong!',
+            'agency.required'   => 'Instansi tidak boleh kosong!',
+        ]);
+
+        if ($data->fails()) {
+            return response()->json([
+                'status'    => false,
+                'errors'    => $data->getMessageBag()->toArray(),
+            ]);
+        }
+
+        $event = EventRegister::create([
+            'event_id'  => 1,
+            'name'      => $request->name,
+            'email'     => $request->email,
+            'phone'     => $request->phone,
+            'agency'    => $request->agency,
+        ]);
+
+        return [
+            'success'   => true,
+            'message'   => 'Pendaftaran event berhasil!',
+            'data'      => new EventRegisterResource($event),
+        ];
     }
 
     /**
@@ -87,7 +118,7 @@ class EventRegisterController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = Validator::make($request->all(),[
+        $data = Validator::make($request->all(), [
             'event_id'  => 'required',
             'name'      => 'required|',
             'email'     => 'required|',
@@ -101,8 +132,7 @@ class EventRegisterController extends Controller
             'agency.required'   => 'Instansi tidak boleh kosong!',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
                 'errors'    => $data->getMessageBag()->toArray(),
