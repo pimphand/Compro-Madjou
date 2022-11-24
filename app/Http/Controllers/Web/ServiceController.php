@@ -25,9 +25,9 @@ class ServiceController extends Controller
         $tags    = Tag::all();
 
         if (request()->ajax()) {
-            $dataService    = Service::with('getUser')->latest()->get();
+            $service    = Service::with('getUser')->latest()->get();
 
-            return DataTables::of($dataService)
+            return DataTables::of($service)
                 ->addColumn('getUser', function ($user) {
                     return $user->getUser->name;
                 })

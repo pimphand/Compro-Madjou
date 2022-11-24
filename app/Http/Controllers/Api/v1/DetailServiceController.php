@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DetailServiceResource;
+use App\Models\Service;
 use App\Models\ServiceDetail;
 use Illuminate\Http\Request;
 
@@ -16,12 +17,7 @@ class DetailServiceController extends Controller
      */
     public function index()
     {
-        $detService = ServiceDetail::where('lang', request()->header('lang') ?? 'id');
-
-        return DetailServiceResource::collection($detService)->additional([
-            'success'   => true,
-            'message'   => 'Data detail layanan berhasil ditampilkan'
-        ]);
+        //
     }
 
     /**
@@ -53,7 +49,12 @@ class DetailServiceController extends Controller
      */
     public function show($id)
     {
-        //
+        $service = Service::whereSlug($id)->where('lang', request()->header('lang'))->firstOrFail();
+
+        return DetailServiceResource::collection($service->detail()->paginate(10))->additional([
+            'success'   => true,
+            'message'   => 'Data detail layanan berhasil ditampilkan'
+        ]);
     }
 
     /**

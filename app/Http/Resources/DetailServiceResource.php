@@ -19,7 +19,7 @@ class DetailServiceResource extends JsonResource
             'service_id'    => $this->service_id,
             'title'         => $this->title,
             'body'          => $this->body,
-            'image'         => $this->image,
+            'image'         => asset('storage/detail-service/' . $this->image),
             'created'       => $this->created_at,
             'updated'       => $this->updated_at,
         ];

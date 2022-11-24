@@ -1,114 +1,104 @@
+@extends('layouts.app')
 @section('title', 'Madjou | Detail - Layanan')
 @section('content')
-        <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                @if( Session::has("success") )
-                <div class="alert alert-success alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("success") }}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h4 class="card-title">Tabel data detail layanan</h4>
+                    <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
+                        data-bs-target="#tagEditorModal" id='btn-add'>
+                        <i data-feather="plus"></i>
+                        Tambah Data
+                    </button>
                 </div>
-                @endif
-                @if( Session::has("error") )
-                <div class="alert alert-danger alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("error") }}
+                <div class="table-responsive">
+                    <table data-url="{{ request()->url() }}" class="table-data table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Layanan</th>
+                                <th>Judul</th>
+                                <th>Konten</th>
+                                <th>Gambar</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
                 </div>
-                @endif
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel data detail layanan</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
-                            data-bs-target="#tagEditorModal" id='btn-add'>
-                                <i data-feather="plus"></i>
-                                Tambah Data
-                            </button>
-                        </div>
-                        <div class="table-responsive">
-                            <table data-url="{{ request()->url() }}" class="table-data table">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Layanan</th>
-                                        <th>Judul</th>
-                                        <th>Konten</th>
-                                        <th>Gambar</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
 
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {{-- modal --}}
+                {{-- modal --}}
 
 
-                        <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
-                            aria-labelledby="varyingModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="varyingModalLabel">
-                                            <span id="title"></span>
-                                        </h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="btn-close"></button>
+                <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1" aria-labelledby="varyingModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="varyingModalLabel">
+                                    <span id="title"></span>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="btn-close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="modalFormData" name="modalFormData" class="form-horizontal" novalidate=""
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div id="put"></div>
+
+                                    <div class="mb-3">
+                                        <label for="body" class="form-label">Layanan </label>
+                                        <select name="service_id" id="service_id" class="form-control">
+                                            <option value="" disabled selected>Select service</option>
+                                            @foreach ($services as $service)
+                                            <option value="{{ $service->id }}">{{ $service->title }}</option>
+                                            @endforeach
+                                        </select>
+                                        <div class="text-danger" id="error-tag"></div>
                                     </div>
-                                    <div class="modal-body">
-                                        <form id="modalFormData" name="modalFormData" class="form-horizontal"
-                                            novalidate="" enctype="multipart/form-data">
-                                            @csrf
-                                            <div id="put"></div>
-                                            
-                                            <div class="mb-3">
-                                                <label for="body" class="form-label">Layanan </label>
-                                                    <select name="service_id" id="service_id" class="form-control" >
-                                                        <option value="" disabled selected>Select service</option>
-                                                        @foreach ($services as $service)
-                                                            <option value="{{ $service->id }}">{{ $service->title }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                <div class="text-danger" id="error-tag"></div>
-                                            </div>
 
-                                            <div class="mb-3">
-                                                <label for="title" class="form-label">Judul </label>
-                                                <input type="text" class="form-control" id="titles" name="title"
-                                                    placeholder="Masukkan judul detail layanan..." value="">
-                                                <div class="text-danger" id="error-title"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="body" class="form-label">Konten </label>
-                                                <textarea type="text" class="form-control" id="body" name="body" placeholder="Masukkan konten detail layanan..."></textarea>
-                                                <div class="text-danger" id="error-body"></div>
-                                            </div>
+                                    <div class="mb-3">
+                                        <label for="title" class="form-label">Judul </label>
+                                        <input type="text" class="form-control" id="titles" name="title"
+                                            placeholder="Masukkan judul detail layanan..." value="">
+                                        <div class="text-danger" id="error-title"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="body" class="form-label">Konten </label>
+                                        <textarea type="text" class="form-control" id="body" name="body"
+                                            placeholder="Masukkan konten detail layanan..."></textarea>
+                                        <div class="text-danger" id="error-body"></div>
+                                    </div>
 
-                                            <div class="mb-3">
-                                                <label for="image" class="form-label">Gambar </label>
-                                                <input type="file" name="image" id="image" class="form-control" value="">
-                                                <div class="text-danger" id="error-image"></div>
-                                            </div>
-                                        </form>
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Gambar </label>
+                                        <input type="file" name="image" id="image" class="form-control" value="">
+                                        <div class="text-danger" id="error-image"></div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-inverse-primary" id="btn-save"
-                                            value="add">Simpan data</button>
-                                        <input type="hidden" id="service_id" name="id" value="0">
-                                    </div>
-                                </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-inverse-primary" id="btn-save" value="add">Simpan
+                                    data</button>
+                                <input type="hidden" id="service_id" name="id" value="0">
                             </div>
                         </div>
-
                     </div>
                 </div>
+
             </div>
         </div>
+    </div>
+</div>
 @endsection
-    @push('js')
-    <script>
-        let showData;
+@push('js')
+<script>
+    let showData;
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
@@ -256,6 +246,5 @@
         element: document.getElementById('body'),
         });
         
-    </script>
-    @endpush
-</x-app-layout>
+</script>
+@endpush

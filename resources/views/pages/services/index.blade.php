@@ -1,119 +1,120 @@
 @extends('layouts.app')
 @section('title', 'Madjou | Layanan')
 @section('content')
-        <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                @if( Session::has("success") )
-                <div class="alert alert-success alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("success") }}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        @if( Session::has("success") )
+        <div class="alert alert-success alert-block" role="alert">
+            <button class="close" data-dismiss="alert"></button>
+            {{ Session::get("success") }}
+        </div>
+        @endif
+        @if( Session::has("error") )
+        <div class="alert alert-danger alert-block" role="alert">
+            <button class="close" data-dismiss="alert"></button>
+            {{ Session::get("error") }}
+        </div>
+        @endif
+        <div class="card">
+            <div class="card-body">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h4 class="card-title">Table data layanan</h4>
+                    <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
+                        data-bs-target="#tagEditorModal" id='btn-add'>
+                        <i data-feather="plus"></i>
+                        Tambah Data
+                    </button>
                 </div>
-                @endif
-                @if( Session::has("error") )
-                <div class="alert alert-danger alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("error") }}
+                <div class="table-responsive">
+                    <table data-url="{{ request()->url() }}" class="table-data table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Diupload oleh</th>
+                                <th>Judul</th>
+                                <th>Tags</th>
+                                <th>Konten</th>
+                                <th>Gambar</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
                 </div>
-                @endif
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Table data layanan</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
-                                data-bs-target="#tagEditorModal" id='btn-add'>
-                                <i data-feather="plus"></i>
-                                Tambah Data
-                            </button>
-                        </div>
-                        <div class="table-responsive">
-                            <table data-url="{{ request()->url() }}" class="table-data table">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Diupload oleh</th>
-                                        <th>Judul</th>
-                                        <th>Tags</th>
-                                        <th>Konten</th>
-                                        <th>Gambar</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
 
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {{-- modal --}}
+                {{-- modal --}}
 
 
-                        <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
-                            aria-labelledby="varyingModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="varyingModalLabel">
-                                            <span id="title"></span>
-                                        </h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="btn-close"></button>
+                <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1" aria-labelledby="varyingModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="varyingModalLabel">
+                                    <span id="title"></span>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="btn-close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="modalFormData" name="modalFormData" class="form-horizontal" novalidate=""
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div id="put"></div>
+
+                                    <div class="mb-3">
+                                        <label for="title" class="form-label">Judul </label>
+                                        <input type="text" class="form-control" id="titles" name="title"
+                                            placeholder="Masukkan judul layanan..." value="">
+                                        <div class="text-danger" id="error-title"></div>
                                     </div>
-                                    <div class="modal-body">
-                                        <form id="modalFormData" name="modalFormData" class="form-horizontal"
-                                            novalidate="" enctype="multipart/form-data">
-                                            @csrf
-                                            <div id="put"></div>
-
-                                            <div class="mb-3">
-                                                <label for="title" class="form-label">Judul </label>
-                                                <input type="text" class="form-control" id="titles" name="title"
-                                                    placeholder="Masukkan judul layanan..." value="">
-                                                <div class="text-danger" id="error-title"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="body" class="form-label">Konten </label>
-                                                <textarea type="text" class="form-control" id="body" name="body"
-                                                    placeholder="Masukkan konten layanan..."></textarea>
-                                                <div class="text-danger" id="error-body"></div>
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label for="tags" class="form-label">Tags </label>
-                                                <select name="tags[]" id="tags" class="form-control"
-                                                    multiple="multiple">
-                                                    <option value="" disabled selected>Pilih Tags</option>
-                                                    @foreach ($tags as $tag)
-                                                    <option value="{{ $tag->name }}">{{ $tag->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <div class="text-danger" id="error-tag"></div>
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label for="image" class="form-label">Gambar </label>
-                                                <input type="file" name="image" id="image" class="form-control"
-                                                    value="">
-                                                <div class="text-danger" id="error-image"></div>
-                                            </div>
-                                        </form>
+                                    <div class="mb-3">
+                                        <label for="body" class="form-label">Konten </label>
+                                        <textarea type="text" class="form-control" id="body"
+                                            placeholder="Masukkan konten layanan..."></textarea>
+                                        <input type="hidden" name="body" class="body">
+                                        <div class="text-danger" id="error-body"></div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-inverse-primary" id="btn-save"
-                                            value="add">Simpan data</button>
-                                        <input type="hidden" id="service_id" name="id" value="0">
+
+                                    <div class="mb-3">
+                                        <label for="tags" class="form-label">Tags </label>
+                                        <select name="tags[]" id="tags" class="form-control" multiple="multiple">
+                                            <option value="" disabled selected>Pilih Tags</option>
+                                            @foreach ($tags as $tag)
+                                            <option value="{{ $tag->name }}">{{ $tag->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <div class="text-danger" id="error-tag"></div>
                                     </div>
-                                </div>
+
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Gambar </label>
+                                        <input type="file" name="image" id="image" class="form-control" value="">
+                                        <div class="text-danger" id="error-image"></div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-inverse-primary" id="btn-save" value="add">Simpan
+                                    data</button>
+                                <input type="hidden" id="service_id" name="id" value="0">
                             </div>
                         </div>
-
                     </div>
                 </div>
+
             </div>
         </div>
+    </div>
+</div>
 @endsection
-    @push('js')
-    <script>
-        let showData;
+@push('js')
+<script src="https://cdn.tiny.cloud/1/wwx0cl8afxdfv85dxbyv3dy0qaovbhaggsxpfqigxlxw8pjx/tinymce/6/tinymce.min.js"
+    referrerpolicy="origin"></script>
+<script>
+    let showData;
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
@@ -168,6 +169,9 @@
                 }, {
                     data: 'body',
                     name: 'body',
+                    render: function ( data) {
+                        return htmlDecode(data);
+                    }
                 }, {
                     data: 'image',
                     name: 'image',
@@ -206,6 +210,11 @@
                 }]
             })
             // edit
+            function htmlDecode(input){
+                var e = document.createElement('p');
+                e.innerHTML = input;
+                return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+            }
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
                 let url = "{{ route('services.update',':id') }}"
@@ -214,7 +223,9 @@
                 $("#title").html("Edit " + row.title);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#titles").val(row.title);
-                $("#body").val(row.body);
+                // $("#body").val(row.body);
+                var body = htmlDecode(row.body);
+                tinyMCE.activeEditor.setContent(body);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
@@ -257,12 +268,15 @@
                 })
             })
         })
-
-         // text editor
-         new EasyMDE({
-        autoDownloadFontAwesome: false,
-        element: document.getElementById('body'),
+        // text editor
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace tablevisualblockswordcount',toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | linkimage media table | alignlineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            init_instance_callback: function(editor) {
+                editor.on('keyup', function(e) {
+                    $(".body").val(editor.getContent())
+                });
+            }
         });
-
-    </script>
-    @endpush
+</script>
+@endpush

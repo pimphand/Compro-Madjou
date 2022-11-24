@@ -8,6 +8,7 @@ use App\Models\Service;
 use App\Models\ServiceDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -22,15 +23,14 @@ class DetailServiceController extends Controller
     {
         $services = Service::all();
 
-        if(request()->ajax())
-        {
+        if (request()->ajax()) {
             $dataDetService = ServiceDetail::latest()->get();
             return DataTables::of($dataDetService)
-                    ->addColumn('getService', function($service){
-                        return $service->getService->title;
-                    })
-                    ->addIndexColumn()
-                    ->make(true);
+                ->addColumn('getService', function ($service) {
+                    return $service->getService->title;
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
 
         return view('pages.detail-services.index', [
@@ -56,7 +56,7 @@ class DetailServiceController extends Controller
      */
     public function store(Request $request)
     {
-        $data   = Validator::make($request->all(),[
+        $data   = Validator::make($request->all(), [
             'title'         => 'required|string|max:50',
             'body'          => 'required|string|',
             'image'         => 'required|image|mimes:jpg,jpeg,png',
@@ -66,16 +66,14 @@ class DetailServiceController extends Controller
             'image.required'    => 'Gambar tidak boleh kosong',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
                 'errors'    => $data->getMessageBag()->toArray(),
             ]);
         }
 
-        if($image = $request->file('image'))
-        {
+        if ($image = $request->file('image')) {
             $fileNameWithExt    = $image->getClientOriginalName();
             $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext                = $image->getClientOriginalExtension();
@@ -128,7 +126,7 @@ class DetailServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data   = Validator::make($request->all(),[
+        $data   = Validator::make($request->all(), [
             'title'         => 'required|string|max:50',
             'body'          => 'required|string|',
             'image'         => 'nullable|image|mimes:jpg,jpeg,png',
@@ -137,8 +135,7 @@ class DetailServiceController extends Controller
             'body.required'     => 'Konten tidak boleh kosong',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
                 'errors'    => $data->getMessageBag()->toArray(),
@@ -147,9 +144,8 @@ class DetailServiceController extends Controller
 
         $detService = ServiceDetail::findOrFail($id);
 
-        if($request->hasFile('image') && $request->file('image') != null)
-        {
-            Storage::delete('public/detail-service/'.$detService->image);
+        if ($request->file('image') != null) {
+            Storage::delete('public/detail-service/' . $detService->image);
 
             $fileNameWithExt    = $request->file('image')->getClientOriginalName();
             $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
@@ -168,7 +164,6 @@ class DetailServiceController extends Controller
         return [
             'success'   => true,
             'message'   => 'Data detail layanan berhasil diubah!',
-            'data'      => new ServiceDetail($detService),
         ];
     }
 
@@ -181,7 +176,7 @@ class DetailServiceController extends Controller
     public function destroy($id)
     {
         $detService = ServiceDetail::findOrFail($id);
-        Storage::delete('public/detail-service/'.$detService->image);
+        Storage::delete('public/detail-service/' . $detService->image);
 
         $detService->delete();
 
