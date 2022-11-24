@@ -38,31 +38,32 @@ class EmployeeRegistrationController extends Controller
      */
     public function store(Request $request)
     {
-        $data = Validator::make($request->all(),[
-            'career_id' => 'required|',
-            'name'      => 'required|unique:employee_registrations,id',
-            'email'     => 'required|unique:employee_registrations,id',
+        $data = Validator::make($request->all(), [
+            'career_id' => 'required|exists:careers,id',
+            'name'      => 'required',
+            'email'     => 'required|unique:employee_registrations,id|email',
             'phone'     => 'required|max:15',
-            'address'   => 'required|',
+            'address'   => 'required',
         ], [
             'career_id.required'    => 'Career tidak boleh kosong',
+            'career_id.exists'      => 'Career tidak ditemukan',
             'name.required'         => 'Nama tidak boleh kosong',
             'name.unique'           => 'Nama sudah digunakan',
-            'email.required'        => 'Email tidak boleh kosong', 
+            'email.required'        => 'Email tidak boleh kosong',
             'email.unique'          => 'Email sudah digunakan',
+            'email.email'           => 'Email tidak valid',
             'phone.required'        => 'Nomer telpon tidak boleh kosong',
             'address.required'      => 'Alamat tidak boleh kosong',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
                 'errors'    => $data->getMessageBag()->toArray()
             ]);
         }
 
-        $employee = EmployeeRegistration::create([
+        EmployeeRegistration::create([
             'career_id'     => $request->career_id,
             'name'          => $request->name,
             'email'         => $request->email,
@@ -76,8 +77,7 @@ class EmployeeRegistrationController extends Controller
 
         return response()->json([
             'success'   => true,
-            'message'   => 'Data employee berhasil disimpan',
-            'data'      => new EmployeeRegistrationResource($employee)
+            'message'   => 'Data employee berhasil disimpan'
         ], 200);
     }
 

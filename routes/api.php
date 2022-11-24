@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\v1\BlogController;
 use App\Http\Controllers\Api\v1\CategoryTeamController;
 use App\Http\Controllers\Api\v1\TagController;
 use App\Http\Controllers\Api\v1\TeamController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\Api\v1\DetailServiceController;
 use App\Http\Controllers\Api\v1\OurClientController;
 use App\Http\Controllers\Api\v1\ServiceController;
 use App\Http\Controllers\Api\v1\CarrerController;
+use App\Http\Controllers\Api\v1\CategoryBlogController;
 use App\Http\Controllers\Api\v1\EmployeeRegistrationController;
 use App\Http\Controllers\Api\v1\MessageController;
 use App\Http\Controllers\Api\v1\NotificationController;
@@ -28,41 +30,40 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(["prefix" => 'v1'], function(){
+Route::group(["prefix" => 'v1', "middleware" => 'lang'], function () {
 
-Route::resource('/notifications', NotificationController::class);
+    Route::resource('/notifications', NotificationController::class);
 
-Route::resource('/category-blogs', CategoryBlog::class);
+    Route::resource('/category-blogs', CategoryBlogController::class);
 
-Route::resource('/blogs', Blog::class);
+    Route::resource('/blogs', BlogController::class);
 
-Route::resource('/employees', EmployeeRegistrationController::class);
+    Route::resource('/employees', EmployeeRegistrationController::class);
 
-Route::resource('/clients', OurClientController::class);
+    Route::resource('/clients', OurClientController::class);
 
-Route::resource('/services', ServiceController::class);
+    Route::resource('/services', ServiceController::class);
 
-Route::resource('/detail-services', DetailServiceController::class);
+    Route::resource('/detail-services', DetailServiceController::class);
 
-Route::resource('/project-types', ProjectTypeController::class);
+    Route::resource('/project-types', ProjectTypeController::class);
 
-Route::resource('/projects', ProjectController::class);
+    Route::resource('/projects', ProjectController::class);
 
-Route::resource('/careers', CarrerController::class);
+    Route::resource('/careers', CarrerController::class);
 
-Route::resource('/category-teams', CategoryTeamController::class);
+    // Route::resource('/category-teams', CategoryTeamController::class);
 
-Route::resource('/teams', TeamController::class);
+    // Route::resource('/teams', TeamController::class);
 
-Route::resource('/tags', TagController::class);
+    // Route::resource('/tags', TagController::class);
 
-Route::resource('/subscribes', SubscribeController::class);
+    Route::resource('/subscribes', SubscribeController::class);
 
-Route::resource('/messages', MessageController::class);
-
+    Route::resource('/messages', MessageController::class);
 });
 
-Route::group(['middleware'=>'auth'], function() {
+Route::group(['middleware' => 'auth'], function () {
     Route::middleware(['role:superadmin|dev|admin'])->group(function () {
         Route::resource('/profile', ProfileController::class);
     });

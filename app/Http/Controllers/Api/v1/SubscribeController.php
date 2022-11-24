@@ -42,18 +42,26 @@ class SubscribeController extends Controller
      */
     public function store(Request $request)
     {
-        $data = Validator::make($request->all(),[
-            'email'     => 'required|email|unique:subscribes',
+        $data = Validator::make($request->all(), [
+            'email'     => 'required|email',
         ], [
             'email.required'    => 'Email tidak boleh kosong',
+            'email.email'    => 'Email yang digunakan tidak valid',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
                 'errors'    => $data->getMessageBag()->toArray()
             ]);
+        }
+        $check = Subscribe::whereEmail($request->email)->get();
+
+        if (count($check ?? []) == 0) {
+            return [
+                'success'   => true,
+                'message'   => 'Terima kasih telah subscribe',
+            ];
         }
 
         $subscribe  = Subscribe::create([
@@ -61,27 +69,13 @@ class SubscribeController extends Controller
             'location'  => $request->getClientIp(),
         ]);
 
-        
         // queue jobs
         SendNotifJobs::dispatch($subscribe);
 
-
-        if($subscribe)
-        {
-              
-
-            return [
-                'success'   => true,
-                'message'   => 'Terima kasih telah subscribe',
-            ];
-        }
-
         return [
             'success'   => true,
-            'message'   => 'Subscribe telah berhasil',
-            'data'      => new SubsribeResource($subscribe)
+            'message'   => 'Terima kasih telah subscribe',
         ];
-
     }
 
     /**
@@ -123,8 +117,7 @@ class SubscribeController extends Controller
     {
         $data = Subscribe::findOrFail($id);
 
-        if($data->status == 1)
-        {
+        if ($data->status == 1) {
             $data->update([
                 'status'    => 0,
             ]);
@@ -134,8 +127,8 @@ class SubscribeController extends Controller
                 'message'   => 'Anda berhasil unsubscribe',
                 'data'      => new SubsribeResource($data),
             ], 200);
-        } 
-        
+        }
+
 
         return response()->json([
             'success'   => true,

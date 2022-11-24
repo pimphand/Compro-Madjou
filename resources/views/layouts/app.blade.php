@@ -11,8 +11,8 @@
 
 
     <!-- Plugin css for this page -->
-	<link rel="stylesheet" href="{{asset('template/assets/vendors/prismjs/themes/prism.css')}}">
-	<!-- End plugin css for this page -->
+    <link rel="stylesheet" href="{{asset('template/assets/vendors/prismjs/themes/prism.css')}}">
+    <!-- End plugin css for this page -->
 
 
     <!-- Fonts -->
@@ -45,10 +45,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
 
-    
 
 
-   
+
+
     <style>
         .size-18 {
             width: 14px;
@@ -60,29 +60,29 @@
 <body>
     <div class="main-wrapper">
 
-		<!-- partial:../../partials/_sidebar.html -->
-		@include('layouts.navigation')
-	
-		<div class="page-wrapper">
-				
-			<!-- partial:../../partials/_navbar.html -->
-			@include('layouts.topbar')
-			<!-- partial -->
+        <!-- partial:../../partials/_sidebar.html -->
+        @include('layouts.navigation')
+
+        <div class="page-wrapper">
+
+            <!-- partial:../../partials/_navbar.html -->
+            @include('layouts.topbar')
+            <!-- partial -->
 
             <div class="page-content">
-                    @yield('content')
+                @yield('content')
 
-                      
+
             </div>
 
-             <!-- partial:../../partials/_footer.html -->
-			@include('layouts.footer')
-			<!-- partial -->  
+            <!-- partial:../../partials/_footer.html -->
+            @include('layouts.footer')
+            <!-- partial -->
 
-		</div>
+        </div>
 
-       
-	</div>
+
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
@@ -116,70 +116,63 @@
     {{-- end sweet alert --}}
 
     <script src="{{asset('template/assets/vendors/feather-icons/feather.min.js')}}"></script>
-	{{-- <script src="{{asset('template/assets/js/template.js')}}"></script> --}}
-
-    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
-
+    {{-- <script src="{{asset('template/assets/js/template.js')}}"></script> --}}
     @stack('js')
 
     <script>
         feather.replace()
     </script>
 
-<script>
-    $('.modal-form #btn-save').on('click', function () {
-        var form = $('#modalFormData')[0];
-        var formData = new FormData(form);
-        $.ajax({
-            url: form.action,
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-               if (data.success == true) {
-                    // sweetalert
-                    $('.modal-form').modal('hide');
-                    Swal.fire({
-                        title: 'Berhasil',
-                        // text: data.message,
-                        icon: 'success',
-                        confirmButtonText: 'Ok'
-                    }).then((result) => {
-                        if (result.value) {
-                            // show data
-                        }
-                    });
-                    if(showData){
-                        showData.ajax.reload();
-                    }else{
-                        setInterval(() => {
-                            location.reload();
-                            
-                        }, 2000);
-                    }
-
-                }else{
-                    $.each(data.errors, function (key, value) {
-                        //   show errors
-                        console.log(key);
-                        $('#' + key).addClass('is-invalid');
-                        $('#' +'error-' + key ).html(value);
-                        // hide error
-                        $('#' + key).on('keyup', function () {
-                            $('#' + key).removeClass('is-invalid');
-                            $('#' +'error-' + key ).html('');
+    <script>
+        $('.modal-form #btn-save').on('click', function () {
+            var form = $('#modalFormData')[0];
+            var formData = new FormData(form);
+            $.ajax({
+                url: form.action,
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                if (data.success == true) {
+                        // sweetalert
+                        $('.modal-form').modal('hide');
+                        Swal.fire({
+                            title: 'Berhasil',
+                            // text: data.message,
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            if (result.value) {
+                                // show data
+                            }
                         });
-                    });
-                }
-            }
-        });
-    })
+                        if(showData){
+                            showData.ajax.reload();
+                        }else{
+                            setInterval(() => {
+                                location.reload();
+                                
+                            }, 2000);
+                        }
 
-  
-    
-</script>
+                    }else{
+                        $.each(data.errors, function (key, value) {
+                            //   show errors
+                            console.log(key);
+                            $('#' + key).addClass('is-invalid');
+                            $('#' +'error-' + key ).html(value);
+                            // hide error
+                            $('#' + key).on('keyup', function () {
+                                $('#' + key).removeClass('is-invalid');
+                                $('#' +'error-' + key ).html('');
+                            });
+                        });
+                    }
+                }
+            });
+        })
+    </script>
 
 </body>
 
