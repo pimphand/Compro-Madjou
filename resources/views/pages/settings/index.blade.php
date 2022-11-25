@@ -15,7 +15,7 @@
                               <a class="nav-link active" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="home" aria-selected="true">Contact</a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="profile-line-tab" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Script Header</a>
+                              <a class="nav-link" id="profile-line-tab" data-bs-toggle="tab" href="#script" role="tab" aria-controls="profile" aria-selected="false">Script Header</a>
                             </li>
                           </ul>
                         <div class="tab-content mt-3" id="lineTabContent">
@@ -44,7 +44,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-line-tab">
+                            <div class="tab-pane fade" id="script" role="tabpanel" aria-labelledby="script-line-tab">
                                 <form action="">
                                     <div class="mb-3">
                                       <label for="script" class="form-label"><h4>Tambah script</h4></label>
@@ -52,7 +52,8 @@
                                       class="form-control" 
                                       id="script" name="script" 
                                       aria-describedby="script"
-                                      rows="3"></textarea>
+                                      rows="3" placeholder="Tambahkan script disini!"></textarea>
+                                      <input type="hidden" name="script" class="script">
                                       
                                     </div>
                                    
@@ -118,6 +119,8 @@
         @endsection
    
     @push('js')
+    <script src="https://cdn.tiny.cloud/1/wwx0cl8afxdfv85dxbyv3dy0qaovbhaggsxpfqigxlxw8pjx/tinymce/6/tinymce.min.js"
+    referrerpolicy="origin"></script>
     <script>
        let showData;
          // add data contact
@@ -263,24 +266,28 @@
   
         })
 
+        function htmlDecode(input){
+                var e = document.createElement('p');
+                e.innerHTML = input;
+                return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+            }
+        $('#script').on('click', function(){
+            tinyMCE.activeEditor.setContent(script);
+
+        })
+        
+        var body = htmlDecode(script);
+
         // text editor
-        let editor;
-
-        let ckEditor = ClassicEditor
-            .create( document.querySelector( '#script' ) )
-            .then( newEditor => {
-                editor = newEditor;
-                editor.ui.view.editable.element.style.height = '500px';
-            })
-            .catch( error => {
-                console.error( error );
-            });
-
-            document.querySelector( '#btn-save' ).addEventListener( 'click', () => {
-                const editorData = editor.getData();
-                $('#script').val(editorData);
-            });
-
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace tablevisualblockswordcount',toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | linkimage media table | alignlineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            init_instance_callback: function(editor) {
+                editor.on('keyup', function(e) {
+                    $(".script").val(editor.getContent())
+                });
+            }
+        });
     </script>
     @endpush
    

@@ -1,6 +1,7 @@
+@extends('layouts.app')
 @section('title', 'Madjou | Pesan')
-<x-app-layout>
-    <div class="page-content">
+@section('content')
+
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
                 @if( Session::has("success") )
@@ -105,6 +106,7 @@
                                                 <label for="text" class="form-label">Pesan </label>
                                                 <textarea type="text" class="form-control" id="comment" name="comment"
                                                     placeholder="Masukkan pesan..." value=""></textarea>
+                                                    <input type="hidden" name="comment" class="comment">
                                                 <div class="text-danger" id="error-comment"></div>
                                             </div>
                                           
@@ -124,9 +126,10 @@
                 </div>
             </div>
         </div>
-    </div>
 
     @push('js')
+    <script src="https://cdn.tiny.cloud/1/wwx0cl8afxdfv85dxbyv3dy0qaovbhaggsxpfqigxlxw8pjx/tinymce/6/tinymce.min.js"
+    referrerpolicy="origin"></script>
     <script>
         let showData;
         $(() => {
@@ -235,11 +238,9 @@
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#message_id").val(row.id);
                 $("#emails").val(row.email);
-                $("subjects").val();
-                $("comment").val();
+                $("#subjects").val();
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
-                console.log(row.id);
             })
 
             // Delete
@@ -283,11 +284,16 @@
         })
 
          // text editor
-         new EasyMDE({
-        autoDownloadFontAwesome: false,
-        element: document.getElementById('comment'),
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace tablevisualblockswordcount',toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | linkimage media table | alignlineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            init_instance_callback: function(editor) {
+                editor.on('keyup', function(e) {
+                    $(".comment").val(editor.getContent())
+                });
+            }
         });
 
     </script>
     @endpush
-</x-app-layout>
+@endsection

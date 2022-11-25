@@ -66,12 +66,13 @@
                                         <label for="title" class="form-label">Judul </label>
                                         <input type="text" class="form-control" id="titles" name="title"
                                             placeholder="Masukkan judul detail layanan..." value="">
-                                        <div class="text-danger" id="error-title"></div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="body" class="form-label">Konten </label>
-                                        <textarea type="text" class="form-control" id="body" name="body"
+                                            <div class="text-danger" id="error-title"></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="body" class="form-label">Konten </label>
+                                            <textarea type="text" class="form-control" id="body" name="body"
                                             placeholder="Masukkan konten detail layanan..."></textarea>
+                                            <input type="hidden" name="body" class="body">
                                         <div class="text-danger" id="error-body"></div>
                                     </div>
 
@@ -97,6 +98,8 @@
 </div>
 @endsection
 @push('js')
+<script src="https://cdn.tiny.cloud/1/wwx0cl8afxdfv85dxbyv3dy0qaovbhaggsxpfqigxlxw8pjx/tinymce/6/tinymce.min.js"
+    referrerpolicy="origin"></script>
 <script>
     let showData;
         $(() => {
@@ -150,11 +153,14 @@
                 }, {
                     data: 'body',
                     name: 'body',
+                    render: function ( data) {
+                        return htmlDecode(data);
+                    }
                 }, {
                     data: 'image',
                     name: 'image',
                     render: function ( data) {
-              return `<img src="{{asset('storage/detail-services')}}/${data}" width="40px">`;},
+              return `<img src="{{asset('storage/detail-service')}}/${data}" width="40px">`;},
                 }, {
                     data: 'id',
                     name: 'id',
@@ -186,7 +192,13 @@
                     }
                 }]
             })
+
             // edit
+            function htmlDecode(input){
+                var e = document.createElement('p');
+                e.innerHTML = input;
+                return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+            }
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
                 let url = "{{ route('detail-services.update',':id') }}"
@@ -196,7 +208,8 @@
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#tags").val(row.tags)
                 $("#titles").val(row.title);
-                $("#body").val(row.body);
+                var body = htmlDecode(row.body);
+                tinyMCE.activeEditor.setContent(body);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
@@ -240,10 +253,15 @@
             })
         })
 
-         // text editor
-         new EasyMDE({
-        autoDownloadFontAwesome: false,
-        element: document.getElementById('body'),
+          // text editor
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace tablevisualblockswordcount',toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | linkimage media table | alignlineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            init_instance_callback: function(editor) {
+                editor.on('keyup', function(e) {
+                    $(".body").val(editor.getContent())
+                });
+            }
         });
         
 </script>

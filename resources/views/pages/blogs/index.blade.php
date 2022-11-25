@@ -56,10 +56,9 @@
                                         @csrf
                                         <div id="put"></div>
                                         <div class="mb-3">
-                                            <label for="category_blog" class="form-label">Kategori blog </label>
-                                            <select name="blog_category_id" id="blog_category_id" class="form-control">
+                                            <label for="blog_category_id" class="form-label">Kategori blog </label>
+                                            <select name="blog_category_id" id="blog_category_id" class="form-control" value="">
                                                 <option value="" disabled selected>Pilih kategori</option>
-
                                                 @foreach ($category as $category)
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                 @endforeach
@@ -74,8 +73,9 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="body" class="form-label">Konten </label>
-                                            <textarea class="form-control" id="content" name="body"
+                                            <textarea class="form-control" id="body" name="body"
                                                 placeholder="Masukkan konten blog..." value=""></textarea>
+                                                <input type="hidden" name="body" class="body">
                                             <div class="text-danger" id="error-body"></div>
                                         </div>
                                         <div class="mb-3">
@@ -135,28 +135,11 @@
     
 
     @push('js')
+    <script src="https://cdn.tiny.cloud/1/wwx0cl8afxdfv85dxbyv3dy0qaovbhaggsxpfqigxlxw8pjx/tinymce/6/tinymce.min.js"
+    referrerpolicy="origin"></script>
     <script>
        $(document).ready(function() {
-
-        let editor;
         let showData;
-
-        let ckeditor = ClassicEditor
-            .create( document.querySelector( '#content' ), {
-                updateSourceElementOnDestroy: true
-            })
-            .then( newEditor => {
-                editor = newEditor;
-            } )
-            .catch( error => {
-                console.error( error );
-            } );
-            
-            $('#btn-save').on('click', () => {
-                const editorData = editor.getData();
-                //  $("#content").val(editorData);
-            });
-
             
         $('#btn-add').click(function (e) { 
                 e.preventDefault();
@@ -166,7 +149,6 @@
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
                 $("#modalFormData").attr('action', "{{ route('blogs.store') }}");
-                
             });
 
         // search data
@@ -221,8 +203,6 @@
                                         "</div>"
                                 );
                             //    console.log(item.author.name)
-
-                            
                         });
 
                     }
@@ -252,7 +232,11 @@
             });
 
             // edit blog
-            
+            function htmlDecode(input){
+                var e = document.createElement('p');
+                e.innerHTML = input;
+                return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+            }
              $('.show-datas').on('click', '.btn-edit', function(){
                  let id = $(this).attr('id');
                  let url = "{{route('blogs.update',':id')}}";
@@ -271,7 +255,8 @@
                         $("#put").html('<input type="hidden" name="_method" value="put">');
                         $("#blog_category_id").val(data.data.blog_category_id);
                         $("#titles").val(data.data.title);
-                        $("#content").val(editor.setData(data.data.body));
+                        var body = htmlDecode(data.data.body);
+                        tinyMCE.activeEditor.setContent(data.data.body);
                         $("#tags").val(data.data.tags);
                         $('.error').empty();
                         $('#tagEditorModal').modal('show');
@@ -335,6 +320,17 @@
                 
             })
 });
+
+// text editor
+tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace tablevisualblockswordcount',toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | linkimage media table | alignlineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            init_instance_callback: function(editor) {
+                editor.on('keyup', function(e) {
+                    $(".body").val(editor.getContent())
+                });
+            }
+        });
     </script>
     @endpush
 

@@ -223,9 +223,9 @@
                 $("#title").html("Edit " + row.title);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#titles").val(row.title);
-                // $("#body").val(row.body);
+                $("#tags").val(row.tags);
                 var body = htmlDecode(row.body);
-                tinyMCE.activeEditor.setContent(body);
+                tinyMCE.activeEditor.setContent(row.body);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })

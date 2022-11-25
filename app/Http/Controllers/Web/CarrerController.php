@@ -120,10 +120,10 @@ class CarrerController extends Controller
     {
         $data   = Validator::make($request->all(),[
             'name'  => 'required',
-            'body'  => 'requried',
+            'body'  => 'required',
             'location'  => 'required',
             'department'    => 'required',
-            'minimum_experience'    => 'requried',
+            'minimum_experience'    => 'required',
             'employment_type'       => 'required', 
         ], [
             'name.required'     => 'Nama tidak boleh kosong',
