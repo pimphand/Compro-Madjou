@@ -33,7 +33,6 @@
           </li>
 
           <li class="nav-item nav-category">Layanan</li>
-
           <li class="nav-item">
             <a href="{{route('services.index')}}" class="nav-link">
               <i class="fa-sharp fa-solid fa-toolbox"></i>
@@ -41,7 +40,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{route('detail-services.index')}}" class="nav-link">
+            <a href="{{route('details.index')}}" class="nav-link">
               <i class="fa-sharp fa-solid fa-screwdriver-wrench"></i>
               <span class="link-title">Detail layanan</span>
             </a>
@@ -49,7 +48,7 @@
           
           <li class="nav-item nav-category">Projek</li>
           <li class="nav-item">
-            <a href="{{route('project-types.index')}}" class="nav-link">
+            <a href="{{route('types.index')}}" class="nav-link">
               <i class="fa-solid fa-cart-plus"></i>
               <span class="link-title">Jenis projek</span>
             </a>
@@ -68,7 +67,7 @@
           </li>
           <li class="nav-item nav-category">Blogs</li>
           <li class="nav-item">
-            <a href="{{route('category-blogs.index')}}" class="nav-link">
+            <a href="{{route('category.index')}}" class="nav-link">
               <i class="fa-solid fa-layer-group"></i>
               <span class="link-title">Kategori blog</span>
             </a>
@@ -94,7 +93,7 @@
           </li>
           <li class="nav-item nav-category">Teams</li>
           <li class="nav-item">
-            <a href="{{route('category-teams.index')}}" class="nav-link">
+            <a href="{{route('categories.index')}}" class="nav-link">
               <i class="fa-solid fa-user-plus"></i>
               <span class="link-title">Kategori team</span>
             </a>

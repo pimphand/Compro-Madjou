@@ -120,7 +120,7 @@
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('event-registers.store') }}");
+                $("#modalFormData").attr('action', "{{ route('registers.store') }}");
             });
             // datatable
             showData = $('.table-data').DataTable({
@@ -203,7 +203,7 @@
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
                 console.log($(this).data('event_id'));
-                let url = "{{ route('event-registers.update',':id') }}"
+                let url = "{{ route('registers.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
                 $("#title").html("Edit "+ row.name);
@@ -221,7 +221,7 @@
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('event-registers.destroy',':id') }}"
+                let url = "{{ route('registers.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({

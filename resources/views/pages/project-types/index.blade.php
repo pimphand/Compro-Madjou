@@ -91,7 +91,7 @@
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('project-types.store') }}");
+                $("#modalFormData").attr('action', "{{ route('types.store') }}");
             });
             // datatable
             showData = $('.table-data').DataTable({
@@ -160,7 +160,7 @@
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('project-types.update',':id') }}"
+                let url = "{{ route('types.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
                 $("#title").html("Edit "+ row.name);
@@ -172,7 +172,7 @@
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('project-types.destroy',':id') }}"
+                let url = "{{ route('types.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({

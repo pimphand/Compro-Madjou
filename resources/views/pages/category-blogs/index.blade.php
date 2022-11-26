@@ -94,7 +94,7 @@
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('category-blogs.store') }}");
+                $("#modalFormData").attr('action', "{{ route('category.store') }}");
             });
             // datatable
             showData = $('.table-data').DataTable({
@@ -163,7 +163,7 @@
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('category-blogs.update',':id') }}"
+                let url = "{{ route('category.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
                 $("#title").html("Edit "+ row.name);
@@ -175,7 +175,7 @@
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('category-blogs.destroy',':id') }}"
+                let url = "{{ route('category.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({

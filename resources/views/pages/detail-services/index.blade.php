@@ -110,7 +110,7 @@
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('detail-services.store') }}");
+                $("#modalFormData").attr('action', "{{ route('details.store') }}");
             });
 
 
@@ -201,7 +201,7 @@
             }
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('detail-services.update',':id') }}"
+                let url = "{{ route('details.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
                 $("#title").html("Edit " + row.title);
@@ -216,7 +216,7 @@
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('detail-services.destroy',':id') }}"
+                let url = "{{ route('details.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({
