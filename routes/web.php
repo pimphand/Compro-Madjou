@@ -47,21 +47,21 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/dashboard', DashboardController::class);
         Route::resource('/roles', RoleController::class);
         Route::resource('/tags', TagController::class);
-        Route::group(['prefix' => 'team'], function(){
+        Route::group(['prefix' => 'team'], function () {
             Route::resource('/categories', CategoryTeamController::class);
             Route::resource('/teams', TeamController::class);
         });
         Route::resource('/languages', ProgrammingLanguageController::class);
-        Route::group(['prefix' => 'blog'], function(){
+        Route::group(['prefix' => 'blog'], function () {
             Route::resource('/blogs', BlogController::class);
             Route::resource('/category', CategoryBlogController::class);
         });
         Route::resource('/clients', OurClientController::class);
-        Route::group(['prefix' => 'service'], function (){
+        Route::group(['prefix' => 'service'], function () {
             Route::resource('/services', ServiceController::class);
             Route::resource('/details', DetailServiceController::class);
         });
-        Route::group(['prefix' => 'Projects'], function(){
+        Route::group(['prefix' => 'Projects'], function () {
             Route::resource('/types', ProjectTypeController::class);
             Route::resource('/project', ProjectController::class);
         });
@@ -71,8 +71,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/notifications', NotificationController::class);
         Route::resource('/subscribes', SubscribeController::class);
         Route::resource('/settings', SettingController::class);
+        Route::get('/settings-data', [SettingController::class, 'data'])->name('settings.data');
         Route::resource('/contacts', ContactController::class);
-        Route::group(['prefix' => 'event'], function(){
+        Route::group(['prefix' => 'event'], function () {
             Route::resource('/events', EventController::class);
             Route::resource('/registers', EventRegisterController::class);
         });

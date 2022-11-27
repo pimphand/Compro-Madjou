@@ -16,24 +16,17 @@ class SettingSeeder extends Seeder
      */
     public function run()
     {
-        Setting::create([
-            "code"  => 'contact',
-            "name"  => 'contact',
-            "slug"  => 'contact',
-            "body"      => '',
-            "image" => '',
-            "lang"  => 'id', 
-        ]);
+        $data = ['script-header', 'script-footer'];
 
-        Setting::create([
-            "code"  => 'header',
-            "name"  => 'header',
-            "slug"  => 'header',
-            "body"  => '',
-            "image" => '',
-            "lang"  => 'id',
-        ]);
-
-       
+        foreach ($data as $key => $value) {
+            Setting::create([
+                "code"  => $value,
+                "name"  => $value,
+                "slug"  => $value,
+                "body"  => $value,
+                "image" => '',
+                "lang"  => 'id',
+            ]);
+        }
     }
 }

@@ -2,127 +2,135 @@
 @section('title', 'Madjou | Pengaturan')
 
 @section('content')
-    
-        {{-- show data setting --}}
-        <div class="row">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Setting</h4>
-                </div>
-                <div class="card-body">
-                        <ul class="nav nav-tabs nav-tabs-line" id="lineTab" role="tablist">
-                            <li class="nav-item">
-                              <a class="nav-link active" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="home" aria-selected="true">Contact</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link" id="profile-line-tab" data-bs-toggle="tab" href="#script" role="tab" aria-controls="profile" aria-selected="false">Script Header</a>
-                            </li>
-                          </ul>
-                        <div class="tab-content mt-3" id="lineTabContent">
-                            <div class="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact">
-                                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                                    <h4 class="card-title">Tabel data Contact</h4>
-                                    <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" data-bs-target="#tagEditorModal" id='btn-add'>
-                                        <i data-feather="plus"></i>
-                                        Tambah Data
-                                    </button>
-                                </div>
-                                <div class="table-responsive">
-                                    <table data-url="{{route('contacts.index')}}" class="table-data table">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Nama</th>
-                                                <th>Url</th>
-                                                <th>Image</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-        
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="script" role="tabpanel" aria-labelledby="script-line-tab">
-                                <form action="">
-                                    <div class="mb-3">
-                                      <label for="script" class="form-label"><h4>Tambah script</h4></label>
-                                      <textarea type="text" 
-                                      class="form-control" 
-                                      id="script" name="script" 
-                                      aria-describedby="script"
-                                      rows="3" placeholder="Tambahkan script disini!"></textarea>
-                                      <input type="hidden" name="script" class="script">
-                                      
-                                    </div>
-                                   
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                  </form>
-                            </div>
-                        </div>
-                </div>
-            </div>
+
+{{-- show data setting --}}
+<div class="row">
+    <div class="card">
+        <div class="card-header">
+            <h4>Setting</h4>
         </div>
-           
+        <div class="card-body">
+            <ul class="nav nav-tabs nav-tabs-line" id="lineTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab"
+                        aria-controls="home" aria-selected="true">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-line-tab" data-bs-toggle="tab" href="#script" role="tab"
+                        aria-controls="profile" aria-selected="false">Script</a>
+                </li>
+            </ul>
+            <div class="tab-content mt-3" id="lineTabContent">
+                <div class="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h4 class="card-title">Tabel data Contact</h4>
+                        <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
+                            data-bs-target="#tagEditorModal" id='btn-add'>
+                            <i data-feather="plus"></i>
+                            Tambah Data
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table data-url="{{route('contacts.index')}}" class="table-data table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>Url</th>
+                                    <th>Image</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-        {{-- store/edit contact --}}
-    <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
-        aria-labelledby="varyingModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="varyingModalLabel">
-                        <span id="title"></span>
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="btn-close"></button>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form id="modalFormData" name="modalFormData" class="form-horizontal"
-                        novalidate="" enctype="multipart/form-data">
-                        @csrf
-                        <div id="put"></div>
+                <div class="tab-pane fade" id="script" role="tabpanel" aria-labelledby="script-line-tab">
+                    <form action="">
+                        <div class="mb-3">
+                            <label for="script" class="form-label">
+                                <h4>Header script</h4>
+                            </label>
+                            <textarea type="text" class="form-control" id="header" name="header"
+                                aria-describedby="script" rows="3" placeholder="Tambahkan script disini!"></textarea>
+                            <input type="hidden" name="script" class="script">
 
-                        <div class="mb-3">
-                            <label for="title" class="form-label">Nama </label>
-                            <input type="text" class="form-control" id="name" name="name"
-                                placeholder="Masukkan judul kontak..." value="">
-                            <div class="text-danger" id="error-name"></div>
                         </div>
                         <div class="mb-3">
-                            <label for="title" class="form-label">Url </label>
-                            <input type="text" class="form-control" id="url" name="url"
-                                placeholder="Masukkan url kontak..." value="">
-                            <div class="text-danger" id="error-url"></div>
+                            <label for="script" class="form-label">
+                                <h4>Footer script</h4>
+                            </label>
+                            <textarea type="text" class="form-control" id="footer" name="footer"
+                                aria-describedby="script" rows="3" placeholder="Tambahkan script disini!"></textarea>
+                            <input type="hidden" name="script" class="script">
+
                         </div>
 
-                        <div class="mb-3">
-                            <label for="image" class="form-label">Gambar </label>
-                            <input type="file" name="images" id="images" class="form-control"
-                                value="">
-                            <div class="text-danger" id="error-images"></div>
-                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-inverse-primary" id="btn-save"
-                        value="add">Simpan data</button>
-                    <input type="hidden" id="contacts_id" name="id" value="0">
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-        
 
-        @endsection
-   
-    @push('js')
-    <script src="https://cdn.tiny.cloud/1/wwx0cl8afxdfv85dxbyv3dy0qaovbhaggsxpfqigxlxw8pjx/tinymce/6/tinymce.min.js"
+{{-- store/edit contact --}}
+<div class="modal fade modal-form" id="tagEditorModal" tabindex="-1" aria-labelledby="varyingModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="varyingModalLabel">
+                    <span id="title"></span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="modalFormData" name="modalFormData" class="form-horizontal" novalidate=""
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div id="put"></div>
+
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Nama </label>
+                        <input type="text" class="form-control" id="name" name="name"
+                            placeholder="Masukkan judul kontak..." value="">
+                        <div class="text-danger" id="error-name"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Url </label>
+                        <input type="text" class="form-control" id="url" name="url" placeholder="Masukkan url kontak..."
+                            value="">
+                        <div class="text-danger" id="error-url"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Gambar </label>
+                        <input type="file" name="images" id="images" class="form-control" value="">
+                        <div class="text-danger" id="error-images"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-inverse-primary" id="btn-save" value="add">Simpan data</button>
+                <input type="hidden" id="contacts_id" name="id" value="0">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@endsection
+
+@push('js')
+<script src="https://cdn.tiny.cloud/1/wwx0cl8afxdfv85dxbyv3dy0qaovbhaggsxpfqigxlxw8pjx/tinymce/6/tinymce.min.js"
     referrerpolicy="origin"></script>
-    <script>
-       let showData;
+<script>
+    let showData;
          // add data contact
          $('#btn-add').click(function (e) { 
                 e.preventDefault();
@@ -276,18 +284,19 @@
 
         })
         
-        var body = htmlDecode(script);
-
-        // text editor
-        tinymce.init({
-            selector: 'textarea',
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace tablevisualblockswordcount',toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | linkimage media table | alignlineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-            init_instance_callback: function(editor) {
-                editor.on('keyup', function(e) {
-                    $(".script").val(editor.getContent())
+        $.ajax({
+            type: "get",
+            url: "{{ route('settings.data') }}",
+            success: function (data) {
+                $.each(data.data, function (i, v) { 
+                    if(v.code == "script-header"){
+                        $('#header').val(v.code);
+                    }
+                    if(v.code == "script-footer"){
+                        $('#footer').val(v.code);
+                    }
                 });
             }
         });
-    </script>
-    @endpush
-   
+</script>
+@endpush

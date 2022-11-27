@@ -8,6 +8,7 @@ use App\Http\Resources\SettingResource;
 use App\Models\Contact;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class SettingController extends Controller
 {
@@ -18,20 +19,7 @@ class SettingController extends Controller
      */
     public function index()
     {
-        
-        if(request()->ajax())
-        {
-            $setting = Setting::all();
-
-            return response()->json([
-                'success'   => true,
-                'message'   => 'Pengaturan berhasil ditampilkan',
-                'data'      => SettingResource::collection($setting)
-            ]);
-        }
-
-        if(request()->ajax())
-        {
+        if (request()->ajax()) {
             $contact = Contact::latest()->get();
 
             return response()->json([
@@ -55,6 +43,17 @@ class SettingController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\ResponseJson
+     */
+    public function data(Request $request)
+    {
+        $data = Setting::all();
+        return SettingResource::collection($data);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -62,7 +61,20 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->script != null) {
+            Setting::updateOrCreate([
+                "code" => $request->code
+            ], [
+                "code" => $request->code,
+                "name" => $request->name,
+                "slug" => Str::slug($request->name),
+            ]);
+        }
+
+        return [
+            'success'   => true,
+            'message'   => 'Data tipe projek berhasil disimpan',
+        ];
     }
 
     /**
