@@ -22,5 +22,46 @@
     </button>
   </div>
 </div>
-@endsection
 
+
+<div class="row">
+  {{-- chart --}}
+  <div class="col-xl-12 ">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">Visitor chart</h6>
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+  </div>
+  {{-- end chart --}}
+</div>
+
+@endsection
+@push('js')
+<script>
+  var labels = {{ Js::from($labels) }};
+  var visit   = {{ Js::from($data) }};
+
+  const data = {
+        labels: labels,
+        datasets: [{
+          label: 'My First dataset',
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgb(255, 99, 132)',
+          data: visit,
+        }]
+      };
+  
+      const config = {
+        type: 'line',
+        data: data,
+        options: {}
+      };
+  
+      const myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+      );
+</script>
+@endpush

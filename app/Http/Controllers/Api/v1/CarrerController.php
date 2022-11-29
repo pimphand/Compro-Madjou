@@ -53,7 +53,13 @@ class CarrerController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Career::findOrFail($id);
+
+        return response()->json([
+            'success'   => true,
+            'message'   => 'Data karir berhasil ditampilkan',
+            'data'      => new CarrerResource($data)
+        ],200);
     }
 
     /**

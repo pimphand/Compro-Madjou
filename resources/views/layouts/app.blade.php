@@ -113,6 +113,10 @@
     {{-- <script src="{{asset('template/assets/js/template.js')}}"></script> --}}
 
     <script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/ckeditor.js"></script>
+    {{-- <script src="https://cdnjs.com/libraries/Chart.js"></script> --}}
+    <script src="{{asset('template/assets/vendors/chartjs/Chart.min.js')}}"></script>
+    
+
     
 
     @stack('js')

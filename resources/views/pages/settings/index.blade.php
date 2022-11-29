@@ -48,27 +48,28 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="script" role="tabpanel" aria-labelledby="script-line-tab">
-                    <form action="">
+                    <form id="scriptForm" name="scriptForm" class="form-horizontal">
+                        <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
+                       
                         <div class="mb-3">
                             <label for="script" class="form-label">
                                 <h4>Header script</h4>
                             </label>
-                            <textarea type="text" class="form-control" id="header" name="header"
-                                aria-describedby="script" rows="3" placeholder="Tambahkan script disini!"></textarea>
-                            <input type="hidden" name="script" class="script">
-
+                            <textarea type="text" class="form-control" id="header" name="body"
+                                aria-describedby="script" rows="3" placeholder="Tambahkan script disini!" value=""></textarea>
+                                <input type="hidden" name="code" id="headerCode">
+                                <input type="hidden" name="name" id="headerName">
                         </div>
                         <div class="mb-3">
                             <label for="script" class="form-label">
                                 <h4>Footer script</h4>
                             </label>
-                            <textarea type="text" class="form-control" id="footer" name="footer"
-                                aria-describedby="script" rows="3" placeholder="Tambahkan script disini!"></textarea>
-                            <input type="hidden" name="script" class="script">
-
+                            <textarea type="text" class="form-control" id="footer" name="body"
+                                aria-describedby="script" rows="3" placeholder="Tambahkan script disini!" value=""></textarea>
+                                <input type="hidden" name="code" id="footerCode">
+                                <input type="hidden" name="name" id="footerName">
                         </div>
-
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="saveBtn">Simpan</button>
                     </form>
                 </div>
             </div>
@@ -274,29 +275,64 @@
   
         })
 
-        function htmlDecode(input){
-                var e = document.createElement('p');
-                e.innerHTML = input;
-                return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
-            }
-        $('#script').on('click', function(){
-            tinyMCE.activeEditor.setContent(script);
+       
 
-        })
-        
-        $.ajax({
+            $.ajax({
             type: "get",
             url: "{{ route('settings.data') }}",
             success: function (data) {
                 $.each(data.data, function (i, v) { 
                     if(v.code == "script-header"){
-                        $('#header').val(v.code);
+                        $('#headerCode').val(v.code); 
+                        $('#header').val(v.body);
+                        $('#headerName').val(v.name);
+                        $('#scriptForm').on('submit',function(e){
+                                e.preventDefault();
+                                $.ajax({
+                                    url: '{{ route("settings.store") }}',
+                                    type:'POST',
+                                    data: {
+                                        _token : $('#csrf').val(),
+                                        code: $('#headerCode').val(),
+                                        body: $('#header').val(),
+                                        name: $('#headerName').val(),
+                                    },
+                                    success: function(data) {
+                                        Swal.fire({
+                                            type: 'success',
+                                            icon: 'success',
+                                            title: `${data.message}`,
+                                            showConfirmButton: false,
+                                            timer: 3000
+                                        });
+                                    }
+                                });
+                        });
                     }
                     if(v.code == "script-footer"){
-                        $('#footer').val(v.code);
+                        $('#footerCode').val(v.code);
+                        $('#footer').val(v.body)
+                        $('#footerName').val(v.name);
+                        $('#scriptForm').on('submit',function(e){
+                                e.preventDefault();
+                                $.ajax({
+                                    url: '{{ route("settings.store") }}',
+                                    type:'POST',
+                                    data: {
+                                        _token : $('#csrf').val(),
+                                        code: $('#footerCode').val(),
+                                        body: $('#footer').val(),
+                                        name: $('#footerName').val(),
+                                    },
+                                    success: function(data) {
+                                        console.log(data);
+                                    }
+                                });
+                            });
                     }
                 });
             }
         });
+
 </script>
 @endpush
