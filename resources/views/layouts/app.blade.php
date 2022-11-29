@@ -39,16 +39,10 @@
     <link rel="stylesheet" href="{{asset('template/assets/css/demo1/style.css')}}" />
     <!-- End layout styles -->
 
-    <link rel="shortcut icon" href="{{asset('template/assets/images/favicon.png')}}" />
+    <link rel="shortcut icon" href="{{asset('template/madjou2.png')}}" />
 
     <link rel="stylesheet" href="{{asset('template/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-
-
-
-
-
-
     <style>
         .size-18 {
             width: 14px;
@@ -58,7 +52,7 @@
 </head>
 
 <body>
-    <div class="main-wrapper">
+    <div class="main-wrapper" id="app">
 
         <!-- partial:../../partials/_sidebar.html -->
         @include('layouts.navigation')
@@ -117,6 +111,10 @@
 
     <script src="{{asset('template/assets/vendors/feather-icons/feather.min.js')}}"></script>
     {{-- <script src="{{asset('template/assets/js/template.js')}}"></script> --}}
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/ckeditor.js"></script>
+    
+
     @stack('js')
 
     <script>
@@ -152,7 +150,6 @@
                         }else{
                             setInterval(() => {
                                 location.reload();
-                                
                             }, 2000);
                         }
 

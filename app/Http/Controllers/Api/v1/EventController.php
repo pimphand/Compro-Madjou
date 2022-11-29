@@ -1,12 +1,13 @@
 <?php
 
-namespace {{ namespace }};
+namespace App\Http\Controllers\Api\v1;
 
-use {{ namespacedModel }};
-use {{ rootNamespace }}Http\Controllers\Controller;
-use {{ namespacedRequests }}
+use App\Http\Controllers\Controller;
+use App\Http\Resources\EventResource;
+use App\Models\Event;
+use Illuminate\Http\Request;
 
-class {{ class }} extends Controller
+class EventController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,12 @@ class {{ class }} extends Controller
      */
     public function index()
     {
-        //
+        $event = Event::where('lang', request()->header('lang') ?? 'id');
+
+        return EventResource::collection($event->paginate(10))->additional([
+            'success'   => true,
+            'message'   => 'Data event berhasil ditampilkan',
+        ]);
     }
 
     /**
@@ -31,10 +37,10 @@ class {{ class }} extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \{{ namespacedStoreRequest }}  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store({{ storeRequest }} $request)
+    public function store(Request $request)
     {
         //
     }
@@ -42,10 +48,10 @@ class {{ class }} extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show({{ model }} ${{ modelVariable }})
+    public function show($id)
     {
         //
     }
@@ -53,10 +59,10 @@ class {{ class }} extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit({{ model }} ${{ modelVariable }})
+    public function edit($id)
     {
         //
     }
@@ -64,11 +70,11 @@ class {{ class }} extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \{{ namespacedUpdateRequest }}  $request
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update({{ updateRequest }} $request, {{ model }} ${{ modelVariable }})
+    public function update(Request $request, $id)
     {
         //
     }
@@ -76,10 +82,10 @@ class {{ class }} extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy({{ model }} ${{ modelVariable }})
+    public function destroy($id)
     {
         //
     }

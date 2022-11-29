@@ -13,8 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('{{ table }}', function (Blueprint $table) {
+        Schema::create('event_registers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('event_id')->constrained();
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone');
+            $table->string('agency');
             $table->timestamps();
 
             $table->softDeletes();
@@ -28,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('{{ table }}');
+        Schema::dropIfExists('event_registers');
     }
 };

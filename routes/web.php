@@ -12,6 +12,8 @@ use App\Http\Controllers\Web\CategoryTeamController;
 use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\Web\DetailServiceController;
 use App\Http\Controllers\Web\EmployeeRegistrationController;
+use App\Http\Controllers\Web\EventController;
+use App\Http\Controllers\Web\EventRegisterController;
 use App\Http\Controllers\Web\MessageController;
 use App\Http\Controllers\Web\NotificationController;
 use App\Http\Controllers\Web\OurClientController;
@@ -45,23 +47,36 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/dashboard', DashboardController::class);
         Route::resource('/roles', RoleController::class);
         Route::resource('/tags', TagController::class);
-        Route::resource('/category-teams', CategoryTeamController::class);
-        Route::resource('/teams', TeamController::class);
+        Route::group(['prefix' => 'team'], function () {
+            Route::resource('/categories', CategoryTeamController::class);
+            Route::resource('/teams', TeamController::class);
+        });
         Route::resource('/languages', ProgrammingLanguageController::class);
-        Route::resource('/blogs', BlogController::class);
-        Route::resource('/category-blogs', CategoryBlogController::class);
+        Route::group(['prefix' => 'blog'], function () {
+            Route::resource('/blogs', BlogController::class);
+            Route::resource('/category', CategoryBlogController::class);
+        });
         Route::resource('/clients', OurClientController::class);
-        Route::resource('/services', ServiceController::class);
-        Route::resource('/detail-services', DetailServiceController::class);
-        Route::resource('/project-types', ProjectTypeController::class);
-        Route::resource('/project', ProjectController::class);
+        Route::group(['prefix' => 'service'], function () {
+            Route::resource('/services', ServiceController::class);
+            Route::resource('/details', DetailServiceController::class);
+        });
+        Route::group(['prefix' => 'Projects'], function () {
+            Route::resource('/types', ProjectTypeController::class);
+            Route::resource('/project', ProjectController::class);
+        });
         Route::resource('/careers', CarrerController::class);
         Route::resource('/employees', EmployeeRegistrationController::class);
         Route::resource('/messages', MessageController::class);
         Route::resource('/notifications', NotificationController::class);
         Route::resource('/subscribes', SubscribeController::class);
         Route::resource('/settings', SettingController::class);
+        Route::get('/settings-data', [SettingController::class, 'data'])->name('settings.data');
         Route::resource('/contacts', ContactController::class);
+        Route::group(['prefix' => 'event'], function () {
+            Route::resource('/events', EventController::class);
+            Route::resource('/registers', EventRegisterController::class);
+        });
         Route::resource('/user', MasterUserController::class);
     });
 });

@@ -73,7 +73,8 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="body" class="form-label">Konten </label>
-                                                <textarea type="text" name="body" id="body" cols="30" rows="10" class="form-control" value="" placeholder="Masukkan deskripsi pekerjaan..."></textarea>
+                                                <textarea type="text"  id="body" cols="30" rows="10" class="form-control" value="" placeholder="Masukkan deskripsi pekerjaan..."></textarea>
+                                                <input type="hidden" name="body" class="body">
                                                 <div class="text-danger" id="error-body"></div>
                                             </div>
                                             <div class="mb-3">
@@ -96,7 +97,7 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="employment_type" class="form-label">Emplpoyment type </label>
-                                                    <select name="employment_type" id="employment_type">
+                                                    <select name="employment_type" class="form-control" id="employment_type">
                                                         <option value="" selected disabled>Pilih jenis karyawan</option>
                                                         <option value="Contract">Kontrak</option>
                                                         <option value="Permanent">Pegawai tetap</option>
@@ -121,6 +122,8 @@
 @endsection 
 
     @push('js')
+    <script src="https://cdn.tiny.cloud/1/wwx0cl8afxdfv85dxbyv3dy0qaovbhaggsxpfqigxlxw8pjx/tinymce/6/tinymce.min.js"
+    referrerpolicy="origin"></script>
     <script>
         let showData;
         $(() => {
@@ -169,6 +172,9 @@
                 }, {
                     data: 'body',
                     name: 'body',
+                    render: function ( data) {
+                        return htmlDecode(data);
+                    }
                 }, {
                     data: 'location',
                     name: 'location',
@@ -213,15 +219,21 @@
                 }]
             })
             // edit
+            function htmlDecode(input){
+                var e = document.createElement('p');
+                e.innerHTML = input;
+                return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+            }
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
                 let url = "{{ route('careers.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
-                $("#name").html("Edit "+ row.name);
+                $("#title").html("Edit "+ row.name);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#name").val(row.name);
-                $("#body").val(row.body);
+                var body = htmlDecode(row.body);
+                tinyMCE.activeEditor.setContent(body);
                 $("#location").val(row.location);
                 $("#department").val(row.department);
                 $("#minimum_experience").val(row.minimum_experience);
@@ -269,10 +281,15 @@
             })
         })
 
-         // text editor
-         new EasyMDE({
-        autoDownloadFontAwesome: false,
-        element: document.getElementById('body'),
+          // text editor
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace tablevisualblockswordcount',toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | linkimage media table | alignlineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            init_instance_callback: function(editor) {
+                editor.on('keyup', function(e) {
+                    $(".body").val(editor.getContent())
+                });
+            }
         });
     </script>
     @endpush

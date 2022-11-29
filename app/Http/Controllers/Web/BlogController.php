@@ -30,7 +30,7 @@ class BlogController extends Controller
         {
             $data = Blog::with('getCategories', 'getUsers')
                     ->where('title','like','%'.substr($request->search, 2).'%')
-                    ->latest()->get();
+                    ->latest()->paginate(10);
             return response()->json([
                 'success'   => true,
                 'message'   => 'Data blog berhasil ditampilkan',
