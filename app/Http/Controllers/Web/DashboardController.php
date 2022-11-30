@@ -8,8 +8,9 @@ use App\Services\SycnMadjou\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use App\Models\Blog;
+use App\Models\BlogLog;
 use App\Models\Dashboard;
-
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class DashboardController extends Controller
 {
@@ -20,7 +21,18 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $visitor = BlogLog::select(FacadesDB::raw("COUNT(*) as count"), FacadesDB::raw("MONTH(created_at) as month"))
+                    ->whereYear('created_at', date('Y'))
+                    ->groupBy(FacadesDB::raw("Month(created_at)"))
+                    ->pluck('count', 'month');
+ 
+        $labels = $visitor->keys();
+        $data = $visitor->values();
+
+        return view('dashboard', [
+            'labels'    => $labels,
+            'data'      => $data,
+        ]);
     }
 
     /**
