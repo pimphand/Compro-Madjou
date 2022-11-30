@@ -53,7 +53,13 @@ class BlogController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Blog::findOrFail($id);
+
+        return response()->json([
+            'success'   => true,
+            'message'   => 'Data blog berhasil ditampilkan',
+            'data'      => new BlogResource($data)
+        ],200);
     }
 
     /**

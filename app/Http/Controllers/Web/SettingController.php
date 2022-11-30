@@ -8,6 +8,7 @@ use App\Http\Resources\SettingResource;
 use App\Models\Contact;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class SettingController extends Controller
@@ -61,19 +62,19 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->script != null) {
-            Setting::updateOrCreate([
-                "code" => $request->code
-            ], [
-                "code" => $request->code,
+        
+        $setting = Setting::updateOrCreate([
+                "code"  => $request->code,
                 "name" => $request->name,
                 "slug" => Str::slug($request->name),
+            ], [
+                "body"  => $request->body,
             ]);
-        }
 
         return [
             'success'   => true,
-            'message'   => 'Data tipe projek berhasil disimpan',
+            'message'   => 'Data script berhasil disimpan',
+            'data'      => $setting
         ];
     }
 
@@ -96,7 +97,11 @@ class SettingController extends Controller
      */
     public function edit($id)
     {
-        //
+        $setting = Setting::find($id);
+        return [
+            'success'   => true,
+            'data'      => $setting,
+        ];
     }
 
     /**

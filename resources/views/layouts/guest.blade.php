@@ -37,7 +37,7 @@
 	<link rel="stylesheet" href="template/assets/css/demo1/style.css">
   <!-- End layout styles -->
 
-  <link rel="shortcut icon" href="template/assets/images/favicon.png" />
+  <link rel="shortcut icon" href="template/madjou2.png" />
     </head>
     <body>
         <div class="font-sans text-gray-900 antialiased">
