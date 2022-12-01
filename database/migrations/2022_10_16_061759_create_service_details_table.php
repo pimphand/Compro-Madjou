@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('service_id')->constrained();
             $table->string('title');
-            $table->string('body');
+            $table->longText('body');
             $table->string('image')->nullable();
             $table->string('lang')->default('id');
             $table->timestamps();

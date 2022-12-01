@@ -22,12 +22,17 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ContactSeeder::class,
             LaratrustSeeder::class,
-            ProvincesSeeder::class,
-            CitiesSeeder::class,
-            DistrictsSeeder::class,
-            VillagesSeeder::class,
+            // ProvincesSeeder::class,
+            // CitiesSeeder::class,
+            // DistrictsSeeder::class,
+            // VillagesSeeder::class,
             UserSeeder::class,
             SettingSeeder::class,
+            TagSeeder::class,
+            BlogSeeder::class,
+            ProgramingLanguageSeeder::class,
+            SubscribeSeeder::class,
+            ServiceSeeder::class,
         ]);
     }
 }

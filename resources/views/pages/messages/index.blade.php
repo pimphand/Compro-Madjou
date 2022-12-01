@@ -228,8 +228,8 @@
             })
 
              // edit
+             
              $('.table-data').on('click', '.btn-edit', function() {
-                
                 let row = showData.row($(this).closest('tr')).data();
                 let url = "{{ route('messages.update',':id') }}"
                     url = url.replace(':id', row.id);

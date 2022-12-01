@@ -51,6 +51,7 @@ class MailCustomer extends Mailable implements ShouldQueue
             view: 'pages.email.index',
             with: [
                 'text'  => $this->message->text,
+                'subject'   => $this->message->requirement,
             ],
         );
     }

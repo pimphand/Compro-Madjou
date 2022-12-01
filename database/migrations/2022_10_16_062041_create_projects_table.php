@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('programing')->nullable();
             $table->string('title')->nullable();
             $table->string('slug');
-            $table->string('body')->nullable();
+            $table->string('image')->nullable();
+            $table->longText('body')->nullable();
             $table->string('url')->nullable();
             $table->string('location')->nullable();
             $table->string('lang')->default('id');
