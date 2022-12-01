@@ -50,24 +50,24 @@
                 <div class="tab-pane fade" id="script" role="tabpanel" aria-labelledby="script-line-tab">
                     <form id="scriptForm" name="scriptForm" class="form-horizontal">
                         <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
-                       
+
                         <div class="mb-3">
                             <label for="script" class="form-label">
                                 <h4>Header script</h4>
                             </label>
-                            <textarea type="text" class="form-control" id="header" name="body"
-                                aria-describedby="script" rows="3" placeholder="Tambahkan script disini!" value=""></textarea>
-                                <input type="hidden" name="code" id="headerCode">
-                                <input type="hidden" name="name" id="headerName">
+                            <textarea type="text" class="form-control" id="header" name="body" aria-describedby="script"
+                                rows="3" placeholder="Tambahkan script disini!" value=""></textarea>
+                            <input type="hidden" name="code" id="headerCode">
+                            <input type="hidden" name="name" id="headerName">
                         </div>
                         <div class="mb-3">
                             <label for="script" class="form-label">
                                 <h4>Footer script</h4>
                             </label>
-                            <textarea type="text" class="form-control" id="footer" name="body"
-                                aria-describedby="script" rows="3" placeholder="Tambahkan script disini!" value=""></textarea>
-                                <input type="hidden" name="code" id="footerCode">
-                                <input type="hidden" name="name" id="footerName">
+                            <textarea type="text" class="form-control" id="footer" name="body" aria-describedby="script"
+                                rows="3" placeholder="Tambahkan script disini!" value=""></textarea>
+                            <input type="hidden" name="code" id="footerCode">
+                            <input type="hidden" name="name" id="footerName">
                         </div>
                         <button type="submit" class="btn btn-primary" id="saveBtn">Simpan</button>
                     </form>
@@ -274,9 +274,6 @@
             })
   
         })
-
-       
-
             $.ajax({
             type: "get",
             url: "{{ route('settings.data') }}",

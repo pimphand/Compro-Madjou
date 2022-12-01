@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Sync\SyncProductController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\MasterUserController;
 use App\Http\Controllers\Web\RoleController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Web\EventRegisterController;
 use App\Http\Controllers\Web\MessageController;
 use App\Http\Controllers\Web\NotificationController;
 use App\Http\Controllers\Web\OurClientController;
+use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProgrammingLanguageController;
 use App\Http\Controllers\Web\ProjectController;
 use App\Http\Controllers\Web\ProjectTypeController;
@@ -78,7 +80,11 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('/registers', EventRegisterController::class);
         });
         Route::resource('/user', MasterUserController::class);
+        Route::resource('/data-product', ProductController::class);
+        // sync-product
+        Route::post('/sync-product', [SyncProductController::class, 'index'])->name('sync_product.store');
     });
 });
+Route::get('/sync-data', [SyncProductController::class, 'list'])->name('sync_product.data');
 
 require __DIR__ . '/auth.php';

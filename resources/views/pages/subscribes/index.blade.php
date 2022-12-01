@@ -1,100 +1,99 @@
 @extends('layouts.app')
 @section('title', 'Madjou | Langganan')
 @section('content')
-        <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                @if( Session::has("success") )
-                <div class="alert alert-success alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("success") }}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        @if( Session::has("success") )
+        <div class="alert alert-success alert-block" role="alert">
+            <button class="close" data-dismiss="alert"></button>
+            {{ Session::get("success") }}
+        </div>
+        @endif
+        @if( Session::has("error") )
+        <div class="alert alert-danger alert-block" role="alert">
+            <button class="close" data-dismiss="alert"></button>
+            {{ Session::get("error") }}
+        </div>
+        @endif
+        <div class="card">
+            <div class="card-body">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h4 class="card-title">Tabel data langganan</h4>
+                    {{-- <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
+                        <i data-feather="plus"></i>
+                        Tambah Data
+                    </button> --}}
                 </div>
-                @endif
-                @if( Session::has("error") )
-                <div class="alert alert-danger alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("error") }}
+                <div class="table-responsive">
+                    <table data-url="{{ request()->url() }}" class="table-data table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>E-mail</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
                 </div>
-                @endif
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel data langganan</h4>
-                            {{-- <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
-                                <i data-feather="plus"></i>
-                                Tambah Data
-                            </button> --}}
-                        </div>
-                        <div class="table-responsive">
-                            <table data-url="{{ request()->url() }}" class="table-data table">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>E-mail</th>
-                                        <th>Status</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
 
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {{-- modal --}}
+                {{-- modal --}}
 
 
-                        <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
-                            aria-labelledby="varyingModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="varyingModalLabel">
-                                            <span id="title"></span>
-                                        </h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="btn-close"></button>
+                <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1" aria-labelledby="varyingModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="varyingModalLabel">
+                                    <span id="title"></span>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="btn-close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="modalFormData" name="modalFormData" class="form-horizontal" novalidate="">
+                                    @csrf
+                                    <div id="put"></div>
+                                    <div class="mb-3">
+                                        <label for="type" class="form-label">Jenis tags </label>
+                                        <select name="type" id="type" class="form-control">
+                                            <option value="" selected disabled hidden>Pilih jenis tags</option>
+                                            <option value="blog">Blog</option>
+                                            <option value="service">Service</option>
+                                            <option value="all">All</option>
+                                        </select>
+                                        <div class="text-danger" id="error-type"></div>
                                     </div>
-                                    <div class="modal-body">
-                                        <form id="modalFormData" name="modalFormData" class="form-horizontal"
-                                            novalidate="">
-                                            @csrf
-                                            <div id="put"></div>
-                                            <div class="mb-3">
-                                                <label for="type" class="form-label">Jenis tags </label>
-                                                    <select name="type" id="type" class="form-control">
-                                                        <option value="" selected disabled hidden>Pilih jenis tags</option>
-                                                        <option value="blog">Blog</option>
-                                                        <option value="service">Service</option>
-                                                        <option value="all">All</option>
-                                                    </select>
-                                                <div class="text-danger" id="error-type"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="name" class="form-label">Nama </label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Masukkan nama tag..." value="">
-                                                <div class="text-danger" id="error-name"></div>
-                                            </div>
-                                        </form>
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Nama </label>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                            placeholder="Masukkan nama tag..." value="">
+                                        <div class="text-danger" id="error-name"></div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-inverse-primary" id="btn-save"
-                                            value="add">Simpan data</button>
-                                        <input type="hidden" id="tag_id" name="id" value="0">
-                                    </div>
-                                </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-inverse-primary" id="btn-save" value="add">Simpan
+                                    data</button>
+                                <input type="hidden" id="tag_id" name="id" value="0">
                             </div>
                         </div>
-
                     </div>
                 </div>
+
             </div>
         </div>
+    </div>
+</div>
 @endsection
 
-    @push('js')
-    <script>
-        let showData;
+@push('js')
+<script>
+    let showData;
         $(() => {
             // $('#btn-add').click(function (e) { 
             //     e.preventDefault();
@@ -225,5 +224,5 @@
                 })
             })
         })
-    </script>
-    @endpush
+</script>
+@endpush

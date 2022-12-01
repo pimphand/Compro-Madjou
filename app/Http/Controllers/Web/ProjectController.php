@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProjectResource;
+use App\Models\Madjou\Product;
 use App\Models\Project;
 use App\Models\ProjectType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
@@ -22,19 +24,18 @@ class ProjectController extends Controller
     {
         $projectType = ProjectType::all();
 
-        if(request()->ajax())
-        {
+        if (request()->ajax()) {
             $dataProject    = Project::latest()->get();
 
             return DataTables::of($dataProject)
-                    ->addColumn('getType', function($type){
-                        return $type->getType->name;
-                    })
-                    ->addIndexColumn()
-                    ->make(true);
+                ->addColumn('getType', function ($type) {
+                    return $type->getType->name;
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
 
-        return view('pages.projects.index',[
+        return view('pages.projects.index', [
             'projectType' => $projectType,
         ])->with('projects');
     }
@@ -68,25 +69,36 @@ class ProjectController extends Controller
             'programing.required'  => 'Programming tidak boleh kosong',
             'body.required'         => 'Konten tidak boleh kosong',
             'url.required'          => 'Alamat url tidak boleh kosong',
-            'location.requried'              => 'Alamat lokasi tidak boleh kosong',       
+            'location.requried'              => 'Alamat lokasi tidak boleh kosong',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
-                'errors'    => $data->getMessageBag()->toArray(), 
+                'errors'    => $data->getMessageBag()->toArray(),
             ]);
+        }
+        if ($image = $request->file('image')) {
+            $fileNameSave      = Str::uuid();
+            $image->storeAs('public/project', $fileNameSave);
         }
 
         $project = Project::create([
             'project_type_id'   => $request->project_type_id,
-            'title'         => $request->title,
-            'slug'          => Str::slug($request->title),
-            'programing'    => $request->programing,
-            'body'          => $request->body,
-            'url'           => $request->url,
-            'location'      => $request->location,
+            'title'             => $request->title,
+            'slug'              => Str::slug($request->title),
+            'programing'        => $request->programing,
+            'body'              => $request->body,
+            'url'               => $request->url,
+            'location'          => $request->location,
+            'image'             => $fileNameSave,
+        ]);
+
+        Product::create([
+            "name" => $request->title,
+            "image" => $fileNameSave,
+            "url" => "",
+            "key" => Hash::make($request->title),
         ]);
 
         return [
@@ -138,14 +150,13 @@ class ProjectController extends Controller
             'programing.required'  => 'Programming tidak boleh kosong',
             'body.required'         => 'Konten tidak boleh kosong',
             'url.required'          => 'Alamat url tidak boleh kosong',
-            'location.requried'              => 'Alamat lokasi tidak boleh kosong',       
+            'location.requried'              => 'Alamat lokasi tidak boleh kosong',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
-                'errors'    => $data->getMessageBag()->toArray(), 
+                'errors'    => $data->getMessageBag()->toArray(),
             ]);
         }
 
