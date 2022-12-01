@@ -38,7 +38,7 @@ class ReplyCustomerMail extends Mailable
     {
         return new Envelope(
             from: new Address('admin-madjou@test'),
-            subject: $this->subject,
+            subject: "Email balasan",
         );
     }
 

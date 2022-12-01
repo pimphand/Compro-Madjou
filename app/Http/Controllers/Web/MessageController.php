@@ -135,7 +135,7 @@ class MessageController extends Controller
                 'message_id'    => $message->id,
                 'user_id'       => Auth::user()->id,
                 'status'        => 'read',
-                'subject'       => $request->subject,
+                // 'subject'       => $request->subject,
                 'comment'       => $request->comment,
             ]);
 
