@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Payment\XenditController;
 use App\Http\Controllers\Api\v1\BlogController;
 use App\Http\Controllers\Api\v1\CategoryTeamController;
 use App\Http\Controllers\Api\v1\TagController;
@@ -68,6 +69,17 @@ Route::group(["prefix" => 'v1', "middleware" => 'lang'], function () {
 
     Route::resource('/events', EventController::class);
 });
+
+Route::group(['prefix' => 'xendit'], function(){
+    Route::get('/balance', [XenditController::class, 'balance']);
+    Route::get('/payment', [XenditController::class, 'payment']);
+    Route::get('/virtual-account', [XenditController::class, 'virtualAccount']);
+    Route::post('/notification', [XenditController::class, 'notification']);
+    Route::post('/createva', [XenditController::class, 'createVa']);
+    Route::post('/updateva', [XenditController::class, 'updateVa']);
+    Route::post('/callback_virtual_account', [XenditController::class, 'pay']);
+});
+
 
 Route::group(['middleware' => 'auth'], function () {
     Route::middleware(['role:superadmin|dev|admin'])->group(function () {
