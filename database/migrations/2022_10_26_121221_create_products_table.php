@@ -17,7 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('image')->nullable();
-            $table->text('url')->nullable();
+            $table->text('url_list')->nullable();
+            $table->text('url_store')->nullable();
+            $table->text('url_update')->nullable();
+            $table->text('url_delete')->nullable();
             $table->longText('key');
             $table->timestamps();
 

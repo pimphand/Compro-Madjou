@@ -13,11 +13,11 @@ class UserService extends BaseApi
             'username' => $users['username'],
             'password' => $users['password'],
             'expired_at' => $users['expired'],
-            'status' => $users['status'],
+            'status' => 1,
             'key' => $product->key
         ];
 
-        return $this->request('POST', $product->url, ['form_params' => $params]);
+        return $this->request('POST', $product->url_store, ['form_params' => $params]);
     }
 
     public function list($product)
@@ -25,7 +25,8 @@ class UserService extends BaseApi
         $params = [
             'key' => $product->key
         ];
-        return $this->request('get', $product->url, ['form_params' => $params]);
+
+        return $this->request('POST', $product->url_list, ['form_params' => $params]);
     }
 
     public function update($product)
@@ -33,13 +34,13 @@ class UserService extends BaseApi
         $params = [
             'key' => $product->key
         ];
-        return $this->request('put', $product->url, ['form_params' => $params]);
+        return $this->request('POST', $product->url_update, ['form_params' => $params]);
     }
-    public function delete($product)
+    public function delete($product, $request)
     {
         $params = [
             'key' => $product->key
         ];
-        return $this->request('delete', $product->url, ['form_params' => $params]);
+        return $this->request('POST', $product->url_delete . "/" . $request->id, ['form_params' => $params]);
     }
 }

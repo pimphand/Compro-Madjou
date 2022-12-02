@@ -82,9 +82,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/user', MasterUserController::class);
         Route::resource('/data-product', ProductController::class);
         // sync-product
-        Route::post('/sync-product', [SyncProductController::class, 'index'])->name('sync_product.store');
     });
 });
-Route::get('/sync-data', [SyncProductController::class, 'list'])->name('sync_product.data');
+Route::post('/sync-product/{id}', [SyncProductController::class, 'store'])->name('sync_product.store');
+Route::post('/delete-product/{id}', [SyncProductController::class, 'delete'])->name('sync_product.delete');
+Route::get('/sync-data/{id}', [SyncProductController::class, 'list'])->name('sync_product.data');
 
 require __DIR__ . '/auth.php';

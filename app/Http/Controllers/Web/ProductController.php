@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Madjou\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
+
 
 class ProductController extends Controller
 {
@@ -45,7 +47,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Product::create([
+            "name" => $request->title,
+            "url_list" => $request->url_list,
+            "url_store" => $request->url_store,
+            "url_update" => $request->url_update,
+            "url_delete" => $request->url_delete,
+            "key" => Str::random(40),
+        ]);
+
+        return [
+            'success'   => true,
+            'message'   => 'Data produk berhasil ditambahkan',
+        ];
     }
 
     /**
@@ -56,7 +70,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::whereName($id)->firstOrFail();
+        $product = Product::findOrFail($id);
         return view('pages.sycn.detail', compact('product'));
     }
 
