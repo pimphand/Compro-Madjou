@@ -143,8 +143,10 @@
                     name: 'id',
                     render: (id,full,data) => {
                         return `
-                            List :${data.url_list} <br>
-                            Store :${data.url_store} <br>
+                            List : ${data.url_list} <br>
+                            Create : ${data.url_store} <br>
+                            Update : ${data.url_update} <br>
+                            delete : ${data.url_delete} <br>
                         `
                     }
                 },{
