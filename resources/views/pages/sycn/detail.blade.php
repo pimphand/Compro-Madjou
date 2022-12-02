@@ -4,18 +4,24 @@
 <div class="row">
     <div class="card">
         <div class="card-header">
-            <h4>Produk</h4>
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h4 class="card-title">Produk : {{ $product->name }}</h4>
+                <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
+                    data-bs-target="#tagEditorModal" id='btn-add'>
+                    <i data-feather="plus"></i>
+                    Tambah Data
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive mb-5">
-                <table data-url="{{ route('sync_product.data') }}?id={{ $product->id }}" class="product table">
+                <table data-url="{{ route('sync_product.data',$product->id) }}" class="product table">
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
-                            <th>Url</th>
-                            <th>Key</th>
-                            <th>Gambar</th>
+                            <th>Email</th>
+                            <th>Expired</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -38,52 +44,42 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
             <div class="modal-body">
-                <form id="modalFormData" name="modalFormData" enctype="multipart/form-data" class="form-horizontal"
-                    novalidate="">
+                <form id="modalFormData" action="{{ route('sync_product.store', $product->id) }}" name="modalFormData"
+                    enctype="multipart/form-data" class="form-horizontal" novalidate="">
                     @csrf
                     <div id="put"></div>
                     <div class="mb-3">
-                        <label for="titles" class="form-label">Nama Product </label>
-                        <input type="text" class="form-control" id="titles" name="title"
+                        <label for="titles" class="form-label">Nama</label>
+                        <input type="text" class="form-control" id="name" name="name"
                             placeholder="Masukkan judul projek..." value="">
                         <div class="text-danger" id="error-title"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="programing" class="form-label">Pemrograman </label>
-                        <input type="text" class="form-control" id="programings" name="programing"
-                            placeholder="Masukkan jenis pemrograman projek..." value="">
-                        <div class="text-danger" id="error-programing"></div>
+                        <label for="titles" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                            placeholder="Masukkan judul projek..." value="">
+                        <div class="text-danger" id="error-title"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="body" class="form-label">Konten </label>
-                        <textarea type="text" name="body" id="body" cols="30" rows="10" class="form-control" value=""
-                            placeholder="Masukkan konten projek..."></textarea>
-                        <div class="text-danger" id="error-body"></div>
+                        <label for="titles" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                            placeholder="Masukkan judul projek..." value="">
+                        <div class="text-danger" id="error-title"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="url" class="form-label">Alamat url </label>
-                        <input type="text" class="form-control" id="url" name="url"
-                            placeholder="Masukkan alamat projek ..." value="">
-                        <div class="text-danger" id="error-url"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="location" class="form-label">Lokasi </label>
-                        <input type="text" class="form-control" id="location" name="location"
-                            placeholder="Masukkan lokasi projek..." value="">
-                        <div class="text-danger" id="error-location"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="location" class="form-label">Gambar </label>
-                        <input type="file" class="form-control" id="location" name="image"
-                            placeholder="Masukkan lokasi projek..." value="">
-                        <div class="text-danger" id="error-location"></div>
+                        <label for="titles" class="form-label">Expired</label>
+                        <select name="expired" class="form-control" id="expired">
+                            <option value="7">7 Hari</option>
+                            <option value="14">14 Hari</option>
+                            <option value="21">21 Hari</option>
+                            <option value="30">30 Hari</option>
+                        </select>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-inverse-primary" id="btn-save" value="add">Simpan
+                <button type="button" class="btn btn-inverse-primary" id="save" value="add">Simpan
                     data</button>
-                <input type="hidden" id="project_type_id" name="id" value="0">
             </div>
         </div>
     </div>
@@ -92,7 +88,7 @@
 
 @push('js')
 <script>
-    let product;
+    let showData;
         $(() => {
             // $('#btn-add').click(function (e) { 
             //     e.preventDefault();
@@ -105,7 +101,7 @@
             // });
             
             // datatable
-            product = $('.product').DataTable({
+            showData = $('.product').DataTable({
                 processing: true,
                 serverSide: true,
                 destroy: true,
@@ -129,23 +125,17 @@
                     }
                 ],
                 columns: [{
-                    name: 'DT_RowIndex',
-                    data: 'DT_RowIndex',
-                    render: (DT_RowIndex) => {
-                        return DT_RowIndex + '.';
-                    }
+                    name: 'id',
+                    data: 'id',
                 }, {
                     data: 'name',
                     name: 'name',
                 }, {
-                    data: 'url',
-                    name: 'url',
+                    data: 'email',
+                    name: 'email',
                 },{
-                    data: 'key',
-                    name: 'key',
-                },{
-                    data: 'image',
-                    name: 'image',
+                    data: 'madjou.expired_at',
+                    name: 'madjou.expired_at',
                 },{
                     data: 'id',
                     name: 'id',
@@ -179,7 +169,7 @@
             })
             // edit
             $('.product').on('click', '.btn-edit', function() {
-                let row = product.row($(this).closest('tr')).data();
+                let row = showData.row($(this).closest('tr')).data();
                 let url = "{{ route('data-product.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
@@ -192,9 +182,9 @@
             })
             // Delete
             $('.product').on('click', '.btn-remove', function() {
-                let row = product.row($(this).closest('tr')).data();
-                let url = "{{ route('data-product.destroy',':id') }}"
-                    url = url.replace(':id', row.id);
+                let row = showData.row($(this).closest('tr')).data();
+                let url = "{{ route('sync_product.delete',':id') }}"
+                    url = url.replace(':id', "{{ $product->id }}");
                 
                 Swal.fire({
                     title: 'Apakah anda yakin?',
@@ -209,7 +199,7 @@
                     if (result.value) {
                         $.post(url, {
                             _token:"{{ csrf_token() }}",
-                            _method: 'delete'
+                            id : row.id,
                         }).done((res) => {
                             if (res.success == true) {
                                 Swal.fire(
@@ -217,7 +207,7 @@
                                     'Data berhasil di hapus.',
                                     'success'
                                 )
-                                product.ajax.reload();
+                                showData.ajax.reload();
                             } else {
                                 swal({
                                     type: 'error',
@@ -228,6 +218,47 @@
                     }
                 })
             })
+        })
+
+        $('.modal-form #save').on('click', function () {
+            var form = $('#modalFormData')[0];
+            var formData = new FormData(form);
+            $.ajax({
+                url: form.action,
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                if (data.success == true) {
+                        // sweetalert
+                        $('.modal-form').modal('hide');
+                        Swal.fire({
+                            title: 'Berhasil',
+                            // text: data.message,
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            if (result.value) {
+                                // show data
+                            }
+                        });
+                        showData.ajax.reload();
+                    }else{
+                        $.each(data.errors, function (key, value) {
+                            //   show errors
+                            console.log(key);
+                            $('#' + key).addClass('is-invalid');
+                            $('#' +'error-' + key ).html(value);
+                            // hide error
+                            $('#' + key).on('keyup', function () {
+                                $('#' + key).removeClass('is-invalid');
+                                $('#' +'error-' + key ).html('');
+                            });
+                        });
+                    }
+                }
+            });
         })
 </script>
 @endpush

@@ -14,25 +14,30 @@ class SyncProductController extends Controller
     /**
      * create for madjou product
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         $validate = "";
-        $product = Product::find($request->id);
+        $product = Product::find($id);
 
         $sycn = new UserService();
         $data = $sycn->create($product, $request);
-        Log::alert('sycn-create-user: ', json_encode($data));
-        return $data;
+        if ($data) {
+            return [
+                'success'   => true,
+                'message'   => 'Data produk berhasil ditambahkan',
+            ];
+        }
     }
 
     /**
      * create for madjou list
      */
-    public function list(Request $request)
+    public function list(Request $request, $id)
     {
-        $product = Product::find($request->id);
-        $response = Http::get($product->url, ["key" => $product->key]);
-        return response()->json($response);
+        $product = Product::find($id);
+        $sycn = new UserService();
+        $data = $sycn->list($product, $request);
+        return response()->json($data);
     }
 
     /**
@@ -45,5 +50,22 @@ class SyncProductController extends Controller
         $data = $sycn->list($product, $request);
         Log::alert('sycn-create-update: ', json_encode($data));
         return $data;
+    }
+
+    /**
+     * create for update user
+     */
+    public function delete(Request $request, $id)
+    {
+        $product = Product::find($id);
+        $sycn = new UserService();
+        $data = $sycn->delete($product, $request);
+        if ($data) {
+            return [
+                'success'   => true,
+                'message'   => 'Data produk berhasil dihapus',
+                "DATA" => $data
+            ];
+        }
     }
 }

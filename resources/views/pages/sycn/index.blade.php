@@ -4,7 +4,14 @@
 <div class="row">
     <div class="card">
         <div class="card-header">
-            <h4>List Produk</h4>
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h4 class="card-title">Data Produk</h4>
+                <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
+                    data-bs-target="#tagEditorModal" id='btn-add'>
+                    <i data-feather="plus"></i>
+                    Tambah Data
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive mb-5">
@@ -15,7 +22,6 @@
                             <th>Nama</th>
                             <th>Url</th>
                             <th>Key</th>
-                            <th>Gambar</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -33,7 +39,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="varyingModalLabel">
-                    <span id="title"></span>
+                    <span id="title">Tambah Produk</span>
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
             </div>
@@ -49,35 +55,30 @@
                         <div class="text-danger" id="error-title"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="programing" class="form-label">Pemrograman </label>
-                        <input type="text" class="form-control" id="programings" name="programing"
-                            placeholder="Masukkan jenis pemrograman projek..." value="">
-                        <div class="text-danger" id="error-programing"></div>
+                        <label for="titles" class="form-label">List </label>
+                        <input type="text" class="form-control" id="url_list" name="url_list" placeholder="Masukkan url"
+                            value="">
+                        <div class="text-danger" id="error-url_list"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="body" class="form-label">Konten </label>
-                        <textarea type="text" name="body" id="body" cols="30" rows="10" class="form-control" value=""
-                            placeholder="Masukkan konten projek..."></textarea>
-                        <div class="text-danger" id="error-body"></div>
+                        <label for="titles" class="form-label">Store </label>
+                        <input type="text" class="form-control" id="url_store" name="url_store"
+                            placeholder="Masukkan url" value="">
+                        <div class="text-danger" id="error-url_store"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="url" class="form-label">Alamat url </label>
-                        <input type="text" class="form-control" id="url" name="url"
-                            placeholder="Masukkan alamat projek ..." value="">
-                        <div class="text-danger" id="error-url"></div>
+                        <label for="titles" class="form-label">Update </label>
+                        <input type="text" class="form-control" id="url_update" name="url_update"
+                            placeholder="Masukkan url" value="">
+                        <div class="text-danger" id="error-url_update"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="location" class="form-label">Lokasi </label>
-                        <input type="text" class="form-control" id="location" name="location"
-                            placeholder="Masukkan lokasi projek..." value="">
-                        <div class="text-danger" id="error-location"></div>
+                        <label for="titles" class="form-label">Delete </label>
+                        <input type="text" class="form-control" id="url_delete" name="url_delete"
+                            placeholder="Masukkan url" value="">
+                        <div class="text-danger" id="error-url_delete"></div>
                     </div>
-                    <div class="mb-3">
-                        <label for="location" class="form-label">Gambar </label>
-                        <input type="file" class="form-control" id="location" name="image"
-                            placeholder="Masukkan lokasi projek..." value="">
-                        <div class="text-danger" id="error-location"></div>
-                    </div>
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -92,7 +93,7 @@
 
 @push('js')
 <script>
-    let product;
+    let showData;
         $(() => {
             // $('#btn-add').click(function (e) { 
             //     e.preventDefault();
@@ -105,7 +106,7 @@
             // });
             
             // datatable
-            product = $('.product').DataTable({
+            showData = $('.product').DataTable({
                 processing: true,
                 serverSide: true,
                 destroy: true,
@@ -138,14 +139,17 @@
                     data: 'name',
                     name: 'name',
                 }, {
-                    data: 'url',
-                    name: 'url',
+                    data: 'id',
+                    name: 'id',
+                    render: (id,full,data) => {
+                        return `
+                            List :${data.url_list} <br>
+                            Store :${data.url_store} <br>
+                        `
+                    }
                 },{
                     data: 'key',
                     name: 'key',
-                },{
-                    data: 'image',
-                    name: 'image',
                 },{
                     data: 'id',
                     name: 'id',
@@ -188,27 +192,31 @@
             })
             // edit
             $('.product').on('click', '.btn-edit', function() {
-                let row = product.row($(this).closest('tr')).data();
+                let row = showData.row($(this).closest('tr')).data();
                 let url = "{{ route('data-product.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
                 $("#title").html("Edit "+ row.title);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
-                $("#type").val(row.type);
-                $("#name").val(row.name);
+               
+                $('#url_list').val();
+                $('#url_store').val();
+                $('#url_update').val();
+                $('#url_delete').val();
+                
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
             
             $('.product').on('click', '.btn-details', function() {
-                let row = product.row($(this).closest('tr')).data();
+                let row = showData.row($(this).closest('tr')).data();
                 let url = "{{ route('data-product.show',':id') }}"
-                    url = url.replace(':id', row.name);
+                    url = url.replace(':id', row.id);
                 window.location.href = url;
             })
             // Delete
             $('.product').on('click', '.btn-remove', function() {
-                let row = product.row($(this).closest('tr')).data();
+                let row = showData.row($(this).closest('tr')).data();
                 let url = "{{ route('data-product.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
@@ -233,7 +241,7 @@
                                     'Data berhasil di hapus.',
                                     'success'
                                 )
-                                product.ajax.reload();
+                                showData.ajax.reload();
                             } else {
                                 swal({
                                     type: 'error',
