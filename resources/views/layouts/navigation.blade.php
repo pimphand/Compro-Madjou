@@ -119,7 +119,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{route('event-registers.index')}}" class="nav-link">
+            <a href="{{route('registers.index')}}" class="nav-link">
               <i class="fa-regular fa-registered"></i>
               <span class="link-title">Peserta Event</span>
             </a>
