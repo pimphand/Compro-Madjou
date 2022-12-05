@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Payment\InvoiceController;
 use App\Http\Controllers\Api\Payment\XenditController;
 use App\Http\Controllers\Api\v1\BlogController;
 use App\Http\Controllers\Api\v1\CategoryTeamController;
@@ -78,6 +79,8 @@ Route::group(['prefix' => 'xendit'], function(){
     Route::post('/createva', [XenditController::class, 'createVa']);
     Route::post('/updateva', [XenditController::class, 'updateVa']);
     Route::post('/callback_virtual_account', [XenditController::class, 'pay']);
+    Route::post('/create-invoice', [InvoiceController::class, 'invoice']);
+    Route::get('/invoice', [InvoiceController::class, 'getInvoice']);
 });
 
 

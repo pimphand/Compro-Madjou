@@ -214,6 +214,11 @@
             })
 
             // show
+            function htmlDecode(input){
+                var e = document.createElement('p');
+                e.innerHTML = input;
+                return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+            }
             $('.table-data').on('click', '.btn-show', function() {
                 let row = showData.row($(this).closest('tr')).data();
                 let url = "{{ route('messages.show',':id') }}"
@@ -223,6 +228,8 @@
                 $("#company").text("Company : " + row.company);
                 $("#req").text("Requirement : " + row.requirement);
                 $("#text").text(row.text);
+                var body = htmlDecode(comment);
+                tinyMCE.activeEditor.setContent(comment);
                 $('.error').empty();
                 $('#showMail').modal('show');
             })
@@ -236,9 +243,8 @@
                 $("#modalFormData").attr('action', url);
                 $("#title").html("Reply message");
                 $("#put").html('<input type="hidden" name="_method" value="put">');
-                $("#message_id").val(row.id);
                 $("#emails").val(row.email);
-                $("#subjects").val();
+                $("#subject").val('');
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
