@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             ProgramingLanguageSeeder::class,
             SubscribeSeeder::class,
             ServiceSeeder::class,
+            PackageSeeder::class,
         ]);
     }
 }

@@ -1,131 +1,132 @@
 @extends('layouts.app')
 @section('title', 'Madjou | Karir')
 @section('content')
-        <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                @if( Session::has("success") )
-                <div class="alert alert-success alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("success") }}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        @if( Session::has("success") )
+        <div class="alert alert-success alert-block" role="alert">
+            <button class="close" data-dismiss="alert"></button>
+            {{ Session::get("success") }}
+        </div>
+        @endif
+        @if( Session::has("error") )
+        <div class="alert alert-danger alert-block" role="alert">
+            <button class="close" data-dismiss="alert"></button>
+            {{ Session::get("error") }}
+        </div>
+        @endif
+        <div class="card">
+            <div class="card-body">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h4 class="card-title">Tabel data karir</h4>
+                    <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
+                        data-bs-target="#tagEditorModal" id='btn-add'>
+                        <i data-feather="plus"></i>
+                        Tambah Data
+                    </button>
                 </div>
-                @endif
-                @if( Session::has("error") )
-                <div class="alert alert-danger alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("error") }}
+                <div class="table-responsive">
+                    <table data-url="{{ request()->url() }}" class="table-data table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Konten</th>
+                                <th>Lokasi</th>
+                                <th>Bagian</th>
+                                <th>Minimal pengalaman</th>
+                                <th>Jenis karyawan</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
                 </div>
-                @endif
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel data karir</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
-                            data-bs-target="#tagEditorModal" id='btn-add'>
-                                <i data-feather="plus"></i>
-                                Tambah Data
-                            </button>
-                        </div>
-                        <div class="table-responsive">
-                            <table data-url="{{ request()->url() }}" class="table-data table">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama</th>
-                                        <th>Konten</th>
-                                        <th>Lokasi</th>
-                                        <th>Bagian</th>
-                                        <th>Minimal pengalaman</th>
-                                        <th>Jenis karyawan</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
 
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {{-- modal --}}
+                {{-- modal --}}
 
 
-                        <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
-                            aria-labelledby="varyingModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="varyingModalLabel">
-                                            <span id="title"></span>
-                                        </h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="btn-close"></button>
+                <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1" aria-labelledby="varyingModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="varyingModalLabel">
+                                    <span id="title"></span>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="btn-close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="modalFormData" name="modalFormData" class="form-horizontal" novalidate="">
+                                    @csrf
+                                    <div id="put"></div>
+
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Nama </label>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                            placeholder="Masukkan nama pekerjaan..." value="">
+                                        <div class="text-danger" id="error-name"></div>
                                     </div>
-                                    <div class="modal-body">
-                                        <form id="modalFormData" name="modalFormData" class="form-horizontal"
-                                            novalidate="">
-                                            @csrf
-                                            <div id="put"></div>
-                                            
-                                            <div class="mb-3">
-                                                <label for="name" class="form-label">Nama </label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Masukkan nama pekerjaan..." value="">
-                                                <div class="text-danger" id="error-name"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="body" class="form-label">Konten </label>
-                                                <textarea type="text"  id="body" cols="30" rows="10" class="form-control" value="" placeholder="Masukkan deskripsi pekerjaan..."></textarea>
-                                                <input type="hidden" name="body" class="body">
-                                                <div class="text-danger" id="error-body"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="location" class="form-label">Lokasi </label>
-                                                <input type="text" class="form-control" id="location" name="location"
-                                                    placeholder="Masukkan lokasi..." value="">
-                                                <div class="text-danger" id="error-location"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="department" class="form-label">Bagian </label>
-                                                <input type="text" class="form-control" id="department" name="department"
-                                                    placeholder="Masukkan bagian pekerjaan..." value="">
-                                                <div class="text-danger" id="error-department"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="minimum_experience" class="form-label">Pengalaman minimal </label>
-                                                <input type="text" class="form-control" id="minimum_experience" name="minimum_experience"
-                                                    placeholder="Masukkan pengalaman minimal..." value="">
-                                                <div class="text-danger" id="error-minimum_experience"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="employment_type" class="form-label">Emplpoyment type </label>
-                                                    <select name="employment_type" class="form-control" id="employment_type">
-                                                        <option value="" selected disabled>Pilih jenis karyawan</option>
-                                                        <option value="Contract">Kontrak</option>
-                                                        <option value="Permanent">Pegawai tetap</option>
-                                                    </select>
-                                                <div class="text-danger" id="error-employment_type"></div>
-                                            </div>
-                                        </form>
+                                    <div class="mb-3">
+                                        <label for="body" class="form-label">Konten </label>
+                                        <textarea type="text" id="body" cols="30" rows="10" class="form-control"
+                                            value="" placeholder="Masukkan deskripsi pekerjaan..."></textarea>
+                                        <input type="hidden" name="body" class="body">
+                                        <div class="text-danger" id="error-body"></div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-inverse-primary" id="btn-save"
-                                            value="add">Simpan data</button>
-                                        <input type="hidden" id="career_id" name="id" value="0">
+                                    <div class="mb-3">
+                                        <label for="location" class="form-label">Lokasi </label>
+                                        <input type="text" class="form-control" id="location" name="location"
+                                            placeholder="Masukkan lokasi..." value="">
+                                        <div class="text-danger" id="error-location"></div>
                                     </div>
-                                </div>
+                                    <div class="mb-3">
+                                        <label for="department" class="form-label">Bagian </label>
+                                        <input type="text" class="form-control" id="department" name="department"
+                                            placeholder="Masukkan bagian pekerjaan..." value="">
+                                        <div class="text-danger" id="error-department"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="minimum_experience" class="form-label">Pengalaman minimal </label>
+                                        <input type="text" class="form-control" id="minimum_experience"
+                                            name="minimum_experience" placeholder="Masukkan pengalaman minimal..."
+                                            value="">
+                                        <div class="text-danger" id="error-minimum_experience"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="employment_type" class="form-label">Emplpoyment type </label>
+                                        <select name="employment_type" class="form-control" id="employment_type">
+                                            <option value="" selected disabled>Pilih jenis karyawan</option>
+                                            <option value="Contract">Kontrak</option>
+                                            <option value="Permanent">Pegawai tetap</option>
+                                        </select>
+                                        <div class="text-danger" id="error-employment_type"></div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-inverse-primary" id="btn-save" value="add">Simpan
+                                    data</button>
+                                <input type="hidden" id="career_id" name="id" value="0">
                             </div>
                         </div>
-
                     </div>
                 </div>
+
             </div>
         </div>
-@endsection 
+    </div>
+</div>
+@endsection
 
-    @push('js')
-    <script src="https://cdn.tiny.cloud/1/wwx0cl8afxdfv85dxbyv3dy0qaovbhaggsxpfqigxlxw8pjx/tinymce/6/tinymce.min.js"
+@push('js')
+<script src="https://cdn.tiny.cloud/1/wwx0cl8afxdfv85dxbyv3dy0qaovbhaggsxpfqigxlxw8pjx/tinymce/6/tinymce.min.js"
     referrerpolicy="origin"></script>
-    <script>
-        let showData;
+<script>
+    let showData;
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
@@ -291,5 +292,5 @@
                 });
             }
         });
-    </script>
-    @endpush
+</script>
+@endpush

@@ -1,15 +1,25 @@
 @extends('layouts.app')
-@section('title', 'Madjou | Klien Kami')
+@section('title', 'Madjou | Paket')
 @section('content')
 <div class="row">
     <div class="col-lg-12 grid-margin stretch-card">
-        z
+        @if( Session::has("success") )
+        <div class="alert alert-success alert-block" role="alert">
+            <button class="close" data-dismiss="alert"></button>
+            {{ Session::get("success") }}
+        </div>
+        @endif
+        @if( Session::has("error") )
+        <div class="alert alert-danger alert-block" role="alert">
+            <button class="close" data-dismiss="alert"></button>
+            {{ Session::get("error") }}
+        </div>
+        @endif
         <div class="card">
             <div class="card-body">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h4 class="card-title">Table data klien</h4>
-                    <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
-                        data-bs-target="#tagEditorModal" id='btn-add'>
+                    <h4 class="card-title">Data Paket</h4>
+                    <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
                         <i data-feather="plus"></i>
                         Tambah Data
                     </button>
@@ -19,20 +29,16 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama</th>
-                                <th>Alamat url</th>
-                                <th>Gambar</th>
+                                <th>Nama Paket</th>
+                                <th>Harga</th>
+                                <th>Detail</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-
                         </tbody>
                     </table>
                 </div>
-
-                {{-- modal --}}
-
 
                 <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1" aria-labelledby="varyingModalLabel"
                     aria-hidden="true">
@@ -50,28 +56,29 @@
                                     @csrf
                                     <div id="put"></div>
                                     <div class="mb-3">
-                                        <label for="name" class="form-label">Nama </label>
+                                        <label for="type" class="form-label">Nama paket </label>
                                         <input type="text" class="form-control" id="name" name="name"
-                                            placeholder="Masukkan nama klien..." value="">
+                                            placeholder="Masukkan nama tag..." value="">
                                         <div class="text-danger" id="error-name"></div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="url" class="form-label">Alamat url </label>
-                                        <input type="text" class="form-control" id="url" name="url"
-                                            placeholder="Masukkan alamat url klien..." value="">
-                                        <div class="text-danger" id="error-url"></div>
+                                        <label for="name" class="form-label">Harga </label>
+                                        <input type="text" class="form-control" id="price" name="price"
+                                            placeholder="Masukkan nama tag..." value="">
+                                        <div class="text-danger" id="error-price"></div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="image" class="form-label">Gambar </label>
-                                        <input type="file" name="image" id="image" class="form-control" value="">
-                                        <div class="text-danger" id="error-image"></div>
+                                        <label for="name" class="form-label">Detail </label>
+                                        <textarea type="text" class="form-control" id="details" name="details"
+                                            placeholder="ex. Hosting,Domain" value=""></textarea>
+                                        <div class="text-danger" id="error-details"></div>
                                     </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-inverse-primary" id="btn-save" value="add">Simpan
                                     data</button>
-                                <input type="hidden" id="client_id" name="id" value="0">
+                                <input type="hidden" id="tag_id" name="id" value="0">
                             </div>
                         </div>
                     </div>
@@ -89,15 +96,14 @@
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Tambah data klien");
+                $("#title").html("Tambah data Paket");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('clients.store') }}");
+                $("#modalFormData").attr('action', "{{ route('packages.store') }}");
             });
-
-
+            
             // datatable
             showData = $('.table-data').DataTable({
                 processing: true,
@@ -110,7 +116,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 4],
+                        targets: [0, 3],
                         className: 'text-center'
                     },
                     {
@@ -132,13 +138,11 @@
                     data: 'name',
                     name: 'name',
                 }, {
-                    data: 'url',
-                    name: 'url',
-                }, {
-                    data: 'image',
-                    name: 'image',
-                    render: function ( data) {
-              return `<img src="{{asset('storage/clients')}}/${data}" width="40px">`;},
+                    data: 'price',
+                    name: 'price',
+                },{
+                    data: 'details',
+                    name: 'details',
                 }, {
                     data: 'id',
                     name: 'id',
@@ -172,22 +176,23 @@
             })
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
-                
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('clients.update',':id') }}"
+                console.log(row);
+                let url = "{{ route('packages.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
                 $("#title").html("Edit "+ row.name);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
+                $("#price").val(row.price);
+                $("#details").val(row.details);
                 $("#name").val(row.name);
-                $("#url").val(row.url);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('clients.destroy',':id') }}"
+                let url = "{{ route('packages.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({

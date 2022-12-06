@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\v1\EventController;
 use App\Http\Controllers\Api\v1\EventRegisterController;
 use App\Http\Controllers\Api\v1\MessageController;
 use App\Http\Controllers\Api\v1\NotificationController;
+use App\Http\Controllers\Api\v1\PackageController;
 use App\Http\Controllers\Api\v1\ProfileController;
 use App\Http\Controllers\Api\v1\ProjectController;
 use App\Http\Controllers\Api\v1\ProjectTypeController;
@@ -55,6 +56,7 @@ Route::group(["prefix" => 'v1'], function () {
     Route::resource('/projects', ProjectController::class);
 
     Route::resource('/careers', CarrerController::class);
+    Route::resource('/packages', PackageController::class);
 
     // Route::resource('/category-teams', CategoryTeamController::class);
 
@@ -71,7 +73,7 @@ Route::group(["prefix" => 'v1'], function () {
     Route::resource('/events', EventController::class);
 });
 
-Route::group(['prefix' => 'xendit'], function(){
+Route::group(['prefix' => 'xendit'], function () {
     Route::get('/balance', [XenditController::class, 'balance']);
     Route::get('/payment', [XenditController::class, 'payment']);
     Route::get('/virtual-account', [XenditController::class, 'virtualAccount']);

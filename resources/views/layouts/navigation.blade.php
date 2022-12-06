@@ -144,6 +144,12 @@
           <span class="link-title">Tags</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a href="{{ route('packages.index')}}" class="nav-link">
+          <i class="fa-solid fa-certificate"></i>
+          <span class="link-title">Paket</span>
+        </a>
+      </li>
 
       <li class="nav-item">
         <a href="{{route('settings.index')}}" class="nav-link">

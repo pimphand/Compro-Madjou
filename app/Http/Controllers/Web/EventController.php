@@ -20,15 +20,13 @@ class EventController extends Controller
      */
     public function index()
     {
-        if(request()->ajax())
-        {
+        if (request()->ajax()) {
             $event = Event::latest()->get();
-
             return DataTables::of($event)
-                    ->addIndexColumn()
-                    ->make(true);
+                ->addIndexColumn()
+                ->make(true);
         }
-        
+
         return view('pages.events.index')->with('events');
     }
 
@@ -66,21 +64,19 @@ class EventController extends Controller
             'time.required'         => 'Jam event tidak boleh kosong!'
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
                 'errors'    => $data->getMessageBag()->toArray(),
             ]);
         }
 
-        if($image = $request->file('image'))
-        {
+        if ($image = $request->file('image')) {
             $fileNameWithExt   = $image->getClientOriginalName();
             $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext               = $image->getClientOriginalExtension();
             $fileNameSave      = Str::uuid();
-            $path              = $image->storeAs('public/events', $fileNameSave);  
+            $path              = $image->storeAs('public/events', $fileNameSave);
         }
 
         $event  = Event::create([
@@ -138,7 +134,7 @@ class EventController extends Controller
             'image'     => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:2048',
             'date'      => 'required',
             'time'      => 'required',
-        ],[
+        ], [
             'title.required'        => 'Judul tidak boleh kosong!',
             'body.required'         => 'Konten tidak boleh kosong!',
             'location.required'     => 'Lokasi tidak boleh kosong!',
@@ -148,8 +144,7 @@ class EventController extends Controller
             'time.required'         => 'Jam event tidak boleh kosong!',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
                 'errors'    => $data->getMessageBag()->toArray(),
@@ -158,15 +153,14 @@ class EventController extends Controller
 
         $event = Event::findOrFail($id);
 
-        if($request->hasFile('image') && $request->file('image') != null)
-        {
-            Storage::delete('public/events/'. $event->image);
+        if ($request->hasFile('image') && $request->file('image') != null) {
+            Storage::delete('public/events/' . $event->image);
 
             $fileNameWithExt    = $request->file('image')->getClientOriginalName();
             $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext                = $request->file('image')->getClientOriginalExtension();
             $fileNameSave       = Str::uuid();
-            $path               = $request->file('image')->storeAs('public/events', $fileNameSave); 
+            $path               = $request->file('image')->storeAs('public/events', $fileNameSave);
         }
 
         $event->update([
@@ -184,7 +178,6 @@ class EventController extends Controller
             'message'   => 'Data event berhasil diubah',
             'data'      => new EventResource($event),
         ];
-
     }
 
     /**
@@ -196,7 +189,7 @@ class EventController extends Controller
     public function destroy($id)
     {
         $event = Event::findOrFail($id);
-        Storage::delete('public/events/'.$event->image);
+        Storage::delete('public/events/' . $event->image);
 
         $event->delete();
 

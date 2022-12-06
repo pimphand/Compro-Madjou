@@ -18,6 +18,7 @@ use App\Http\Controllers\Web\EventRegisterController;
 use App\Http\Controllers\Web\MessageController;
 use App\Http\Controllers\Web\NotificationController;
 use App\Http\Controllers\Web\OurClientController;
+use App\Http\Controllers\Web\PackageController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProgrammingLanguageController;
 use App\Http\Controllers\Web\ProjectController;
@@ -82,10 +83,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/user', MasterUserController::class);
         Route::resource('/data-product', ProductController::class);
         // sync-product
+        Route::post('/sync-product/{id}', [SyncProductController::class, 'store'])->name('sync_product.store');
+        Route::post('/delete-product/{id}', [SyncProductController::class, 'delete'])->name('sync_product.delete');
+        Route::get('/sync-data/{id}', [SyncProductController::class, 'list'])->name('sync_product.data');
+
+        // packages
+        Route::resource('/packages', PackageController::class);
     });
 });
-Route::post('/sync-product/{id}', [SyncProductController::class, 'store'])->name('sync_product.store');
-Route::post('/delete-product/{id}', [SyncProductController::class, 'delete'])->name('sync_product.delete');
-Route::get('/sync-data/{id}', [SyncProductController::class, 'list'])->name('sync_product.data');
+
 
 require __DIR__ . '/auth.php';
