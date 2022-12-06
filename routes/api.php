@@ -75,11 +75,8 @@ Route::group(['prefix' => 'xendit'], function(){
     Route::get('/balance', [XenditController::class, 'balance']);
     Route::get('/payment', [XenditController::class, 'payment']);
     Route::get('/virtual-account', [XenditController::class, 'virtualAccount']);
-    Route::post('/notification', [XenditController::class, 'notification']);
-    Route::post('/createva', [XenditController::class, 'createVa']);
-    Route::post('/updateva', [XenditController::class, 'updateVa']);
     Route::post('/callback_virtual_account', [XenditController::class, 'pay']);
-    Route::post('/create-invoice', [InvoiceController::class, 'invoice']);
+    Route::post('/create-invoice', [InvoiceController::class, 'createInv']);
     Route::get('/invoice', [InvoiceController::class, 'getInvoice']);
 });
 

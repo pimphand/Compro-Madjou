@@ -92,8 +92,8 @@ class XenditController extends Controller
         Xendit::setApiKey($this->token);
 
         $params = [
-            "external_id"   => 'demo',
-            "amount"        => 50000,
+            "external_id"   => 'demo-1475804036622',
+            "amount"        => 3000000,
             "email"     => 'rieflvi@gmail.com',
         ];
 
@@ -104,6 +104,33 @@ class XenditController extends Controller
             'message'   => 'Pembayaran diupdate',
             'data'      => $getPay
         ]);
+    }
+
+    public function getPayment()
+    {
+        Xendit::setApiKey($this->token);
+        
+        $paymentID = '638dcaa8a499245112297d7d';
+        $getFVAPayment = \Xendit\VirtualAccounts::getFVAPayment($paymentID);
+
+        return [
+            'success'   => true,
+            'message'   => 'Data payment',
+            'data'      => $getFVAPayment
+        ];
+    }
+
+    public function getVa()
+    {
+        Xendit::setApiKey($this->token);
+
+        $getVABanks = \Xendit\VirtualAccounts::getVABanks();
+
+        return [
+            'success'   => true,
+            'message'   => 'Data get VA',
+            'data'      => $getVABanks,
+        ];
     }
 
 
