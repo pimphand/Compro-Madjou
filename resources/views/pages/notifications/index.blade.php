@@ -19,11 +19,11 @@
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h4 class="card-title">Table data notifikasi</h4>
-                            {{-- <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
+                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
                             data-bs-target="#tagEditorModal" id='btn-add'>
                                 <i data-feather="plus"></i>
                                 Tambah Data
-                            </button> --}}
+                            </button>
                         </div>
                         <div class="table-responsive">
                             <table data-url="{{ request()->url() }}" class="table-data table">
@@ -83,7 +83,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-inverse-primary" id="btn-save"
                                             value="add">Simpan data</button>
-                                        <input type="hidden" id="client_id" name="id" value="0">
+                                        <input type="hidden" id="notif_id" name="id" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -99,15 +99,15 @@
     <script>
         let showData;
         $(() => {
-            // $('#btn-add').click(function (e) { 
-            //     e.preventDefault();
-            //     $("#title").html("Tambah data klien");
-            //     $("#btn-save").val("add");
-            //     $("#put").html("");
-            //     $("#modalFormData").trigger("reset");
-            //     $("#tagEditorModal").modal("show");
-            //     $("#modalFormData").attr('action', "{{ route('clients.store') }}");
-            // });
+            $('#btn-add').click(function (e) { 
+                e.preventDefault();
+                $("#title").html("Tambah data klien");
+                $("#btn-save").val("add");
+                $("#put").html("");
+                $("#modalFormData").trigger("reset");
+                $("#tagEditorModal").modal("show");
+                $("#modalFormData").attr('action', "{{ route('notifications.store') }}");
+            });
 
 
             // datatable

@@ -56,6 +56,7 @@ Route::group(["prefix" => 'v1'], function () {
     Route::resource('/projects', ProjectController::class);
 
     Route::resource('/careers', CarrerController::class);
+    
     Route::resource('/packages', PackageController::class);
 
     // Route::resource('/category-teams', CategoryTeamController::class);

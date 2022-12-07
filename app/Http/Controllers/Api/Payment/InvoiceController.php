@@ -16,27 +16,37 @@ class InvoiceController extends Controller
 
     public function createInv(Request $request)
     {
-        $data = Validator::make($request->all(),[
-            'external_id'   => 'required',
-            'amount'        => 'required',
-            'payer_email'   => 'required',
-            'description'   => 'required',
-        ]);
+        $fee = $request->value;
+        $code   = rand(0,999);
 
-        if($data->fails())
-        {
-            return response()->json([
-                'status'    => false,
-                'errors'    => $data->getMessageBag()->toArray()
-            ]);
-        }
-
-        $inv = \Xendit\Invoice::create([
-            'external_id'   => $request->external_id,
-            'amount'        => $request->amount,
+        $inv_params =[
+            'external_id'   => 'MDJ'.'-' . $request->external_id,
             'payer_email'   => $request->payer_email,
             'description'   => $request->description,
-        ]);
+            'fees'          => [
+                [
+                    'type'      => 'Admin Fee',
+                    'value'     => $fee,
+                ],
+                [
+                    'type'      => 'unique code',
+                    'value'     => $code,
+                ]
+                ],
+            'amount'        => $request->amount + $fee + $code,
+            'customer'      => [
+                'name'          => $request->name,
+                'email'         => $request->email,
+                'mobile_number' => $request->mobile_number,
+            ],
+            'payment_methods' => [
+                    'BCA', 'BNI',
+                     'BSI', 'BRI', 'MANDIRI', 'PERMATA',
+            ],
+        ];
+
+
+        $inv = \Xendit\Invoice::create($inv_params);
 
         return [
             'success'   => true,
@@ -94,5 +104,5 @@ class InvoiceController extends Controller
         ];
     }
 
-    
+   
 }
