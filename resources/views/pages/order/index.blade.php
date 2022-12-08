@@ -127,11 +127,11 @@
                         return DT_RowIndex + '.';
                     }
                 }, {
-                    data: 'type',
-                    name: 'type',
+                    data: 'packages',
+                    name: 'packages',
                 }, {
-                    data: 'user_id',
-                    name: 'user_id',
+                    data: 'users',
+                    name: 'users',
                 }, {
                     data: 'amount',
                     name: 'amount',
@@ -165,7 +165,7 @@
                             class: 'btn-group btn-group-sm',
                             role: 'group',
                             html: () => {
-                                return [button_edit, button_delete]
+                                return [ button_delete]
                             }
                         })
                         return button_group.prop('outerHTML')

@@ -12,4 +12,13 @@ class Order extends Model
     protected $fillable = [
     'type', 'user_id', 'amount', 'code_unique', 'invoice_id',''
     ];
+
+    public function packages(){
+        return $this->belongsTo(Package::class, 'type', 'id');
+    }
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }
