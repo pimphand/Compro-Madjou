@@ -97,6 +97,11 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Order::destroy($id);
+
+        return [
+            'success'   => true,
+            'message'   => 'Data order berhasil dihapus',
+        ];
     }
 }

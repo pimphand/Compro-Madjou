@@ -187,12 +187,12 @@
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('categories.destroy',':id') }}"
+                let url = "{{ route('order.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({
                     title: 'Apakah anda yakin?',
-                    text: "Data "+row.name+" akan terhapus!",
+                    text: "Data akan terhapus!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
