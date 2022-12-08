@@ -101,7 +101,7 @@
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Tambah data klien");
+                $("#title").html("Buat notifikasi");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
