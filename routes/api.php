@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\v1\ProfileController;
 use App\Http\Controllers\Api\v1\ProjectController;
 use App\Http\Controllers\Api\v1\ProjectTypeController;
 use App\Http\Controllers\Api\v1\SubscribeController;
+use App\Http\Controllers\Web\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -72,6 +73,8 @@ Route::group(["prefix" => 'v1'], function () {
     Route::resource('/event-registers', EventRegisterController::class);
 
     Route::resource('/events', EventController::class);
+
+    Route::post('/order', [OrderController::class, 'create']);
 });
 
 Route::group(['prefix' => 'xendit'], function () {

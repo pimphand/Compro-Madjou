@@ -9,12 +9,14 @@ use Xendit\Xendit;
 
 class XenditController extends Controller
 {
-    private $token = "xnd_development_5C7LORbHK9Q3iBkBdJ4YlKqkv5hIDC1mZHmLdBD8SiKYBQvn9P6ALECTs5mJK";
+    function __construct()
+    {
+        Xendit::setApiKey(env('API_KEY'));
+    }
 
     // get balance xendit
     public function balance() {
 
-        Xendit::setApiKey($this->token);
 
        $getBalance =  \Xendit\Balance::getBalance('CASH');
 

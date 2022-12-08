@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('type')->comment('1=produk, 2=paket basic');
             $table->foreignId('user_id')->nullable()->constrained();
             $table->integer('amount');
-            $table->string('code_unique');
+            $table->integer('code_unique');
             $table->string('invoice_id');
             $table->timestamps();
             $table->softDeletes();

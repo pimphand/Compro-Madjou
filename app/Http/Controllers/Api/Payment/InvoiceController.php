@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api\Payment;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\Package;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Xendit\Xendit;
 
@@ -14,47 +17,77 @@ class InvoiceController extends Controller
         Xendit::setApiKey(env('API_KEY'));
     }
 
+    // create invoice 
     public function createInv(Request $request)
     {
-        $fee = $request->value;
-        $code   = rand(0,999);
 
-        $inv_params =[
-            'external_id'   => 'MDJ'.'-' . $request->external_id,
-            'payer_email'   => $request->payer_email,
-            'description'   => $request->description,
-            'fees'          => [
-                [
-                    'type'      => 'Admin Fee',
-                    'value'     => $fee,
+        $package = Package::FindOrFail(1);
+
+        $uniq_code = rand(0,999);
+
+        $no = '0001';
+
+        $fee = 5000;
+
+        $total = $package->price + $fee + $uniq_code;
+
+        $order = Order::create([
+            'type'          => $package->id,
+            'user_id'       => $request->user_id,
+            'amount'        => $total,
+            'code_unique'   => $uniq_code,
+            'invoice_id'    => 'MDJ' . '-' . intval($no)+1,
+        ]);
+
+        if($order)
+        {
+            $inv_params = [
+                'external_id'   => $order->invoice_id,
+                'payer_email'   => 'rieflvi@gmail.com',
+                'description'   => 'Pembbayaran web',
+                'fees'          => [
+                    [
+                        'type'      => 'Admin Fee',
+                        'value'     => $fee,
+                    ],
+                    [
+                        'type'      => 'unique code',
+                        'value'     => $uniq_code,
+                    ]
+                    ],
+                'amount'        => $total,
+                'customer'      => [
+                    'name'          => 'rochman',
+                    'email'         => 'rieflvi@gmail.com',
+                    'mobile_number' => '08998988682',
                 ],
-                [
-                    'type'      => 'unique code',
-                    'value'     => $code,
-                ]
+                'payment_methods' => [
+                        'BCA', 'BNI',
+                         'BSI', 'BRI', 'MANDIRI', 'PERMATA',
                 ],
-            'amount'        => $request->amount + $fee + $code,
-            'customer'      => [
-                'name'          => $request->name,
-                'email'         => $request->email,
-                'mobile_number' => $request->mobile_number,
-            ],
-            'payment_methods' => [
-                    'BCA', 'BNI',
-                     'BSI', 'BRI', 'MANDIRI', 'PERMATA',
-            ],
-        ];
-
-
-        $inv = \Xendit\Invoice::create($inv_params);
+                'should_send_email' => true,
+            ];
+    
+    
+            $inv = \Xendit\Invoice::create($inv_params);
+    
+            return [
+                'success'   => true,
+                'message'   => 'Invoice berhasil dibuat',
+                'data'      => $inv,
+            ];
+        }
 
         return [
             'success'   => true,
-            'message'   => 'Invoice berhasil dibuat',
-            'data'      => $inv,
+            'message'   => 'Data order berhasil disimpan',
+            'data'      => $order,
         ];
+
+       
     }
 
+    // get invoice
     public function getInvoice(Request $request)
     {
        $id = $request->id;
@@ -67,42 +100,5 @@ class InvoiceController extends Controller
             'data'      => $inv
         ];
     }
-
-    public function paymentReq(Request $request)
-    {
-        $data = Validator::make($request->all(),[
-            "external_id" => "required",
-            "amount"    =>  "required",
-            "bank_code" => "required",
-            "account_number" => "required",
-            'account_holder_name' => 'required',
-            "description" => "required",
-            
-        ]);
-
-        if($data->fails())
-        {
-            return response()->json([
-                'status'    => false,
-                'errors'    => $data->getMessageBag()->toArray()
-            ]);
-        }
-
-        $pay    = \Xendit\Disbursements::create([
-            'external_id'       => $request->external_id,
-            'amount'            => $request->amount,
-            'account_number'    => $request->account_number,
-            'account_holder_name'   => $request->account_holder_name,
-            'bank_code'         => $request->bank_code,
-            'description'       => $request->description,
-        ]);
-
-        return [
-            'success'   => true,
-            'message'   => 'Pembayaran berhasil dibuat',
-            'data'      => $pay
-        ];
-    }
-
    
 }
