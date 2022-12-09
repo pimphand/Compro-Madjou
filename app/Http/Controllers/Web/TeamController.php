@@ -62,12 +62,14 @@ class TeamController extends Controller
             'name'              => 'required|string|max:50|unique:teams',
             'image'             => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'position'          => 'required|string|max:50',
+            'lang'              => 'required',
         ], [
-            'name.required'     => 'Nama tidak boleh kosong',
-            'name.unique'       => 'Nama sudah digunakan',
-            'category_team_id.required'  => 'Kategori tim tidak boleh kosong',
-            'image.required'    => 'Gambar tidak boleh kosong',
-            'position.required' => 'Posisi tidak boleh kosong',
+            'name.required'     => 'Nama tidak boleh kosong!',
+            'name.unique'       => 'Nama sudah digunakan!',
+            'category_team_id.required'  => 'Kategori tim tidak boleh kosong!',
+            'image.required'    => 'Gambar tidak boleh kosong!',
+            'position.required' => 'Posisi tidak boleh kosong!',
+            'lang.required'     => 'Bahasa tidak boleh kosong!',
         ]);
 
         if($data->fails())
@@ -94,6 +96,7 @@ class TeamController extends Controller
             'category_team_id'  => $request->category_team_id,
             'image'             => $fileNameSave,
             'position'          => $request->position,
+            'lang'              => $request->lang,
         ]);
 
         return [
@@ -145,11 +148,13 @@ class TeamController extends Controller
             'name'              => 'required|string|max:50|unique:teams,id,'. $id,
             'image'             => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'position'          => 'required|string|max:50',
+            'lang'              => 'required',
         ],[
-            'name.required'     => 'Nama tidak boleh kosong',
-            'name.unique'       => 'Nama sudah digunakan',
-            'category_team_id.required'  => 'Kategori tim tidak boleh kosong',
-            'position.required' => 'Posisi tidak boleh kosong',
+            'name.required'     => 'Nama tidak boleh kosong!',
+            'name.unique'       => 'Nama sudah digunakan!',
+            'category_team_id.required'  => 'Kategori tim tidak boleh kosong!',
+            'position.required' => 'Posisi tidak boleh kosong!',
+            'lang.required'     => 'Bahasa tidak boleh kosong!',
         ]);
 
         if($data->fails())
@@ -178,6 +183,7 @@ class TeamController extends Controller
             'category_team_id'  => $request->category_team_id,
             'image'             => $fileNameSave ?? $team->image,
             'position'          => $request->position,
+            'lang'              => $request->lang,
         ]);
 
         return [

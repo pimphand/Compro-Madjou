@@ -36,6 +36,8 @@
                                 <th>Konten</th>
                                 <th>Alamat url</th>
                                 <th>Lokasi</th>
+                                <th>Bahasa</th>
+                                <th>Gambar</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -106,17 +108,26 @@
                                         <div class="text-danger" id="error-location"></div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="location" class="form-label">Gambar </label>
-                                        <input type="file" class="form-control" id="location" name="image"
-                                            placeholder="Masukkan lokasi projek..." value="">
-                                        <div class="text-danger" id="error-location"></div>
+                                        <label for="lang" class="form-label">Bahasa </label>
+                                        <select name="lang" id="lang" class="form-control">
+                                            <option value="" disabled selected>Pilih bahasa</option>
+                                            <option value="id">Indonesia</option>
+                                            <option value="en">English</option>
+                                        </select>
+                                        <div class="text-danger" id="error-lang"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Gambar </label>
+                                        <input type="file" class="form-control" id="image" name="image"
+                                            placeholder="Masukkan gambar..." value="">
+                                        <div class="text-danger" id="error-image"></div>
                                     </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-inverse-primary" id="btn-save" value="add">Simpan
                                     data</button>
-                                <input type="hidden" id="project_type_id" name="id" value="0">
+                                <input type="hidden" id="project_id" name="id" value="0">
                             </div>
                         </div>
                     </div>
@@ -152,7 +163,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 7],
+                        targets: [0, 9],
                         className: 'text-center'
                     },
                     {
@@ -188,6 +199,14 @@
                 }, {
                     data: 'location',
                     name: 'location',
+                }, {
+                    data: 'lang',
+                    name: 'lang',
+                }, {
+                    data: 'image',
+                    name: 'image',
+                    render: function ( data) {
+              return `<img src="{{asset('storage/project')}}/${data}" width="40px">`;},
                 }, {
                     data: 'id',
                     name: 'id',
@@ -233,6 +252,7 @@
                 $("#body").val(row.body);
                 $("#url").val(row.url);
                 $("#location").val(row.location);
+                $('#lang').val(row.lang);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })

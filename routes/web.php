@@ -5,7 +5,7 @@ use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\MasterUserController;
 use App\Http\Controllers\Web\RoleController;
 use App\Http\Controllers\Web\TagController;
-use App\Http\Controllers\Sync\XenditController;
+// use App\Http\Controllers\Sync\XenditController;
 use App\Http\Controllers\Web\BlogController;
 use App\Http\Controllers\Web\CarrerController;
 use App\Http\Controllers\Web\CategoryBlogController;
@@ -17,7 +17,9 @@ use App\Http\Controllers\Web\EventController;
 use App\Http\Controllers\Web\EventRegisterController;
 use App\Http\Controllers\Web\MessageController;
 use App\Http\Controllers\Web\NotificationController;
+use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\OurClientController;
+use App\Http\Controllers\Web\PackageController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProgrammingLanguageController;
 use App\Http\Controllers\Web\ProjectController;
@@ -26,7 +28,7 @@ use App\Http\Controllers\Web\ServiceController;
 use App\Http\Controllers\Web\SettingController;
 use App\Http\Controllers\Web\SubscribeController;
 use App\Http\Controllers\Web\TeamController;
-
+use App\Http\Controllers\Web\XenditController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -82,10 +84,20 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/user', MasterUserController::class);
         Route::resource('/data-product', ProductController::class);
         // sync-product
+        Route::post('/sync-product/{id}', [SyncProductController::class, 'store'])->name('sync_product.store');
+        Route::post('/delete-product/{id}', [SyncProductController::class, 'delete'])->name('sync_product.delete');
+        Route::get('/sync-data/{id}', [SyncProductController::class, 'list'])->name('sync_product.data');
+
+        // packages
+        Route::resource('/packages', PackageController::class);
+
+        // xendit
+        Route::resource('/xendit', XenditController::class);
+
+        // Order
+        Route::resource('/order', OrderController::class);
     });
 });
-Route::post('/sync-product/{id}', [SyncProductController::class, 'store'])->name('sync_product.store');
-Route::post('/delete-product/{id}', [SyncProductController::class, 'delete'])->name('sync_product.delete');
-Route::get('/sync-data/{id}', [SyncProductController::class, 'list'])->name('sync_product.data');
+
 
 require __DIR__ . '/auth.php';

@@ -54,10 +54,12 @@ class ContactController extends Controller
             'name'      => 'required|string|unique:contacts',
             'images'     => 'required|image|mimes:png,svg|max:1048',
             'url'       => 'required',
+            'lang'      => 'required',
         ], [
-            'name.required'     => 'Nama tidak boleh kosong',
-            'name.unique'       => 'Nama sudah digunakan',
-            'url.required'      => 'Url tidak boleh kosong'
+            'name.required'     => 'Nama tidak boleh kosong!',
+            'name.unique'       => 'Nama sudah digunakan!',
+            'url.required'      => 'Url tidak boleh kosong!',
+            'lang.required'     => 'Bahasa tidak boleh kosong!',
         ]);
 
         if($data->fails())
@@ -79,6 +81,7 @@ class ContactController extends Controller
             'name'   => $request->name,
             'url'    => $request->url,
             'images' => $fileNameSave,
+            'lang'   => $request->lang,
         ]);
 
         return [
@@ -122,11 +125,13 @@ class ContactController extends Controller
         $data     = Validator::make($request->all(), [
             'name'      => 'required|string|unique:contacts,id,'.$id,
             'url'       => 'required',
-            'images'    => 'nullable|image|mimes:png,svg|max:1048'
+            'images'    => 'nullable|image|mimes:png,svg|max:1048',
+            'lang'      => 'required',
         ], [
-            'name.required' => 'Nama tidak boleh kosong',
-            'name.unique'   => 'Nama sudah digunakan',
-            'url.required'  => 'Url tidak boleh kosong',
+            'name.required' => 'Nama tidak boleh kosong!',
+            'name.unique'   => 'Nama sudah digunakan!',
+            'url.required'  => 'Url tidak boleh kosong!',
+            'lang.required' => 'Bahasa tidak boleh kosong!',
         ]);
 
         if($data->fails())
@@ -151,7 +156,8 @@ class ContactController extends Controller
         $contact->update([
             'name'  => $request->name,
             'image' => $fileNameSave ?? $contact->image,
-            'url'   => $request->url
+            'url'   => $request->url,
+            'lang'  => $request->lang,
         ]);
 
         return [

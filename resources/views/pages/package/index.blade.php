@@ -1,108 +1,109 @@
 @extends('layouts.app')
-@section('title', 'Madjou | Jenis Projek')
+@section('title', 'Madjou | Paket')
 @section('content')
-        <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                @if( Session::has("success") )
-                <div class="alert alert-success alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("success") }}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        @if( Session::has("success") )
+        <div class="alert alert-success alert-block" role="alert">
+            <button class="close" data-dismiss="alert"></button>
+            {{ Session::get("success") }}
+        </div>
+        @endif
+        @if( Session::has("error") )
+        <div class="alert alert-danger alert-block" role="alert">
+            <button class="close" data-dismiss="alert"></button>
+            {{ Session::get("error") }}
+        </div>
+        @endif
+        <div class="card">
+            <div class="card-body">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h4 class="card-title">Data Paket</h4>
+                    <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
+                        <i data-feather="plus"></i>
+                        Tambah Data
+                    </button>
                 </div>
-                @endif
-                @if( Session::has("error") )
-                <div class="alert alert-danger alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("error") }}
+                <div class="table-responsive">
+                    <table data-url="{{ request()->url() }}" class="table-data table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Paket</th>
+                                <th>Harga</th>
+                                <th>Detail</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
-                @endif
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel data jenis projek</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
-                                <i data-feather="plus"></i>
-                                Tambah Data
-                            </button>
-                        </div>
-                        <div class="table-responsive">
-                            <table data-url="{{ request()->url() }}" class="table-data table">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama</th>
-                                        <th>Bahasa</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
 
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {{-- modal --}}
-
-
-                        <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
-                            aria-labelledby="varyingModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="varyingModalLabel">
-                                            <span id="title"></span>
-                                        </h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="btn-close"></button>
+                <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1" aria-labelledby="varyingModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="varyingModalLabel">
+                                    <span id="title"></span>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="btn-close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="modalFormData" name="modalFormData" class="form-horizontal" novalidate="">
+                                    @csrf
+                                    <div id="put"></div>
+                                    <div class="mb-3">
+                                        <label for="type" class="form-label">Nama paket </label>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                            placeholder="Masukkan nama tag..." value="">
+                                        <div class="text-danger" id="error-name"></div>
                                     </div>
-                                    <div class="modal-body">
-                                        <form id="modalFormData" name="modalFormData" class="form-horizontal"
-                                            novalidate="">
-                                            @csrf
-                                            <div id="put"></div>
-                                            <div class="mb-3">
-                                                <label for="name" class="form-label">Nama </label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Masukkan nama jenis projek..." value="">
-                                                <div class="text-danger" id="error-name"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="lang" class="form-label">Bahasa </label>
-                                                <select name="lang" id="lang" class="form-control">
-                                                    <option value="" disabled selected>Pilih bahasa</option>
-                                                    <option value="id">Indonesia</option>
-                                                    <option value="en">English</option>
-                                                </select>
-                                                <div class="text-danger" id="error-lang"></div>
-                                            </div>
-                                        </form>
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Harga </label>
+                                        <input type="text" class="form-control" id="price" name="price"
+                                            placeholder="Masukkan nama tag..." value="">
+                                        <div class="text-danger" id="error-price"></div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-inverse-primary" id="btn-save"
-                                            value="add">Simpan data</button>
-                                        <input type="hidden" id="project_type_id" name="id" value="0">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Detail </label>
+                                        <textarea type="text" class="form-control" id="details" name="details"
+                                            placeholder="ex. Hosting,Domain" value=""></textarea>
+                                        <div class="text-danger" id="error-details"></div>
                                     </div>
-                                </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-inverse-primary" id="btn-save" value="add">Simpan
+                                    data</button>
+                                <input type="hidden" id="tag_id" name="id" value="0">
                             </div>
                         </div>
-
                     </div>
                 </div>
+
             </div>
         </div>
+    </div>
+</div>
 @endsection
-    @push('js')
-    <script>
-        let showData;
+
+@push('js')
+<script>
+    let showData;
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
-                $("#title").html("Tambah data jenis projek");
+                $("#title").html("Tambah data Paket");
                 $("#btn-save").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('types.store') }}");
+                $("#modalFormData").attr('action', "{{ route('packages.store') }}");
             });
+            
             // datatable
             showData = $('.table-data').DataTable({
                 processing: true,
@@ -137,8 +138,11 @@
                     data: 'name',
                     name: 'name',
                 }, {
-                    data: 'lang',
-                    name: 'lang',
+                    data: 'price',
+                    name: 'price',
+                },{
+                    data: 'details',
+                    name: 'details',
                 }, {
                     data: 'id',
                     name: 'id',
@@ -173,20 +177,22 @@
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('types.update',':id') }}"
+                console.log(row);
+                let url = "{{ route('packages.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
                 $("#title").html("Edit "+ row.name);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
+                $("#price").val(row.price);
+                $("#details").val(row.details);
                 $("#name").val(row.name);
-                $('#lang').val(row.lang);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('types.destroy',':id') }}"
+                let url = "{{ route('packages.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({
@@ -222,5 +228,5 @@
                 })
             })
         })
-    </script>
-    @endpush
+</script>
+@endpush

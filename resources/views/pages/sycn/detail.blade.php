@@ -18,7 +18,7 @@
                 <table data-url="{{ route('sync_product.data',$product->id) }}" class="product table">
                     <thead>
                         <tr>
-                            <th>No</th>
+                            <th>Id</th>
                             <th>Nama</th>
                             <th>Email</th>
                             <th>Expired</th>
@@ -156,11 +156,19 @@
                             'data-id': id,
                             title: `Hapus Data`,
                         })
+                        const button_invoice = $('<button>', {
+                            html: $('<i>', {
+                                class: 'fa fa-file-invoice'
+                            }).prop('outerHTML'),
+                            class: 'btn btn-info btn-invoice',
+                            'data-id': id,
+                            title: `Tambah Invoice`,
+                        })
                         const button_group = $('<div>', {
                             class: 'btn-group btn-group-sm',
                             role: 'group',
                             html: () => {
-                                return [button_edit, button_delete]
+                                return [button_edit, button_delete,button_invoice]
                             }
                         })
                         return button_group.prop('outerHTML')
@@ -177,6 +185,15 @@
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#type").val(row.type);
                 $("#name").val(row.name);
+                $('.error').empty();
+                $('#tagEditorModal').modal('show');
+            })
+
+            $('.product').on('click', '.btn-invoice', function() {
+                let row = showData.row($(this).closest('tr')).data();
+                let url = "{{ route('data-product.update',':id') }}"
+                    url = url.replace(':id', row.id);
+                $("#invoice").attr('action', url);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })

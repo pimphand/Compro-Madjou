@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Madjou | Jenis Projek')
+@section('title', 'Madjou | Data Order')
 @section('content')
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
@@ -18,19 +18,18 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Tabel data jenis projek</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" id='btn-add'>
-                                <i data-feather="plus"></i>
-                                Tambah Data
-                            </button>
+                            <h4 class="card-title">Tabel data order</h4>
                         </div>
                         <div class="table-responsive">
                             <table data-url="{{ request()->url() }}" class="table-data table">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama</th>
-                                        <th>Bahasa</th>
+                                        <th>Type</th>
+                                        <th>Customer</th>
+                                        <th>Total</th>
+                                        <th>Kode unik</th>
+                                        <th>Id invoice</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -59,27 +58,19 @@
                                             novalidate="">
                                             @csrf
                                             <div id="put"></div>
+                                           
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">Nama </label>
                                                 <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Masukkan nama jenis projek..." value="">
+                                                    placeholder="Masukkan nama kategori tim..." value="">
                                                 <div class="text-danger" id="error-name"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="lang" class="form-label">Bahasa </label>
-                                                <select name="lang" id="lang" class="form-control">
-                                                    <option value="" disabled selected>Pilih bahasa</option>
-                                                    <option value="id">Indonesia</option>
-                                                    <option value="en">English</option>
-                                                </select>
-                                                <div class="text-danger" id="error-lang"></div>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-inverse-primary" id="btn-save"
                                             value="add">Simpan data</button>
-                                        <input type="hidden" id="project_type_id" name="id" value="0">
+                                        <input type="hidden" id="catTeam_id" name="id" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -89,20 +80,22 @@
                 </div>
             </div>
         </div>
-@endsection
+ @endsection
+
     @push('js')
     <script>
         let showData;
         $(() => {
-            $('#btn-add').click(function (e) { 
-                e.preventDefault();
-                $("#title").html("Tambah data jenis projek");
-                $("#btn-save").val("add");
-                $("#put").html("");
-                $("#modalFormData").trigger("reset");
-                $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('types.store') }}");
-            });
+            // $('#btn-add').click(function (e) { 
+            //     e.preventDefault();
+            //     $("#title").html("Tambah data kategori tim");
+            //     $("#btn-save").val("add");
+            //     $("#put").html("");
+            //     $("#modalFormData").trigger("reset");
+            //     $("#tagEditorModal").modal("show");
+            //     $("#modalFormData").attr('action', "{{ route('categories.store') }}");
+            // });
+
             // datatable
             showData = $('.table-data').DataTable({
                 processing: true,
@@ -115,7 +108,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 3],
+                        targets: [0, 6],
                         className: 'text-center'
                     },
                     {
@@ -134,11 +127,20 @@
                         return DT_RowIndex + '.';
                     }
                 }, {
-                    data: 'name',
-                    name: 'name',
+                    data: 'packages',
+                    name: 'packages',
                 }, {
-                    data: 'lang',
-                    name: 'lang',
+                    data: 'users',
+                    name: 'users',
+                }, {
+                    data: 'amount',
+                    name: 'amount',
+                }, {
+                    data: 'code_unique',
+                    name: 'code_unique',
+                }, {
+                    data: 'invoice_id',
+                    name: 'invoice_id',
                 }, {
                     data: 'id',
                     name: 'id',
@@ -163,7 +165,7 @@
                             class: 'btn-group btn-group-sm',
                             role: 'group',
                             html: () => {
-                                return [button_edit, button_delete]
+                                return [ button_delete]
                             }
                         })
                         return button_group.prop('outerHTML')
@@ -173,25 +175,24 @@
             // edit
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('types.update',':id') }}"
+                let url = "{{ route('categories.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
                 $("#title").html("Edit "+ row.name);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#name").val(row.name);
-                $('#lang').val(row.lang);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('types.destroy',':id') }}"
+                let url = "{{ route('order.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({
                     title: 'Apakah anda yakin?',
-                    text: "Data "+row.name+" akan terhapus!",
+                    text: "Data akan terhapus!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',

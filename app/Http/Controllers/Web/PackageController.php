@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CategoryBlogResource;
-use App\Models\BlogCategory;
+use App\Models\Package;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
-class CategoryBlogController extends Controller
+class PackageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,15 +17,13 @@ class CategoryBlogController extends Controller
      */
     public function index()
     {
-        if(request()->ajax())
-        {
-            $dataCatBlog = BlogCategory::latest()->get();
-            return DataTables::of($dataCatBlog)
+        if (request()->ajax()) {
+            $package = Package::latest()->get();
+            return DataTables::of($package)
                 ->addIndexColumn()
                 ->make(true);
         }
-
-        return view('pages.category-blogs.index')->with('category-blogs');
+        return view('pages.package.index');
     }
 
     /**
@@ -47,32 +44,32 @@ class CategoryBlogController extends Controller
      */
     public function store(Request $request)
     {
-        $data = Validator::make($request->all(),[
-            'name'  => 'required|string|unique:blog_categories',
-            'lang'  => 'required',
-        ],[
-            'name.required' => 'Nama tidak boleh kosong!',
-            'name.unique'   => 'Nama sudah digunakan!',
-            'lang'          => 'Bahasa tidak boleh kosong!',
+        $data = Validator::make($request->all(), [
+            'name'     => 'required',
+            'price'      => 'required',
+            'details'  => 'required',
+        ], [
+            'name.required'        => 'Nama Paket tidak boleh kosong!',
+            'price.required'         => 'Harga tidak boleh kosong!',
+            'details.required'     => 'Detail tidak boleh kosong!',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
-                'errors'    => $data->getMessageBag()->toArray()
+                'errors'    => $data->getMessageBag()->toArray(),
             ]);
         }
 
-        $dataCatBlog = BlogCategory::create([
-            'name'  => $request->name,
-            'lang'  => $request->lang,
+        Package::create([
+            "name" => $request->name,
+            "price" => $request->price,
+            "details" => explode(",", $request->details),
         ]);
 
         return [
             'success'   => true,
-            'message'   => 'Data kategori blog berhasil ditambahkan!',
-            'data'      => new CategoryBlogController($dataCatBlog),
+            'message'   => 'Data paket berhasil disimpan',
         ];
     }
 
@@ -107,33 +104,32 @@ class CategoryBlogController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = Validator::make($request->all(),[
-            'name'  => 'required|string|unique:blog_categories,id,'. $id,
-            'lang'  => 'required',
-        ],[
-            'name.required' => 'Nama tidak boleh kosong!',
-            'name.unique'   => 'Nama sudah digunakan!',
-            'lang'          => 'Bahasa tidak boleh kosong!',
+        $data = Validator::make($request->all(), [
+            'name'     => 'required',
+            'price'      => 'required',
+            'details'  => 'required',
+        ], [
+            'name.required'        => 'Nama Paket tidak boleh kosong!',
+            'price.required'         => 'Harga tidak boleh kosong!',
+            'details.required'     => 'Detail tidak boleh kosong!',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
-                'errors'    => $data->getMessageBag()->toArray()
+                'errors'    => $data->getMessageBag()->toArray(),
             ]);
         }
 
-        $dataCatBlog = BlogCategory::findOrFail($id);
-        $dataCatBlog->update([
-            'name'  => $request->name,
-            'lang'  => $request->lang,
+        Package::findOrFail($id)->update([
+            "name" => $request->name,
+            "price" => $request->price,
+            "details" => explode(",", $request->details),
         ]);
 
         return [
             'success'   => true,
-            'message'   => 'Data kategori blog berhasil diubah!',
-            'data'      => new CategoryBlogResource($dataCatBlog)
+            'message'   => 'Data paket berhasil disimpan',
         ];
     }
 
@@ -145,12 +141,10 @@ class CategoryBlogController extends Controller
      */
     public function destroy($id)
     {
-        $dataCatBlog = BlogCategory::findOrFail($id);
-        $dataCatBlog->delete();
-
+        Package::destroy($id);
         return [
             'success'   => true,
-            'message'   => 'Data kategori blog berhasil dihapus!'
+            'message'   => 'Data paket berhasil disimpan',
         ];
     }
 }

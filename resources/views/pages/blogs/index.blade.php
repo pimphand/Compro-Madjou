@@ -89,6 +89,15 @@
                                             <div class="text-danger" id="error-title"></div>
                                         </div>
                                         <div class="mb-3">
+                                            <label for="lang" class="form-label">Bahasa </label>
+                                            <select name="lang" id="lang" class="form-control">
+                                                <option value="" disabled selected>Pilih bahasa</option>
+                                                <option value="id">Indonesia</option>
+                                                <option value="en">English</option>
+                                            </select>
+                                            <div class="text-danger" id="error-lang"></div>
+                                        </div>
+                                        <div class="mb-3">
                                             <label for="title" class="form-label">Gambar </label>
                                             <input type="file" class="form-control" id="image" name="image"
                                                 value="">
@@ -258,6 +267,7 @@
                         var body = htmlDecode(data.data.body);
                         tinyMCE.activeEditor.setContent(data.data.body);
                         $("#tags").val(data.data.tags);
+                        $('#lang').val(data.data.lang);
                         $('.error').empty();
                         $('#tagEditorModal').modal('show');
                         

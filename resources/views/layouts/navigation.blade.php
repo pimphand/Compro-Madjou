@@ -125,6 +125,14 @@
         </a>
       </li>
 
+      <li class="nav-item nav-category">Order</li>
+      <li class="nav-item">
+        <a href="{{route('order.index')}}" class="nav-link">
+          <i class="fa-sharp fa-solid fa-folder-open"></i>
+          <span class="link-title">Data Order</span>
+        </a>
+      </li>
+
       <li class="nav-item nav-category">Menu Super-Admin</li>
       <li class="nav-item">
         <a href="{{route('user.index')}}" class="nav-link">
@@ -144,6 +152,12 @@
           <span class="link-title">Tags</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a href="{{ route('packages.index')}}" class="nav-link">
+          <i class="fa-solid fa-certificate"></i>
+          <span class="link-title">Paket</span>
+        </a>
+      </li>
 
       <li class="nav-item">
         <a href="{{route('settings.index')}}" class="nav-link">
@@ -156,6 +170,14 @@
         <a href="{{route('data-product.index')}}" class="nav-link">
           <i class="fa-solid fa-gear"></i>
           <span class="link-title">Product</span>
+        </a>
+      </li>
+
+      <li class="nav-item nav-category">Xendit</li>
+      <li class="nav-item">
+        <a href="{{route('xendit.index')}}" class="nav-link">
+          <i class="fa-solid fa-credit-card"></i>
+          <span class="link-title">Dashboard Xendit</span>
         </a>
       </li>
     </ul>

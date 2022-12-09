@@ -64,12 +64,14 @@ class ProjectController extends Controller
             'body'              => 'required',
             'url'               => 'required',
             'location'          => 'required',
+            'lang'              => 'required',
         ], [
-            'title.required'    => 'Judul tidak boleh kosong',
-            'programing.required'  => 'Programming tidak boleh kosong',
-            'body.required'         => 'Konten tidak boleh kosong',
-            'url.required'          => 'Alamat url tidak boleh kosong',
-            'location.requried'              => 'Alamat lokasi tidak boleh kosong',
+            'title.required'    => 'Judul tidak boleh kosong!',
+            'programing.required'  => 'Programming tidak boleh kosong!',
+            'body.required'         => 'Konten tidak boleh kosong!',
+            'url.required'          => 'Alamat url tidak boleh kosong!',
+            'location.requried'     => 'Alamat lokasi tidak boleh kosong!',
+            'lang.required'         => 'Bahasa tidak boleh kosong',
         ]);
 
         if ($data->fails()) {
@@ -78,6 +80,7 @@ class ProjectController extends Controller
                 'errors'    => $data->getMessageBag()->toArray(),
             ]);
         }
+        
         if ($image = $request->file('image')) {
             $fileNameSave      = Str::uuid();
             $image->storeAs('public/project', $fileNameSave);
@@ -92,6 +95,7 @@ class ProjectController extends Controller
             'url'               => $request->url,
             'location'          => $request->location,
             'image'             => $fileNameSave,
+            'lang'              => $request->lang,
         ]);
 
         Product::create([
@@ -169,6 +173,7 @@ class ProjectController extends Controller
             'body'          => $request->body,
             'url'           => $request->url,
             'location'      => $request->location,
+            'lang'          => $request->lang,
         ]);
 
         return [

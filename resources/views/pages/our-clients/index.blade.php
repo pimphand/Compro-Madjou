@@ -1,103 +1,101 @@
 @extends('layouts.app')
 @section('title', 'Madjou | Klien Kami')
 @section('content')
-        <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                @if( Session::has("success") )
-                <div class="alert alert-success alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("success") }}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        z
+        <div class="card">
+            <div class="card-body">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h4 class="card-title">Table data klien</h4>
+                    <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
+                        data-bs-target="#tagEditorModal" id='btn-add'>
+                        <i data-feather="plus"></i>
+                        Tambah Data
+                    </button>
                 </div>
-                @endif
-                @if( Session::has("error") )
-                <div class="alert alert-danger alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("error") }}
+                <div class="table-responsive">
+                    <table data-url="{{ request()->url() }}" class="table-data table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Alamat url</th>
+                                <th>Bahasa</th>
+                                <th>Gambar</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
                 </div>
-                @endif
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Table data klien</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
-                            data-bs-target="#tagEditorModal" id='btn-add'>
-                                <i data-feather="plus"></i>
-                                Tambah Data
-                            </button>
-                        </div>
-                        <div class="table-responsive">
-                            <table data-url="{{ request()->url() }}" class="table-data table">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama</th>
-                                        <th>Alamat url</th>
-                                        <th>Gambar</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
 
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {{-- modal --}}
+                {{-- modal --}}
 
 
-                        <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
-                            aria-labelledby="varyingModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="varyingModalLabel">
-                                            <span id="title"></span>
-                                        </h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="btn-close"></button>
+                <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1" aria-labelledby="varyingModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="varyingModalLabel">
+                                    <span id="title"></span>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="btn-close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="modalFormData" name="modalFormData" class="form-horizontal" novalidate="">
+                                    @csrf
+                                    <div id="put"></div>
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Nama </label>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                            placeholder="Masukkan nama klien..." value="">
+                                        <div class="text-danger" id="error-name"></div>
                                     </div>
-                                    <div class="modal-body">
-                                        <form id="modalFormData" name="modalFormData" class="form-horizontal"
-                                            novalidate="">
-                                            @csrf
-                                            <div id="put"></div>
-                                            <div class="mb-3">
-                                                <label for="name" class="form-label">Nama </label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Masukkan nama klien..." value="">
-                                                <div class="text-danger" id="error-name"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="url" class="form-label">Alamat url </label>
-                                                <input type="text" class="form-control" id="url" name="url"
-                                                    placeholder="Masukkan alamat url klien..." value="">
-                                                <div class="text-danger" id="error-url"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="image" class="form-label">Gambar </label>
-                                                <input type="file" name="image" id="image" class="form-control" value="">
-                                                <div class="text-danger" id="error-image"></div>
-                                            </div>
-                                        </form>
+                                    <div class="mb-3">
+                                        <label for="url" class="form-label">Alamat url </label>
+                                        <input type="text" class="form-control" id="url" name="url"
+                                            placeholder="Masukkan alamat url klien..." value="">
+                                        <div class="text-danger" id="error-url"></div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-inverse-primary" id="btn-save"
-                                            value="add">Simpan data</button>
-                                        <input type="hidden" id="client_id" name="id" value="0">
+                                    <div class="mb-3">
+                                        <label for="lang" class="form-label">Bahasa </label>
+                                        <select name="lang" id="lang" class="form-control">
+                                            <option value="" disabled selected>Pilih bahasa</option>
+                                            <option value="id">Indonesia</option>
+                                            <option value="en">English</option>
+                                        </select>
+                                        <div class="text-danger" id="error-lang"></div>
                                     </div>
-                                </div>
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Gambar </label>
+                                        <input type="file" name="image" id="image" class="form-control" value="">
+                                        <div class="text-danger" id="error-image"></div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-inverse-primary" id="btn-save" value="add">Simpan
+                                    data</button>
+                                <input type="hidden" id="client_id" name="id" value="0">
                             </div>
                         </div>
-
                     </div>
                 </div>
+
             </div>
         </div>
+    </div>
+</div>
 @endsection
 
-    @push('js')
-    <script>
-        let showData;
+@push('js')
+<script>
+    let showData;
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
@@ -122,7 +120,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 4],
+                        targets: [0, 5],
                         className: 'text-center'
                     },
                     {
@@ -146,6 +144,9 @@
                 }, {
                     data: 'url',
                     name: 'url',
+                }, {
+                    data: 'lang',
+                    name: 'lang',
                 }, {
                     data: 'image',
                     name: 'image',
@@ -193,6 +194,7 @@
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#name").val(row.name);
                 $("#url").val(row.url);
+                $('#lang').val(row.lang);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
@@ -235,5 +237,5 @@
                 })
             })
         })
-    </script>
-    @endpush
+</script>
+@endpush

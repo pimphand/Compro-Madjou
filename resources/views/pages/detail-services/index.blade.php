@@ -21,6 +21,7 @@
                                 <th>Layanan</th>
                                 <th>Judul</th>
                                 <th>Konten</th>
+                                <th>Bahasa</th>
                                 <th>Gambar</th>
                                 <th>Aksi</th>
                             </tr>
@@ -77,6 +78,16 @@
                                     </div>
 
                                     <div class="mb-3">
+                                        <label for="lang" class="form-label">Bahasa </label>
+                                        <select name="lang" id="lang" class="form-control">
+                                            <option value="" disabled selected>Pilih bahasa</option>
+                                            <option value="id">Indonesia</option>
+                                            <option value="en">English</option>
+                                        </select>
+                                        <div class="text-danger" id="error-lang"></div>
+                                    </div>
+
+                                    <div class="mb-3">
                                         <label for="image" class="form-label">Gambar </label>
                                         <input type="file" name="image" id="image" class="form-control" value="">
                                         <div class="text-danger" id="error-image"></div>
@@ -126,7 +137,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 5],
+                        targets: [0, 6],
                         className: 'text-center'
                     },
                     {
@@ -161,6 +172,9 @@
                     name: 'image',
                     render: function ( data) {
               return `<img src="{{asset('storage/detail-service')}}/${data}" width="40px">`;},
+                }, {
+                    data: 'lang',
+                    name: 'lang',
                 }, {
                     data: 'id',
                     name: 'id',
@@ -210,6 +224,7 @@
                 $("#titles").val(row.title);
                 var body = htmlDecode(row.body);
                 tinyMCE.activeEditor.setContent(body);
+                $('#lang').val(row.lang);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })

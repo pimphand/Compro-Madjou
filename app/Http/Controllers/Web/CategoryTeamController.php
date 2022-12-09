@@ -49,9 +49,11 @@ class CategoryTeamController extends Controller
     {
         $data   = Validator::make($request->all(),[
             'name'  => 'required|max:50',
+            'lang'  => 'required',
         ],[
-            'name.required' => 'Nama tidak boleh kosong',
-            'name.max'      => 'Nama terlalu panjang',
+            'name.required' => 'Nama tidak boleh kosong!',
+            'name.max'      => 'Nama terlalu panjang!',
+            'lang.required' => 'Bahasa tidak boleh kosong!',
         ]);
 
         if($data->fails())
@@ -65,6 +67,7 @@ class CategoryTeamController extends Controller
         
         $dataCategoryTeam = TeamCategory::create([
             'name'  => $request->name,
+            'lang'  => $request->lang,
         ]);
 
         return response()->json([
@@ -113,9 +116,11 @@ class CategoryTeamController extends Controller
     {
         $data   = Validator::make($request->all(),[
             'name'  => 'required|max:50',
+            'lang'  => 'required',
         ],[
-            'name.required' => 'Nama tidak boleh kosong',
-            'name.max'      => 'Nama terlalu panjang',
+            'name.required' => 'Nama tidak boleh kosong!',
+            'name.max'      => 'Nama terlalu panjang!',
+            'lang.required' => 'Bahasa tidak boleh kosong!',
         ]);
 
         if($data->fails())
@@ -131,6 +136,7 @@ class CategoryTeamController extends Controller
 
         $categoryTeam->update([
             'name'  => $request->name,
+            'lang'  => $request->lang,
         ]);
 
         return response()->json([

@@ -16,10 +16,12 @@ use App\Http\Controllers\Api\v1\EventController;
 use App\Http\Controllers\Api\v1\EventRegisterController;
 use App\Http\Controllers\Api\v1\MessageController;
 use App\Http\Controllers\Api\v1\NotificationController;
+use App\Http\Controllers\Api\v1\PackageController;
 use App\Http\Controllers\Api\v1\ProfileController;
 use App\Http\Controllers\Api\v1\ProjectController;
 use App\Http\Controllers\Api\v1\ProjectTypeController;
 use App\Http\Controllers\Api\v1\SubscribeController;
+use App\Http\Controllers\Web\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -55,6 +57,8 @@ Route::group(["prefix" => 'v1'], function () {
     Route::resource('/projects', ProjectController::class);
 
     Route::resource('/careers', CarrerController::class);
+    
+    Route::resource('/packages', PackageController::class);
 
     // Route::resource('/category-teams', CategoryTeamController::class);
 
@@ -69,17 +73,16 @@ Route::group(["prefix" => 'v1'], function () {
     Route::resource('/event-registers', EventRegisterController::class);
 
     Route::resource('/events', EventController::class);
+
+    Route::post('/order', [OrderController::class, 'create']);
 });
 
-Route::group(['prefix' => 'xendit'], function(){
+Route::group(['prefix' => 'xendit'], function () {
     Route::get('/balance', [XenditController::class, 'balance']);
     Route::get('/payment', [XenditController::class, 'payment']);
     Route::get('/virtual-account', [XenditController::class, 'virtualAccount']);
-    Route::post('/notification', [XenditController::class, 'notification']);
-    Route::post('/createva', [XenditController::class, 'createVa']);
-    Route::post('/updateva', [XenditController::class, 'updateVa']);
     Route::post('/callback_virtual_account', [XenditController::class, 'pay']);
-    Route::post('/create-invoice', [InvoiceController::class, 'invoice']);
+    Route::post('/create-invoice', [InvoiceController::class, 'createInv']);
     Route::get('/invoice', [InvoiceController::class, 'getInvoice']);
 });
 
