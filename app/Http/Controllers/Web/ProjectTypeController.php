@@ -49,9 +49,11 @@ class ProjectTypeController extends Controller
     public function store(Request $request)
     {
         $data   = Validator::make($request->all(), [
-            'name'  => 'required|string|max:50'
+            'name'  => 'required|string|max:50',
+            'lang'  => 'required',
         ], [
-            'name.required'     => 'Nama tipe projek tidak boleh kosong',
+            'name.required'     => 'Nama tipe projek tidak boleh kosong!',
+            'lang.required'     => 'Bahasa tidak boleh kosong!'
         ]);
 
         if($data->fails())
@@ -64,6 +66,7 @@ class ProjectTypeController extends Controller
 
         $proType    = ProjectType::create([
             'name'  => $request->name,
+            'lang'  => $request->lang,
         ]);
 
         return [
@@ -105,9 +108,11 @@ class ProjectTypeController extends Controller
     public function update(Request $request, $id)
     {
         $data   = Validator::make($request->all(), [
-            'name'  => 'required|string|max:50'
+            'name'  => 'required|string|max:50',
+            'lang'  => 'required',
         ], [
-            'name.required'     => 'Nama tipe projek tidak boleh kosong',
+            'name.required'     => 'Nama tipe projek tidak boleh kosong!',
+            'lang.required'     => 'Bahasa tidak boleh kosong!'
         ]);
 
         if($data->fails())
@@ -121,6 +126,7 @@ class ProjectTypeController extends Controller
         $proType = ProjectType::findOrFail($id);
         $proType->update([
             'name'  => $request->name,
+            'lang'  => $request->lang,
         ]);
 
         return [

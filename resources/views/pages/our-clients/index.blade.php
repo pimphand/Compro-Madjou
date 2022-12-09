@@ -21,6 +21,7 @@
                                 <th>No</th>
                                 <th>Nama</th>
                                 <th>Alamat url</th>
+                                <th>Bahasa</th>
                                 <th>Gambar</th>
                                 <th>Aksi</th>
                             </tr>
@@ -60,6 +61,15 @@
                                         <input type="text" class="form-control" id="url" name="url"
                                             placeholder="Masukkan alamat url klien..." value="">
                                         <div class="text-danger" id="error-url"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="lang" class="form-label">Bahasa </label>
+                                        <select name="lang" id="lang" class="form-control">
+                                            <option value="" disabled selected>Pilih bahasa</option>
+                                            <option value="id">Indonesia</option>
+                                            <option value="en">English</option>
+                                        </select>
+                                        <div class="text-danger" id="error-lang"></div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="image" class="form-label">Gambar </label>
@@ -110,7 +120,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 4],
+                        targets: [0, 5],
                         className: 'text-center'
                     },
                     {
@@ -134,6 +144,9 @@
                 }, {
                     data: 'url',
                     name: 'url',
+                }, {
+                    data: 'lang',
+                    name: 'lang',
                 }, {
                     data: 'image',
                     name: 'image',
@@ -181,6 +194,7 @@
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#name").val(row.name);
                 $("#url").val(row.url);
+                $('#lang').val(row.lang);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })

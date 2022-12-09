@@ -67,11 +67,13 @@ class BlogController extends Controller
             'title'             => 'required|string|max:50',
             'body'              => 'required|string|',
             'image'             => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'lang'              => 'required'
         ], [
             'blog_category_id.required'     => 'Kategori blog tidak boleh kosong!',
             'title.required'                => 'Judul tidak boleh kosong!',
             'body.required'                 => 'Konten tidak boleh kosong!',
-            'image.required'                => 'Gambar tidak boleh kosong!',     
+            'image.required'                => 'Gambar tidak boleh kosong!',
+            'lang.required'                 => 'Bahasa tidak boleh kosong!',     
         ]);
 
         if($data->fails())
@@ -99,6 +101,7 @@ class BlogController extends Controller
             'tags'                  => $request->tags,
             'author'                => Auth::user()->id,
             'image'                 => $fileNameSave,
+            'lang'                  => $request->lang,
         ]);
 
         return [
@@ -150,11 +153,13 @@ class BlogController extends Controller
             'title'             => 'required|string|max:50',
             'body'              => 'required|string|',
             'image'             => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'lang'              => 'required',
         ], [
             'blog_category_id.required'     => 'Kategori blog tidak boleh kosong!',
             'title.required'                => 'Judul tidak boleh kosong!',
             'body.required'                 => 'Konten tidak boleh kosong!',
-            'image.required'                => 'Gambar tidak boleh kosong!',     
+            'image.required'                => 'Gambar tidak boleh kosong!',
+            'lang.required'                 => 'Bahasa tidak boleh kosong!',     
         ]);
 
         if($data->fails())
@@ -187,6 +192,7 @@ class BlogController extends Controller
             'tags'                  => $request->tags,
             'author'                => Auth::user()->id,
             'image'                 => $fileNameSave ?? $blog->image,
+            'lang'                  => $request->lang,
         ]);
 
         return [

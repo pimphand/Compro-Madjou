@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Payment;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Package;
 use Illuminate\Http\Request;
@@ -81,7 +82,7 @@ class InvoiceController extends Controller
         return [
             'success'   => true,
             'message'   => 'Data order berhasil disimpan',
-            'data'      => $order,
+            'data'      => new OrderResource($order),
         ];
 
        

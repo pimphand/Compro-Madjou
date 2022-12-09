@@ -48,10 +48,12 @@ class CategoryBlogController extends Controller
     public function store(Request $request)
     {
         $data = Validator::make($request->all(),[
-            'name'  => 'required|string|unique:blog_categories'
+            'name'  => 'required|string|unique:blog_categories',
+            'lang'  => 'required',
         ],[
             'name.required' => 'Nama tidak boleh kosong!',
-            'name.unique'   => 'Nama sudah digunakan!'
+            'name.unique'   => 'Nama sudah digunakan!',
+            'lang'          => 'Bahasa tidak boleh kosong!',
         ]);
 
         if($data->fails())
@@ -64,6 +66,7 @@ class CategoryBlogController extends Controller
 
         $dataCatBlog = BlogCategory::create([
             'name'  => $request->name,
+            'lang'  => $request->lang,
         ]);
 
         return [
@@ -105,10 +108,12 @@ class CategoryBlogController extends Controller
     public function update(Request $request, $id)
     {
         $data = Validator::make($request->all(),[
-            'name'  => 'required|string|unique:blog_categories,id,'. $id
+            'name'  => 'required|string|unique:blog_categories,id,'. $id,
+            'lang'  => 'required',
         ],[
             'name.required' => 'Nama tidak boleh kosong!',
-            'name.unique'   => 'Nama sudah digunakan!'
+            'name.unique'   => 'Nama sudah digunakan!',
+            'lang'          => 'Bahasa tidak boleh kosong!',
         ]);
 
         if($data->fails())
@@ -122,6 +127,7 @@ class CategoryBlogController extends Controller
         $dataCatBlog = BlogCategory::findOrFail($id);
         $dataCatBlog->update([
             'name'  => $request->name,
+            'lang'  => $request->lang,
         ]);
 
         return [

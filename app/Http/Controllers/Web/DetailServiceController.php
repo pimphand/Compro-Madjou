@@ -60,10 +60,12 @@ class DetailServiceController extends Controller
             'title'         => 'required|string|max:50',
             'body'          => 'required|string|',
             'image'         => 'required|image|mimes:jpg,jpeg,png',
+            'lang'          => 'required',
         ], [
-            'title.required'    => 'Judul tidak boleh kosong',
-            'body.required'     => 'Konten tidak boleh kosong',
-            'image.required'    => 'Gambar tidak boleh kosong',
+            'title.required'    => 'Judul tidak boleh kosong!',
+            'body.required'     => 'Konten tidak boleh kosong!',
+            'image.required'    => 'Gambar tidak boleh kosong!',
+            'lang.required'     => 'Bahasa tidak boleh kosong!',
         ]);
 
         if ($data->fails()) {
@@ -86,6 +88,7 @@ class DetailServiceController extends Controller
             'title'             => $request->title,
             'body'              => $request->body,
             'image'             => $fileNameSave,
+            'lang'              => $request->lang,
         ]);
 
         return [
@@ -130,9 +133,11 @@ class DetailServiceController extends Controller
             'title'         => 'required|string|max:50',
             'body'          => 'required|string|',
             'image'         => 'nullable|image|mimes:jpg,jpeg,png',
+            'lang'          => 'required',
         ], [
-            'title.required'    => 'Judul tidak boleh kosong',
-            'body.required'     => 'Konten tidak boleh kosong',
+            'title.required'    => 'Judul tidak boleh kosong!',
+            'body.required'     => 'Konten tidak boleh kosong!',
+            'lang.required'     => 'Bahasa tidak boleh kosong!'
         ]);
 
         if ($data->fails()) {
@@ -159,6 +164,7 @@ class DetailServiceController extends Controller
             'title'         => $request->title,
             'body'          => $request->body,
             'image'         => $fileNameSave ?? $detService->image,
+            'lang'          => $request->lang,
         ]);
 
         return [

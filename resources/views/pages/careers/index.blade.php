@@ -36,6 +36,7 @@
                                 <th>Bagian</th>
                                 <th>Minimal pengalaman</th>
                                 <th>Jenis karyawan</th>
+                                <th>Bahasa</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -105,6 +106,15 @@
                                         </select>
                                         <div class="text-danger" id="error-employment_type"></div>
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="lang" class="form-label">Bahasa </label>
+                                        <select name="lang" id="lang" class="form-control">
+                                            <option value="" disabled selected>Pilih bahasa</option>
+                                            <option value="id">Indonesia</option>
+                                            <option value="en">English</option>
+                                        </select>
+                                        <div class="text-danger" id="error-lang"></div>
+                                    </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -149,7 +159,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 7],
+                        targets: [0, 8],
                         className: 'text-center'
                     },
                     {
@@ -188,6 +198,9 @@
                 }, {
                     data: 'employment_type',
                     name: 'employment_type',
+                }, {
+                    data: 'lang',
+                    name: 'lang',
                 }, {
                     data: 'id',
                     name: 'id',
@@ -239,6 +252,7 @@
                 $("#department").val(row.department);
                 $("#minimum_experience").val(row.minimum_experience);
                 $("#employment_type").val(row.employment_type);
+                $('#lang').val(row.lang);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })

@@ -30,6 +30,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nama</th>
+                                        <th>Bahasa</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -63,6 +64,15 @@
                                                 <input type="text" class="form-control" id="name" name="name"
                                                     placeholder="Masukkan nama jenis projek..." value="">
                                                 <div class="text-danger" id="error-name"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="lang" class="form-label">Bahasa </label>
+                                                <select name="lang" id="lang" class="form-control">
+                                                    <option value="" disabled selected>Pilih bahasa</option>
+                                                    <option value="id">Indonesia</option>
+                                                    <option value="en">English</option>
+                                                </select>
+                                                <div class="text-danger" id="error-lang"></div>
                                             </div>
                                         </form>
                                     </div>
@@ -105,7 +115,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 2],
+                        targets: [0, 3],
                         className: 'text-center'
                     },
                     {
@@ -126,6 +136,9 @@
                 }, {
                     data: 'name',
                     name: 'name',
+                }, {
+                    data: 'lang',
+                    name: 'lang',
                 }, {
                     data: 'id',
                     name: 'id',
@@ -166,6 +179,7 @@
                 $("#title").html("Edit "+ row.name);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#name").val(row.name);
+                $('#lang').val(row.lang);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })

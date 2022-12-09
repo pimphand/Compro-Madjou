@@ -54,10 +54,12 @@ class OurClientController extends Controller
             'name'  => 'required|string|',
             'url'   => 'required|string|max:255',
             'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'lang'  => 'required',
         ], [
-            'name.required'     => 'Nama tidak boleh kosong',
-            'url.required'      => 'Url tidak boleh kosong',
-            'image'             => 'Gambar tidak boleh kosong',
+            'name.required'     => 'Nama tidak boleh kosong!',
+            'url.required'      => 'Url tidak boleh kosong!',
+            'image'             => 'Gambar tidak boleh kosong!',
+            'lang'              => 'Bahasa tidak boleh kosong!'
         ]);
 
         if ($data->fails()) 
@@ -81,6 +83,7 @@ class OurClientController extends Controller
             'name'      => $request->name,
             'url'       => $request->url,
             'image'     => $fileNameSave,
+            'lang'      => $request->lang,
         ]);
 
         return [
@@ -154,7 +157,8 @@ class OurClientController extends Controller
         $client->update([
             'name'      => $request->name,
             'url'       => $request->url,
-            'image'     => $fileNameSave ?? $client->image
+            'image'     => $fileNameSave ?? $client->image,
+            'lang'      => $request->lang,
         ]);
 
         return [

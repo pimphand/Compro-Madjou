@@ -62,10 +62,12 @@ class ServiceController extends Controller
             'title'     => 'required|max:50|',
             'body'      => 'required|string|',
             'image'     => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'lang'      => 'required',
         ], [
-            'title.required'    => 'Judul tidak boleh kosong',
-            'body.required'     => 'Kontent tidak boleh kosong',
-            'image.required'    => 'Gambar tidak boleh kosong',
+            'title.required'    => 'Judul tidak boleh kosong!',
+            'body.required'     => 'Kontent tidak boleh kosong!',
+            'image.required'    => 'Gambar tidak boleh kosong!',
+            'lang.required'     => 'Bahasa tidak boleh kosong!',
         ]);
 
         if ($data->fails()) {
@@ -91,6 +93,7 @@ class ServiceController extends Controller
             'tags'      => $request->tags,
             'body'      => $request->body,
             'image'     => $fileNameSave,
+            'lang'      => $request->lang,
         ]);
 
         return [
@@ -137,10 +140,12 @@ class ServiceController extends Controller
             'title'     => 'required|max:50',
             'body'      => 'required|',
             'image'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'lang'      => 'required',
         ], [
-            'name.required'     => 'Nama tidak boleh kosong',
-            'title.required'    => 'Judul tidak boleh kosong',
-            'body.required'     => 'Konten tidak boleh kosong',
+            'name.required'     => 'Nama tidak boleh kosong!',
+            'title.required'    => 'Judul tidak boleh kosong!',
+            'body.required'     => 'Konten tidak boleh kosong!',
+            'lang.required'     => 'Bahasa tidak boleh kosong!',
         ]);
 
         if ($data->fails()) {
@@ -171,6 +176,7 @@ class ServiceController extends Controller
             'body'      => $request->body,
             'tags'      => $request->tags,
             'image'     => $fileNameSave ?? $service->image,
+            'lang'      => $request->lang,
         ]);
 
         return [

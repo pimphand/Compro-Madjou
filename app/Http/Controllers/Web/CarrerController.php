@@ -55,12 +55,14 @@ class CarrerController extends Controller
             'department'    => 'required',
             'minimum_experience'    => 'required',
             'employment_type'       => 'required', 
+            'lang'                  => 'required',
         ], [
-            'name.required'     => 'Nama tidak boleh kosong',
-            'body.required'     => 'Konten tidak boleh kosong',
-            'location.required' => 'Lokasi tidak boleh kosong',
-            'minimum_experience.required'   => 'Pengalaman tidak boleh kosong',
-            'employment_type.required'      => 'Tipe pekerja tidak boleh kosong',
+            'name.required'     => 'Nama tidak boleh kosong!',
+            'body.required'     => 'Konten tidak boleh kosong!',
+            'location.required' => 'Lokasi tidak boleh kosong!',
+            'minimum_experience.required'   => 'Pengalaman tidak boleh kosong!',
+            'employment_type.required'      => 'Tipe pekerja tidak boleh kosong!',
+            'lang.required'                 => 'Bahasa tidak boleh kosong!'
         ]);
 
         if($data->fails())
@@ -78,6 +80,7 @@ class CarrerController extends Controller
             'department'    => $request->department,
             'minimum_experience'    => $request->minimum_experience,
             'employment_type'       => $request->employment_type,
+            'lang'                  => $request->lang,
         ]);
 
         return [
@@ -125,12 +128,14 @@ class CarrerController extends Controller
             'department'    => 'required',
             'minimum_experience'    => 'required',
             'employment_type'       => 'required', 
+            'lang'                  => 'required',
         ], [
-            'name.required'     => 'Nama tidak boleh kosong',
-            'body.required'     => 'Konten tidak boleh kosong',
-            'location.required' => 'Lokasi tidak boleh kosong',
-            'minimum_experience.required'   => 'Pengalaman tidak boleh kosong',
-            'employment_type.required'      => 'Tipe pekerja tidak boleh kosong',
+            'name.required'     => 'Nama tidak boleh kosong!',
+            'body.required'     => 'Konten tidak boleh kosong!',
+            'location.required' => 'Lokasi tidak boleh kosong!',
+            'minimum_experience.required'   => 'Pengalaman tidak boleh kosong!',
+            'employment_type.required'      => 'Tipe pekerja tidak boleh kosong!',
+            'lang.required'                 => 'Bahasa tidak boleh kosong!'
         ]);
 
         if($data->fails())
@@ -149,6 +154,7 @@ class CarrerController extends Controller
             'department'    => $request->department,
             'minimum_experience'    => $request->minimum_experience,
             'employment_type'       => $request->employment_type,
+            'lang'                  => $request->lang,
         ]);
 
         return [

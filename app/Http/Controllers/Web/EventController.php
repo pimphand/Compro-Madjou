@@ -54,14 +54,16 @@ class EventController extends Controller
             'location'  => 'required',
             'image'     => 'required|image|mimes:jpg,jpeg,png,svg,webp|max:2048',
             'date'      => 'required',
-            'time'      => 'required'
+            'time'      => 'required',
+            'lang'      => 'required',
         ], [
             'title.required'        => 'Judul tidak boleh kosong!',
             'body.required'         => 'Konten tidak boleh kosong!',
             'location.required'     => 'Lokasi tidak boleh kosong!',
             'image.required'        => 'Gambar tidak boleh kosong!',
             'date.required'         => 'Tanggal event tidak boleh kosong!',
-            'time.required'         => 'Jam event tidak boleh kosong!'
+            'time.required'         => 'Jam event tidak boleh kosong!',
+            'lang.required'         => 'Bahasa tidak boleh kosong!',
         ]);
 
         if ($data->fails()) {
@@ -87,6 +89,7 @@ class EventController extends Controller
             'location'  => $request->location,
             'date'      => $request->date,
             'time'      => $request->time,
+            'lang'      => $request->lang,
         ]);
 
         return [
@@ -134,6 +137,7 @@ class EventController extends Controller
             'image'     => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:2048',
             'date'      => 'required',
             'time'      => 'required',
+            'lang'      => 'required',
         ], [
             'title.required'        => 'Judul tidak boleh kosong!',
             'body.required'         => 'Konten tidak boleh kosong!',
@@ -142,6 +146,7 @@ class EventController extends Controller
             'image.mimes'           => 'Ekstensi gambar tidak sesuai!',
             'date.required'         => 'Tanggal event tidak boleh kosong!',
             'time.required'         => 'Jam event tidak boleh kosong!',
+            'lang.required'         => 'Bahasa tidak boleh kosong!',
         ]);
 
         if ($data->fails()) {
@@ -171,6 +176,7 @@ class EventController extends Controller
             'date'      => $request->date,
             'time'      => $request->time,
             'image'     => $fileNameSave ?? $event->image,
+            'lang'      => $request->lang,
         ]);
 
         return [

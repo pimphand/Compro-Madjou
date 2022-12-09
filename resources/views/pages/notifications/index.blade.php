@@ -32,6 +32,7 @@
                                         <th>No</th>
                                         <th>E-mail</th>
                                         <th>Body</th>
+                                        <th>Bahasa</th>
                                         <th>Gambar</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -69,9 +70,19 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="body" class="form-label">Body </label>
-                                                <textarea type="text" class="form-control" id="body" name="body"
+                                                <textarea type="text" class="form-control" id="body"
                                                     placeholder="Masukkan body pesan..."></textarea>
+                                                    <input type="hidden" name="body" class="body">
                                                 <div class="text-danger" id="error-body"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="lang" class="form-label">Bahasa </label>
+                                                <select name="lang" id="lang" class="form-control">
+                                                    <option value="" disabled selected>Pilih bahasa</option>
+                                                    <option value="id">Indonesia</option>
+                                                    <option value="en">English</option>
+                                                </select>
+                                                <div class="text-danger" id="error-lang"></div>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="image" class="form-label">Gambar </label>
@@ -96,7 +107,10 @@
 @endsection
 
     @push('js')
+    <script src="https://cdn.tiny.cloud/1/wwx0cl8afxdfv85dxbyv3dy0qaovbhaggsxpfqigxlxw8pjx/tinymce/6/tinymce.min.js"
+    referrerpolicy="origin"></script>
     <script>
+        
         let showData;
         $(() => {
             $('#btn-add').click(function (e) { 
@@ -122,7 +136,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 4],
+                        targets: [0, 5],
                         className: 'text-center'
                     },
                     {
@@ -146,11 +160,17 @@
                 }, {
                     data: 'body',
                     name: 'body',
+                    render: function ( data) {
+                        return htmlDecode(data);
+                    },
+                }, {
+                    data: 'lang',
+                    name: 'lang',
                 }, {
                     data: 'image',
                     name: 'image',
                     render: function ( data) {
-              return `<img src="{{asset('storage/clients')}}/${data}" width="40px">`;},
+              return `<img src="{{asset('storage/notifications')}}/${data}" width="40px">`;},
                 }, {
                     data: 'id',
                     name: 'id',
@@ -183,23 +203,30 @@
                 }]
             })
             // edit
+            function htmlDecode(input){
+                var e = document.createElement('p');
+                e.innerHTML = input;
+                return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+            }
             $('.table-data').on('click', '.btn-edit', function() {
                 
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('clients.update',':id') }}"
+                let url = "{{ route('notifications.update',':id') }}"
                     url = url.replace(':id', row.id);
                 $("#modalFormData").attr('action', url);
                 $("#title").html("Edit "+ row.name);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#email").val(row.email);
-                $("#body").val(row.body);
+                var body = htmlDecode(row.body);
+                tinyMCE.activeEditor.setContent(body);
+                $('#lang').val(row.lang);
                 $('.error').empty();
                 $('#tagEditorModal').modal('show');
             })
             // Delete
             $('.table-data').on('click', '.btn-remove', function() {
                 let row = showData.row($(this).closest('tr')).data();
-                let url = "{{ route('clients.destroy',':id') }}"
+                let url = "{{ route('notifications.destroy',':id') }}"
                     url = url.replace(':id', row.id);
                 
                 Swal.fire({
@@ -236,10 +263,15 @@
             })
         })
 
-        // text editor
-        new EasyMDE({
-        autoDownloadFontAwesome: false,
-        element: document.getElementById('body'),
+          // text editor
+          tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace tablevisualblockswordcount',toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | linkimage media table | alignlineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            init_instance_callback: function(editor) {
+                editor.on('keyup', function(e) {
+                    $(".body").val(editor.getContent())
+                });
+            }
         });
     </script>
     @endpush
