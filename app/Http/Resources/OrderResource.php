@@ -20,6 +20,7 @@ class OrderResource extends JsonResource
             'amount'    => $this->amount,
             'code_unique'   => $this->code_unique,
             'invoice_id'    => $this->invoice_id,
+            'booking_id'    => $this->booking_id,
         ];
     }
 }
