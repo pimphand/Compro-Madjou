@@ -16,20 +16,19 @@ class OrderController extends Controller
      */
     public function index()
     {
-        if(request()->ajax())
-        {
+        if (request()->ajax()) {
             $order = Order::latest()->get();
 
             return DataTables::of($order)
-                ->addColumn('packages', function($package){
+                ->addColumn('packages', function ($package) {
                     return $package->packages->name;
                 })
-                ->addColumn('users', function($user){
+                ->addColumn('users', function ($user) {
                     return $user->users->name;
                 })
                 ->addIndexColumn()
                 ->make(true);
-        } 
+        }
 
         return view('pages.order.index')->with('orders');
     }

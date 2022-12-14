@@ -1,117 +1,122 @@
 @extends('layouts.app')
 @section('title', 'Madjou | Notifikasi')
 @section('content')
-        <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                @if( Session::has("success") )
-                <div class="alert alert-success alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("success") }}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        @if( Session::has("success") )
+        <div class="alert alert-success alert-block" role="alert">
+            <button class="close" data-dismiss="alert"></button>
+            {{ Session::get("success") }}
+        </div>
+        @endif
+        @if( Session::has("error") )
+        <div class="alert alert-danger alert-block" role="alert">
+            <button class="close" data-dismiss="alert"></button>
+            {{ Session::get("error") }}
+        </div>
+        @endif
+        <div class="card">
+            <div class="card-body">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h4 class="card-title">Table data notifikasi</h4>
+                    <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal"
+                        data-bs-target="#tagEditorModal" id='btn-add'>
+                        <i data-feather="plus"></i>
+                        Tambah Data
+                    </button>
                 </div>
-                @endif
-                @if( Session::has("error") )
-                <div class="alert alert-danger alert-block" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    {{ Session::get("error") }}
+                <div class="table-responsive">
+                    <table data-url="{{ request()->url() }}" class="table-data table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Judul</th>
+                                <th>E-mail</th>
+                                <th>Body</th>
+                                <th>Bahasa</th>
+                                <th>Gambar</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
                 </div>
-                @endif
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h4 class="card-title">Table data notifikasi</h4>
-                            <button type="button" class="btn btn-inverse-success" data-bs-toggle="modal" 
-                            data-bs-target="#tagEditorModal" id='btn-add'>
-                                <i data-feather="plus"></i>
-                                Tambah Data
-                            </button>
-                        </div>
-                        <div class="table-responsive">
-                            <table data-url="{{ request()->url() }}" class="table-data table">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>E-mail</th>
-                                        <th>Body</th>
-                                        <th>Bahasa</th>
-                                        <th>Gambar</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
 
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {{-- modal --}}
+                {{-- modal --}}
 
 
-                        <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1"
-                            aria-labelledby="varyingModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="varyingModalLabel">
-                                            <span id="title"></span>
-                                        </h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="btn-close"></button>
+                <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1" aria-labelledby="varyingModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="varyingModalLabel">
+                                    <span id="title"></span>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="btn-close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="modalFormData" name="modalFormData" class="form-horizontal" novalidate="">
+                                    @csrf
+                                    <div id="put"></div>
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Judul </label>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                            placeholder="Masukkan title..." value="">
+                                        <div class="text-danger" id="error-name"></div>
                                     </div>
-                                    <div class="modal-body">
-                                        <form id="modalFormData" name="modalFormData" class="form-horizontal"
-                                            novalidate="">
-                                            @csrf
-                                            <div id="put"></div>
-                                            <div class="mb-3">
-                                                <label for="name" class="form-label">Email </label>
-                                                <input type="text" class="form-control" id="email" name="email"
-                                                    placeholder="Masukkan email..." value="">
-                                                <div class="text-danger" id="error-name"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="body" class="form-label">Body </label>
-                                                <textarea type="text" class="form-control" id="body"
-                                                    placeholder="Masukkan body pesan..."></textarea>
-                                                    <input type="hidden" name="body" class="body">
-                                                <div class="text-danger" id="error-body"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="lang" class="form-label">Bahasa </label>
-                                                <select name="lang" id="lang" class="form-control">
-                                                    <option value="" disabled selected>Pilih bahasa</option>
-                                                    <option value="id">Indonesia</option>
-                                                    <option value="en">English</option>
-                                                </select>
-                                                <div class="text-danger" id="error-lang"></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="image" class="form-label">Gambar </label>
-                                                <input type="file" name="image" id="image" class="form-control" value="">
-                                                <div class="text-danger" id="error-image"></div>
-                                            </div>
-                                        </form>
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Email </label>
+                                        <input type="text" class="form-control" id="email" name="email"
+                                            placeholder="Masukkan email..." value="">
+                                        <div class="text-danger" id="error-name"></div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-inverse-primary" id="btn-save"
-                                            value="add">Simpan data</button>
-                                        <input type="hidden" id="notif_id" name="id" value="0">
+                                    <div class="mb-3">
+                                        <label for="body" class="form-label">Body </label>
+                                        <textarea type="text" class="form-control" id="body"
+                                            placeholder="Masukkan body pesan..."></textarea>
+                                        <input type="hidden" name="body" class="body">
+                                        <div class="text-danger" id="error-body"></div>
                                     </div>
-                                </div>
+                                    <div class="mb-3">
+                                        <label for="lang" class="form-label">Bahasa </label>
+                                        <select name="lang" id="lang" class="form-control">
+                                            <option value="" disabled selected>Pilih bahasa</option>
+                                            <option value="id">Indonesia</option>
+                                            <option value="en">English</option>
+                                        </select>
+                                        <div class="text-danger" id="error-lang"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Gambar </label>
+                                        <input type="file" name="image" id="image" class="form-control" value="">
+                                        <div class="text-danger" id="error-image"></div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-inverse-primary" id="btn-save" value="add">Simpan
+                                    data</button>
+                                <input type="hidden" id="notif_id" name="id" value="0">
                             </div>
                         </div>
-
                     </div>
                 </div>
+
             </div>
         </div>
+    </div>
+</div>
 @endsection
 
-    @push('js')
-    <script src="https://cdn.tiny.cloud/1/wwx0cl8afxdfv85dxbyv3dy0qaovbhaggsxpfqigxlxw8pjx/tinymce/6/tinymce.min.js"
+@push('js')
+<script src="https://cdn.tiny.cloud/1/wwx0cl8afxdfv85dxbyv3dy0qaovbhaggsxpfqigxlxw8pjx/tinymce/6/tinymce.min.js"
     referrerpolicy="origin"></script>
-    <script>
-        
-        let showData;
+<script>
+    let showData;
         $(() => {
             $('#btn-add').click(function (e) { 
                 e.preventDefault();
@@ -154,6 +159,9 @@
                     render: (DT_RowIndex) => {
                         return DT_RowIndex + '.';
                     }
+                },{
+                    data: 'name',
+                    name: 'name',
                 }, {
                     data: 'email',
                     name: 'email',
@@ -217,6 +225,7 @@
                 $("#title").html("Edit "+ row.name);
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#email").val(row.email);
+                $("#name").val(row.name);
                 var body = htmlDecode(row.body);
                 tinyMCE.activeEditor.setContent(body);
                 $('#lang').val(row.lang);
@@ -273,5 +282,5 @@
                 });
             }
         });
-    </script>
-    @endpush
+</script>
+@endpush

@@ -11,6 +11,6 @@ class Notification extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'email', 'body', 'image', 'lang'
+        'email', 'body', 'image', 'lang', 'name'
     ];
 }
