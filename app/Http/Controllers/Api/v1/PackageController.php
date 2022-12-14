@@ -21,7 +21,7 @@ class PackageController extends Controller
 
         return PackageResource::collection($package)->additional([
             'success'   => true,
-            'message'   => 'Data kontak berhasil ditampilkan'
+            'message'   => 'Data paket berhasil ditampilkan'
         ]);
     }
 
@@ -44,7 +44,13 @@ class PackageController extends Controller
      */
     public function show($id)
     {
-        //
+        $package = Package::findOrFail($id);
+
+        return [
+            'success'   => true,
+            'message'   => 'Data paket berhasil ditampilkan',
+            'data'      => new PackageResource($package)
+        ];
     }
 
     /**

@@ -169,7 +169,7 @@
                     data: 'body',
                     name: 'body',
                     render: function ( data) {
-                        return htmlDecode(data);
+                        return htmlDecode(data.slice(0,30).padEnd(50,'.'));
                     },
                 }, {
                     data: 'lang',

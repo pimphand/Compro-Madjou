@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Payment;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
+use App\Models\Madjou\Product;
 use App\Models\Order;
 use App\Models\Package;
 use Illuminate\Http\Request;
@@ -19,33 +20,46 @@ class InvoiceController extends Controller
     }
 
     // create invoice 
-    public function createInv(Request $request)
+    public function createInv(Request $request, $id)
     {
+        $type = $request->type;
 
-        $package = Package::FindOrFail(1);
+        if( $type == 1 )
+        {
+            $product = Package::findOrFail($id);
+        } 
+        else if( $type == 2 )
+        {
+            $product = Product::findOrFail($id);
+        } 
+        
+        $noUrut = Order::count();
+        $no= $noUrut;
+        $auto=intval($no)+1;
+        $inv_code= str_pad($auto , 6, '0', STR_PAD_LEFT);
 
         $uniq_code = rand(0,999);
 
-        $no = '0001';
-
         $fee = 5000;
 
-        $total = $package->price + $fee + $uniq_code;
+        $total = $product->price + $fee + $uniq_code;
 
         $order = Order::create([
-            'type'          => $package->id,
+            'type'          => $type,
             'user_id'       => $request->user_id,
             'amount'        => $total,
             'code_unique'   => $uniq_code,
-            'invoice_id'    => 'MDJ' . '-' . intval($no)+1,
+            'booking_id'    => $product->id,
+            'invoice_id'    => 'MDJ' . '-' . $inv_code,
         ]);
+        
 
         if($order)
         {
             $inv_params = [
                 'external_id'   => $order->invoice_id,
                 'payer_email'   => 'rieflvi@gmail.com',
-                'description'   => 'Pembbayaran web',
+                'description'   => 'Pembayaran web',
                 'fees'          => [
                     [
                         'type'      => 'Admin Fee',
@@ -58,7 +72,7 @@ class InvoiceController extends Controller
                     ],
                 'amount'        => $total,
                 'customer'      => [
-                    'name'          => 'rochman',
+                    'surname'          => 'rochman',
                     'email'         => 'rieflvi@gmail.com',
                     'mobile_number' => '08998988682',
                 ],
@@ -75,16 +89,16 @@ class InvoiceController extends Controller
             return [
                 'success'   => true,
                 'message'   => 'Invoice berhasil dibuat',
-                'data'      => $inv,
+                'data order'        => new OrderResource($order),
+                'data invoice'      => $inv,
             ];
         }
-
+        
         return [
             'success'   => true,
             'message'   => 'Data order berhasil disimpan',
             'data'      => new OrderResource($order),
-        ];
-
+        ];        
        
     }
 
