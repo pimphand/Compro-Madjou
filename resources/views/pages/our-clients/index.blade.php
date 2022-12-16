@@ -3,7 +3,6 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12 grid-margin stretch-card">
-        z
         <div class="card">
             <div class="card-body">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
