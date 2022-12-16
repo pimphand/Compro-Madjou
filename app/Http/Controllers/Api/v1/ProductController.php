@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\EventResource;
-use App\Models\Event;
+use App\Http\Resources\ProductResource;
+use App\Models\Madjou\Product;
 use Illuminate\Http\Request;
 
-class EventController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,12 +16,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        $event = Event::where('lang', request()->header('lang') ?? 'id');
-
-        return EventResource::collection($event->paginate(10))->additional([
-            'success'   => true,
-            'message'   => 'Data event berhasil ditampilkan',
-        ]);
+        //
     }
 
     /**
@@ -53,13 +48,13 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        $event = Event::findOrFail($id);
+        $product = Product::findOrFail($id);
 
-        return response()->json([
+        return [
             'success'   => true,
-            'message'   => 'Data event berhasil ditampilkan!',
-            'data'      => new EventResource($event),
-        ], 200);
+            'message'   => 'Data produk berhasil ditampilkan!',
+            'data'      => new ProductResource($product),
+        ];
     }
 
     /**

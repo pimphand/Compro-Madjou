@@ -24,12 +24,11 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        if(request()->ajax())
-        {
-            $notif = ModelsNotification::latest()->get(); 
+        if (request()->ajax()) {
+            $notif = ModelsNotification::latest()->get();
             return DataTables::of($notif)
-                    ->addIndexColumn()
-                    ->make(true);
+                ->addIndexColumn()
+                ->make(true);
         }
 
         return view('pages.notifications.index')->with('notifications');
@@ -53,37 +52,36 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
-        $data = Validator::make($request->all(),[
+        $data = Validator::make($request->all(), [
             'email'     => 'required|email',
             'body'      => 'required',
+            'name'      => 'required',
             'image'     => 'required|image|mimes:jpg,jpeg,png|max:2048',
             // 'lang'      => 'required',
-        ],[
+        ], [
             'email.required'    => 'Email tidak boleh kosong!',
             'body.required'     => 'Konten tidak boleh kosong!',
             // 'lang.required'     => 'Bahasa tidak boleh kosong!',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
                 'errors'    => $data->getMessageBag()->toArray(),
             ]);
         }
 
-        if($image = $request->file('image'))
-        {
+        if ($image = $request->file('image')) {
             $fileNameWithExt   = $image->getClientOriginalName();
             $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext               = $image->getClientOriginalExtension();
             $fileNameSave      = Str::uuid();
             $path              = $image->storeAs('public/notifications', $fileNameSave);
-
         }
 
         $notif  = ModelsNotification::create([
             'email' => $request->email,
+            'name' => $request->name,
             'body'  => $request->body,
             'image' => $fileNameSave,
             'lang'  => $request->lang,
@@ -131,18 +129,18 @@ class NotificationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = Validator::make($request->all(),[
+        $data = Validator::make($request->all(), [
             'email'     => 'required|email',
             'body'      => 'required',
+            'name'      => 'required',
             'image'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'lang'      => 'nullable',
-        ],[
+        ], [
             'email.required'    => 'Email tidak boleh kosong',
             'body.required'     => 'Konten tidak boleh kosong'
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'    => false,
                 'errors'    => $data->getMessageBag()->toArray(),
@@ -151,20 +149,20 @@ class NotificationController extends Controller
 
         $notif = ModelsNotification::findOrFail($id);
 
-        if($request->hasFile('image') && $request->file('image') != null)
-        {
-            Storage::delete('public/notifications/'.$notif->image);
-            
+        if ($request->hasFile('image') && $request->file('image') != null) {
+            Storage::delete('public/notifications/' . $notif->image);
+
             $fileNameWithExt   = $request->file('image')->getClientOriginalName();
             $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext               = $request->file('image')->getClientOriginalExtension();
             $fileNameSave      = Str::uuid();
             $path               = $request->file('image')->storeAs('public/notifications', $fileNameSave);
         }
-        
+
         $notif->update([
             'email'             => $request->email,
             'body'              => $request->body,
+            'name'              => $request->name,
             'image'             => $fileNameSave ?? $notif->image,
             'lang'              => $request->lang,
         ]);
@@ -190,12 +188,11 @@ class NotificationController extends Controller
     {
         $notif = ModelsNotification::findOrFail($id);
         $notif->delete();
-        Storage::delete('public/notifications/'.$notif->image);
+        Storage::delete('public/notifications/' . $notif->image);
 
         return [
             'success'   => true,
             'message'   => 'Notifikasi berhasil dihapus',
         ];
-
     }
 }

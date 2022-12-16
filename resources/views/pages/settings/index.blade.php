@@ -193,6 +193,13 @@
                     }, {
                         data: 'url',
                         name: 'url',
+                        render: function (data) {
+                            if(data != ''){
+                                return data.slice(0,30).padEnd(50,'.');
+                            }else{
+                                return data;
+                            }
+                        },
                     }, {
                         data: 'images',
                         name: 'images',

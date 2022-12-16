@@ -74,7 +74,7 @@ Route::group(["prefix" => 'v1'], function () {
 
     Route::resource('/events', EventController::class);
 
-    Route::post('/order', [OrderController::class, 'create']);
+    Route::post('/order/{id}', [OrderController::class, 'create']);
 });
 
 Route::group(['prefix' => 'xendit'], function () {
@@ -82,7 +82,7 @@ Route::group(['prefix' => 'xendit'], function () {
     Route::get('/payment', [XenditController::class, 'payment']);
     Route::get('/virtual-account', [XenditController::class, 'virtualAccount']);
     Route::post('/callback_virtual_account', [XenditController::class, 'pay']);
-    Route::post('/create-invoice', [InvoiceController::class, 'createInv']);
+    Route::post('/create-invoice/{id}', [InvoiceController::class, 'createInv']);
     Route::get('/invoice', [InvoiceController::class, 'getInvoice']);
 });
 

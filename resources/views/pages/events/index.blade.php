@@ -194,6 +194,9 @@
                 }, {
                     data: 'title',
                     name: 'title',
+                    render: function (data) {
+                        return htmlDecode(data.slice(0,30).padEnd(50,'.'));
+                    },
                 }, {
                     data: 'location',
                     name: 'location',
