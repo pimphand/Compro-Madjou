@@ -11,12 +11,16 @@ class Project extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'project_type_id', 'title', 'programing', 'body' , 'slug',
-        'url', 'location', 'lang'
+        'project_type_id', 'title', 'programing', 'body', 'slug', 'image', 'url', 'location', 'lang'
     ];
 
     public function getType()
     {
         return $this->belongsTo(ProjectType::class, 'project_type_id', 'id');
+    }
+
+    function getImageAttribute($value)
+    {
+        return $this->image = config('app.url_prod') . "storage/project/" . $value;
     }
 }

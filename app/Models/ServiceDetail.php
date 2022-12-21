@@ -18,4 +18,8 @@ class ServiceDetail extends Model
     {
         return $this->belongsTo(Service::class, 'service_id', 'id');
     }
+    function getImageAttribute($value)
+    {
+        return $this->image = config('app.url_prod') . "storage/services/" . $value;
+    }
 }

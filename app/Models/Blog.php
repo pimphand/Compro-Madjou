@@ -18,13 +18,11 @@ class Blog extends Model
     public static function createLog($post)
     {
         $log = BlogLog::whereIp(request()->getClientIp())
-                ->where('created_at', ">" , now()->subMinutes(2))
-                ->count();
+            ->where('created_at', ">", now()->subMinutes(2))
+            ->count();
 
-        if(strpos(request()->getRequestUri(), "api") == true)
-        {
-            if($log <= 0)
-            {
+        if (strpos(request()->getRequestUri(), "api") == true) {
+            if ($log <= 0) {
                 BlogLog::create([
                     "blog_id"   => $post->id,
                     "ip"        => request()->getClientIp(),
@@ -41,15 +39,15 @@ class Blog extends Model
     }
 
     protected $fillable = [
-        'blog_category_id', 'title', 'slug', 'body',
-        'image', 'tags', 'lang', 'author'
+        'blog_category_id', 'title', 'slug', 'body', 'image', 'tags', 'lang', 'author'
     ];
 
     protected $casts = [
         'tags' => Json::class,
     ];
 
-    public function getCategories(){
+    public function getCategories()
+    {
         return $this->belongsTo(BlogCategory::class, 'blog_category_id', 'id');
     }
 
@@ -66,5 +64,10 @@ class Blog extends Model
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('D, Y-m-d');
+    }
+
+    function getImageAttribute($value)
+    {
+        return $this->image = config('app.url_prod') . "storage/blog/" . $value;
     }
 }

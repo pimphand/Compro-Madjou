@@ -25,12 +25,11 @@ class BlogController extends Controller
     {
         $category   = BlogCategory::all();
         $tag        = Tag::all();
-        
-        if(request()->ajax())
-        {
+
+        if (request()->ajax()) {
             $data = Blog::with('getCategories', 'getUsers')
-                    ->where('title','like','%'.substr($request->search, 2).'%')
-                    ->latest()->paginate(10);
+                ->where('title', 'like', '%' . substr($request->search, 2) . '%')
+                ->latest()->paginate(10);
             return response()->json([
                 'success'   => true,
                 'message'   => 'Data blog berhasil ditampilkan',
@@ -38,7 +37,7 @@ class BlogController extends Controller
             ]);
         }
 
-        return view('pages.blogs.index',[
+        return view('pages.blogs.index', [
             'category'  => $category,
             'tag'       => $tag
         ]);
@@ -62,7 +61,7 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        $data = Validator::make($request->all(),[
+        $data = Validator::make($request->all(), [
             'blog_category_id'  => 'required|',
             'title'             => 'required|string|max:50',
             'body'              => 'required|string|',
@@ -73,24 +72,22 @@ class BlogController extends Controller
             'title.required'                => 'Judul tidak boleh kosong!',
             'body.required'                 => 'Konten tidak boleh kosong!',
             'image.required'                => 'Gambar tidak boleh kosong!',
-            'lang.required'                 => 'Bahasa tidak boleh kosong!',     
+            'lang.required'                 => 'Bahasa tidak boleh kosong!',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'        => false,
                 'message'       => $data->getMessageBag()->toArray()
             ]);
         }
 
-        if($image = $request->file('image'))
-        {
+        if ($image = $request->file('image')) {
             $fileNameWithExt   = $image->getClientOriginalName();
             $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext               = $image->getClientOriginalExtension();
             $fileNameSave      = Str::uuid();
-            $path              = $image->storeAs('public/blogs', $fileNameSave);  
+            $path              = $image->storeAs('public/blogs', $fileNameSave);
         }
 
         $dataBlog = Blog::create([
@@ -148,7 +145,7 @@ class BlogController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = Validator::make($request->all(),[
+        $data = Validator::make($request->all(), [
             'blog_category_id'  => 'required|',
             'title'             => 'required|string|max:50',
             'body'              => 'required|string|',
@@ -159,11 +156,10 @@ class BlogController extends Controller
             'title.required'                => 'Judul tidak boleh kosong!',
             'body.required'                 => 'Konten tidak boleh kosong!',
             'image.required'                => 'Gambar tidak boleh kosong!',
-            'lang.required'                 => 'Bahasa tidak boleh kosong!',     
+            'lang.required'                 => 'Bahasa tidak boleh kosong!',
         ]);
 
-        if($data->fails())
-        {
+        if ($data->fails()) {
             return response()->json([
                 'status'        => false,
                 'message'       => $data->getMessageBag()->toArray()
@@ -172,16 +168,15 @@ class BlogController extends Controller
 
         $blog    = Blog::findOrFail($id);
 
-        if($request->hasFile('image') && $request->file('image') != null)
-        {
-            Storage::delete('public/blogs/'.$blog->image);
-            
+        if ($request->hasFile('image') && $request->file('image') != null) {
+            Storage::delete('public/blogs/' . $blog->image);
+
 
             $fileNameWithExt    = $request->file('image')->getClientOriginalName();
             $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext                = $request->file('image')->getClientOriginalExtension();
             $fileNameSave       = Str::uuid();
-            $path               = $request->file('image')->storeAs('public/service', $fileNameSave);
+            $path               = $request->file('image')->storeAs('public/blogs', $fileNameSave);
         }
 
         $blog->update([
@@ -211,7 +206,7 @@ class BlogController extends Controller
     public function destroy($id)
     {
         $blog    = Blog::findOrFail($id);
-        Storage::delete('public/blog/'.$blog->image);
+        Storage::delete('public/blogs/' . $blog->image);
         $blog->delete();
 
         return [

@@ -33,4 +33,9 @@ class Service extends Model
     {
         return $this->hasMany(ServiceDetail::class, 'service_id', 'id');
     }
+
+    function getImageAttribute($value)
+    {
+        return $this->image = config('app.url_prod') . "storage/services/" . $value;
+    }
 }

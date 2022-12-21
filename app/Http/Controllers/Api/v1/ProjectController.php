@@ -22,8 +22,6 @@ class ProjectController extends Controller
             'success'   => true,
             'message'   => 'Data project berhasil ditampilkan',
         ]);
-
-        
     }
 
     /**
@@ -55,7 +53,13 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Project::whereSlug($id)->firstOrFail();
+
+        return response()->json([
+            'success'   => true,
+            'message'   => 'Data detail layanan berhasil ditampilkan',
+            'data'      => new ProjectResource($data),
+        ]);
     }
 
     /**

@@ -54,12 +54,12 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        $data   = Service::findOrFail($id)->with('getDetail')->latest()->get();
-
+        $data   = Service::whereSlug($id)->firstOrFail();
+        $data->load('detail');
         return response()->json([
             'success'   => true,
             'message'   => 'Data detail layanan berhasil ditampilkan',
-            'data'      => new DetailServiceResource($data),
+            'data'      => new ServiceResource($data),
         ]);
     }
 

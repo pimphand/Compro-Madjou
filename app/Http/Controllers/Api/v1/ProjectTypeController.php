@@ -22,8 +22,6 @@ class ProjectTypeController extends Controller
             'success'   => true,
             'message'   => 'Data tipe projek berhasil ditampilkan'
         ]);
-
-       
     }
 
     /**
@@ -55,7 +53,12 @@ class ProjectTypeController extends Controller
      */
     public function show($id)
     {
-        //
+        $projectType = ProjectType::whereSlug($id)->firstOrFail();
+
+        return ProjectTypeResource::collection($projectType)->additional([
+            'success'   => true,
+            'message'   => 'Data tipe projek berhasil ditampilkan'
+        ]);
     }
 
     /**
