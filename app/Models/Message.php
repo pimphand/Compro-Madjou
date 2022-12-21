@@ -11,7 +11,6 @@ class Message extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'email', 'company', 'phone', 'text',
-        'ip', 'country', 'requirement', 'from'
+        'email', 'company', 'phone', 'text', 'ip', 'country', 'requirement', 'from'
     ];
 }

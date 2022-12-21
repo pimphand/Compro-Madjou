@@ -18,9 +18,4 @@ class Project extends Model
     {
         return $this->belongsTo(ProjectType::class, 'project_type_id', 'id');
     }
-
-    function getImageAttribute($value)
-    {
-        return $this->image = config('app.url_prod') . "storage/project/" . $value;
-    }
 }
