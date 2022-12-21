@@ -65,9 +65,4 @@ class Blog extends Model
     {
         return Carbon::parse($value)->format('D, Y-m-d');
     }
-
-    function getImageAttribute($value)
-    {
-        return $this->image = config('app.url_prod') . "storage/blog/" . $value;
-    }
 }

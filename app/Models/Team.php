@@ -24,9 +24,4 @@ class Team extends Model
     {
         return $this->belongsTo(TeamCategory::class, 'category_team_id', 'id');
     }
-
-    function getImageAttribute($value)
-    {
-        return $this->image = config('app.url_prod') . "storage/teams/" . $value;
-    }
 }
