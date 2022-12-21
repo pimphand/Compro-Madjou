@@ -15,16 +15,13 @@ class CarrerResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'        => $this->id,
-            'name'      => $this->name,
-            'body'      => $this->body,
-            'location'  => $this->location,
-            'department'=> $this->department,
+            'id'                    => $this->id,
+            'name'                  => $this->name,
+            'body'                  => $this->body,
+            'location'              => $this->location,
+            'department'            => $this->department,
             'minimum_experience'    => $this->minimum_experience,
             'employment_type'       => $this->employment_type,
-            'lang'                  => $this->lang,
-            'created'               => $this->created_at,
-            'updated'               => $this->updated_at,
         ];
     }
 }

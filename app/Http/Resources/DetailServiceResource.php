@@ -20,8 +20,6 @@ class DetailServiceResource extends JsonResource
             'title'         => $this->title,
             'body'          => $this->body,
             'image'         => $this->image,
-            'created'       => $this->created_at,
-            'updated'       => $this->updated_at,
         ];
     }
 }

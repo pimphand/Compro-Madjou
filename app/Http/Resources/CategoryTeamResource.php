@@ -16,10 +16,7 @@ class CategoryTeamResource extends JsonResource
     {
         return [
             'id'            => $this->id,
-            'name'          => $this->name,
-            'created_at'    => $this->created_at,
-            'update_at'     => $this->update_at,
-            'delete_at'     => $this->delete_at     
+            'name'          => $this->name
         ];
     }
 }

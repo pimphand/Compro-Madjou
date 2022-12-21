@@ -16,12 +16,13 @@ class ProjectResource extends JsonResource
     {
         return [
             'id'                => $this->id,
-            'project_type_id'   => $this->project_type_id,
+            'project_type'      => new ProjectTypeResource($this->getType),
             'programming'       => $this->programming,
             'title'             => $this->title,
             'slug'              => $this->slug,
             'body'              => $this->body,
             'url'               => $this->url,
+            'image'             => $this->image,
             'location'          => $this->location,
             'lang'              => $this->lang,
             'created'           => $this->created_at,

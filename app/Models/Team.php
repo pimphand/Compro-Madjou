@@ -12,8 +12,7 @@ class Team extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name', 'category_team_id','name','image',
-        'position','lang'
+        'name', 'category_team_id', 'name', 'image', 'position', 'lang'
     ];
 
     /**
@@ -24,5 +23,10 @@ class Team extends Model
     public function getTeam(): BelongsTo
     {
         return $this->belongsTo(TeamCategory::class, 'category_team_id', 'id');
+    }
+
+    function getImageAttribute($value)
+    {
+        return $this->image = config('app.url_prod') . "storage/teams/" . $value;
     }
 }

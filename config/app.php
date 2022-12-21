@@ -214,5 +214,5 @@ return [
         'Indonesia' => Laravolt\Indonesia\Facade::class,
         'Datatables' => Yajra\Datatables\Datatables::class,
     ])->toArray(),
-
+    'url_prod' => "https://admin.madjou.com/",
 ];

@@ -80,7 +80,7 @@ class ProjectController extends Controller
                 'errors'    => $data->getMessageBag()->toArray(),
             ]);
         }
-        
+
         if ($image = $request->file('image')) {
             $fileNameSave      = Str::uuid();
             $image->storeAs('public/project', $fileNameSave);
@@ -164,6 +164,10 @@ class ProjectController extends Controller
             ]);
         }
 
+        if ($image = $request->file('image')) {
+            $fileNameSave      = Str::uuid();
+            $image->storeAs('public/project', $fileNameSave);
+        }
         $project = Project::findOrFail($id);
         $project->update([
             'project_type_id'   => $request->project_type_id,
@@ -171,6 +175,7 @@ class ProjectController extends Controller
             'slug'          => Str::slug($request->title),
             'programing'    => $request->programing,
             'body'          => $request->body,
+            'image'         => $fileNameSave ?? $project->image,
             'url'           => $request->url,
             'location'      => $request->location,
             'lang'          => $request->lang,

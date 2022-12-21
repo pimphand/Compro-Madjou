@@ -16,13 +16,10 @@ class TeamResource extends JsonResource
     {
         return [
             'id'            => $this->id,
-            'category_id'   => $this->category_team_id,
+            'category'      => new CategoryTeamResource($this->getTeam),
             'name'          => $this->name,
             'image'         => $this->image,
             'position'      => $this->position,
-            'created'       => $this->created_at,
-            'update'        => $this->update_at,
-            'delete'        => $this->delete_at,
         ];
     }
 }

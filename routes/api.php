@@ -57,14 +57,14 @@ Route::group(["prefix" => 'v1'], function () {
     Route::resource('/projects', ProjectController::class);
 
     Route::resource('/careers', CarrerController::class);
-    
+
     Route::resource('/packages', PackageController::class);
 
-    // Route::resource('/category-teams', CategoryTeamController::class);
+    Route::resource('/category-teams', CategoryTeamController::class);
 
-    // Route::resource('/teams', TeamController::class);
+    Route::resource('/teams', TeamController::class);
 
-    // Route::resource('/tags', TagController::class);
+    Route::resource('/tags', TagController::class);
 
     Route::resource('/subscribes', SubscribeController::class);
 

@@ -22,8 +22,7 @@ class ServiceResource extends JsonResource
             'tags'          => $this->tags,
             'body'          => $this->body,
             'image'         => $this->image,
-            'created'       => $this->created_at,
-            'updated'       => $this->updated_at,
+            'detail_service' => DetailServiceResource::collection($this->whenLoaded('detail'))
         ];
     }
 }

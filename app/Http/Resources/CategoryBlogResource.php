@@ -17,9 +17,9 @@ class CategoryBlogResource extends JsonResource
         return [
             'id'        => $this->id,
             'name'      => $this->name,
-            'lang'      => $this->lang,
-            'created'   => $this->created_at,
-            'updated'   => $this->update_at,
+            // 'lang'      => $this->lang,
+            // 'created'   => $this->created_at,
+            // 'updated'   => $this->update_at,
         ];
     }
 }
