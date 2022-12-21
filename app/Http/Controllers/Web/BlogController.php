@@ -83,6 +83,7 @@ class BlogController extends Controller
         }
 
         if ($image = $request->file('image')) {
+
             $fileNameWithExt   = $image->getClientOriginalName();
             $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext               = $image->getClientOriginalExtension();
@@ -169,13 +170,16 @@ class BlogController extends Controller
         $blog    = Blog::findOrFail($id);
 
         if ($request->hasFile('image') && $request->file('image') != null) {
-            Storage::delete('public/blogs/' . $blog->image);
-
+            // Storage::delete('public/blogs/' . $blog->image);
+            $fileNameSave       = Str::uuid();
+            $destinationPath = 'blogs';
+            $myimage = $request->image->getClientOriginalName();
+            $request->image->move(public_path($destinationPath), $myimage);
 
             $fileNameWithExt    = $request->file('image')->getClientOriginalName();
             $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext                = $request->file('image')->getClientOriginalExtension();
-            $fileNameSave       = Str::uuid();
+
             $path               = $request->file('image')->storeAs('public/blogs', $fileNameSave);
         }
 
