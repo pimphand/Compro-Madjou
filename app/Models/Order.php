@@ -14,7 +14,7 @@ class Order extends Model
     'type', 'user_id', 'amount', 'code_unique', 'invoice_id','booking_id'
     ];
 
-    public function packages(){
+    public function product(){
         return $this->belongsTo(Package::class, 'booking_id', 'id');
     }
 

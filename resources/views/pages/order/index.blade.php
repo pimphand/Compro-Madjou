@@ -30,6 +30,7 @@
                                         <th>Total</th>
                                         <th>Kode unik</th>
                                         <th>Id invoice</th>
+                                        <th>Product</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -108,7 +109,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 6],
+                        targets: [0, 7],
                         className: 'text-center'
                     },
                     {
@@ -127,8 +128,8 @@
                         return DT_RowIndex + '.';
                     }
                 }, {
-                    data: 'packages',
-                    name: 'packages',
+                    data: 'type',
+                    name: 'type',
                 }, {
                     data: 'users',
                     name: 'users',
@@ -141,6 +142,9 @@
                 }, {
                     data: 'invoice_id',
                     name: 'invoice_id',
+                }, {
+                    data: 'products',
+                    name: 'products',
                 }, {
                     data: 'id',
                     name: 'id',
