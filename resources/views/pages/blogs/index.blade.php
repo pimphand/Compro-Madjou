@@ -63,7 +63,7 @@
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                 @endforeach
                                             </select>
-                                            <div class="text-danger" id="error-category_blog"></div>
+                                            <div class="text-danger" id="error-blog_category_blog"></div>
                                         </div>
                                         <div class="mb-3">
                                             <label for="title" class="form-label">Judul </label>
@@ -304,7 +304,7 @@
                         $("#modalFormData").attr('action', url);
                         $("#title").html("Edit "+ data.data.title);
                         $("#put").html('<input type="hidden" name="_method" value="put">');
-                        $("#blog_category_id").val(data.data.blog_category_id);
+                        $("#blog_category_id").val(data.data.category_name.id);
                         $("#titles").val(data.data.title);
                         var body = htmlDecode(data.data.body);
                         tinyMCE.activeEditor.setContent(data.data.body);
@@ -312,7 +312,6 @@
                         $('#lang').val(data.data.lang);
                         $('.error').empty();
                         $('#tagEditorModal').modal('show');
-                        
                     }
                 });        
                 
