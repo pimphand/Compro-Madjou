@@ -225,7 +225,7 @@
                              $('.show-datas').append(
                                         "<div class='col'>"+
                                         "<div class='card'>"+
-                                            "<img src='{{url('storage/blogs')}}/"+item.image+"' class='card-img-top' height='200px' alt=''>"+
+                                            "<img src='{{asset('storage/blogs')}}/"+item.image+"' class='card-img-top' height='200px' alt=''>"+
                                             "<div class='card-body'>"+
                                                     "<h5 class='card-title'>"+item.title+"</h5>"+
                                                         "<span class='badge bg-light text-dark'>"+item.tags+"</span>"+
