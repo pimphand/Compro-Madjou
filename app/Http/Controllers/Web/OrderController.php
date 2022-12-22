@@ -20,8 +20,8 @@ class OrderController extends Controller
             $order = Order::latest()->get();
 
             return DataTables::of($order)
-                ->addColumn('packages', function ($package) {
-                    return $package->packages->name;
+                ->addColumn('products', function ($package) {
+                    return $package->products->name;
                 })
                 ->addColumn('users', function ($user) {
                     return $user->users->name;

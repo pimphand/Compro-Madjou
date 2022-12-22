@@ -149,14 +149,7 @@
                                 // show data
                             }
                         });
-                        if(showData){
                             showData.ajax.reload();
-                        }else{
-                            setInterval(() => {
-                                location.reload();
-                            }, 2000);
-                        }
-
                     }else{
                         $.each(data.errors, function (key, value) {
                             //   show errors

@@ -25,7 +25,7 @@ class TeamController extends Controller
         $data = TeamCategory::all();
 
         if (request()->ajax()) {
-            $dataTeam    = Team::with('getTeam')->latest()->get();
+            $dataTeam    = Team::latest()->get();
             return DataTables::of($dataTeam)
                 ->addColumn('getTeam', function($data) {
                     return $data->getTeam->name;

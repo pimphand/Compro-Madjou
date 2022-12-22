@@ -150,7 +150,7 @@
                     data: 'image',
                     name: 'image',
                     render: function ( data) {
-              return `<img src="{{asset('storage/clients')}}/${data}" width="40px">`;},
+              return `<img src="{{url('storage/clients')}}/${data}" width="40px">`;},
                 }, {
                     data: 'id',
                     name: 'id',

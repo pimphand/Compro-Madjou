@@ -106,9 +106,9 @@
                                     </form>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-inverse-primary" id="btn-save"
+                                    <button type="button" class="btn btn-inverse-primary" id="btn-sv"
                                         value="add">Simpan data</button>
-                                    <input type="hidden" id="blog_id" name="id" value="0">
+                                    <input type="hidden" id="blog_id" name="id" value="">
                                 </div>
                             </div>
                         </div>
@@ -153,12 +153,54 @@
         $('#btn-add').click(function (e) { 
                 e.preventDefault();
                 $("#title").html("Tambah data kategori blog");
-                $("#btn-save").val("add");
+                $("#btn-sv").val("add");
                 $("#put").html("");
                 $("#modalFormData").trigger("reset");
                 $("#tagEditorModal").modal("show");
                 $("#modalFormData").attr('action', "{{ route('blogs.store') }}");
+                console.log('click')
+        });
+        
+        $('.modal-form #btn-sv').on('click', function () {
+            var form = $('#modalFormData')[0];
+            var formData = new FormData(form);
+            $.ajax({
+                url: form.action,
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                if (data.success == true) {
+                        // sweetalert
+                        $('.modal-form').modal('hide');
+                        Swal.fire({
+                            title: 'Berhasil',
+                            // text: data.message,
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        })
+                        setInterval(() => {
+                                    location.reload();
+                                    
+                                }, 2000);
+                       
+                    }else{
+                        $.each(data.errors, function (key, value) {
+                            //   show errors
+                            console.log(key);
+                            $('#' + key).addClass('is-invalid');
+                            $('#' +'error-' + key ).html(value);
+                            // hide error
+                            $('#' + key).on('keyup', function () {
+                                $('#' + key).removeClass('is-invalid');
+                                $('#' +'error-' + key ).html('');
+                            });
+                        });
+                    }
+                }
             });
+        })
 
         // search data
         $('#search').on('keyup', function(){
@@ -183,7 +225,7 @@
                              $('.show-datas').append(
                                         "<div class='col'>"+
                                         "<div class='card'>"+
-                                            "<img src='{{asset('storage/blogs')}}/"+item.image+"' class='card-img-top' height='200px' alt=''>"+
+                                            "<img src='{{url('storage/blogs')}}/"+item.image+"' class='card-img-top' height='200px' alt=''>"+
                                             "<div class='card-body'>"+
                                                     "<h5 class='card-title'>"+item.title+"</h5>"+
                                                         "<span class='badge bg-light text-dark'>"+item.tags+"</span>"+
@@ -331,18 +373,18 @@
             })
 });
 
-// text editor
-tinymce.init({
-            selector: 'textarea',
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace tablevisualblockswordcount',toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | linkimage media table | alignlineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-            init_instance_callback: function(editor) {
-                editor.on('keyup', function(e) {
-                    $(".body").val(editor.getContent())
-                });
-            }
-        });
-    </script>
-    @endpush
+    // text editor
+    tinymce.init({
+                selector: 'textarea',
+                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace tablevisualblockswordcount',toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | linkimage media table | alignlineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                init_instance_callback: function(editor) {
+                    editor.on('keyup', function(e) {
+                        $(".body").val(editor.getContent())
+                    });
+                }
+            });
+</script>
+@endpush
 
 
 

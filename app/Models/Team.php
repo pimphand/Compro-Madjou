@@ -12,7 +12,7 @@ class Team extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name', 'category_team_id', 'name', 'image', 'position', 'lang'
+         'category_team_id', 'name', 'image', 'position', 'lang'
     ];
 
     /**
