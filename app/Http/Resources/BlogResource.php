@@ -17,12 +17,13 @@ class BlogResource extends JsonResource
     {
         return [
             'id'                    => $this->id,
-            'catergory_name'        => new CategoryBlogResource($this->getCategories),
+            'category_name'        => new CategoryBlogResource($this->getCategories),
             'title'                 => $this->title,
             'slug'                  => $this->slug,
             'body'                  => $this->body,
             'image'                 => $this->image,
             'tags'                  => $this->tags,
+            'lang'                  => $this->lang,
             'author'                => Auth::user(),
             'created'               => $this->created_at,
         ];

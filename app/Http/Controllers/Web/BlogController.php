@@ -88,7 +88,6 @@ class BlogController extends Controller
             $ext                = $request->file('image')->getClientOriginalExtension();
             $fileNameSave       = Str::uuid();
             $path               = $request->file('image')->storeAs('public/blogs', $fileNameSave);
-            // $path               = $request->file('image')->move(public_path('blogs'), $fileNameSave); 
         }
 
         $dataBlog = Blog::create([
