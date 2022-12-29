@@ -65,7 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('/services', ServiceController::class);
             Route::resource('/details', DetailServiceController::class);
         });
-        Route::group(['prefix' => 'Projects'], function () {
+        Route::group(['prefix' => 'project'], function () {
             Route::resource('/types', ProjectTypeController::class);
             Route::resource('/project', ProjectController::class);
         });
