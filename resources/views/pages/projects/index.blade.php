@@ -83,9 +83,9 @@
                                         <div class="text-danger" id="error-title"></div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="price" class="form-label">Harga paket </label>
+                                        <label for="price" class="form-label">Harga subscribe </label>
                                         <input type="text" class="form-control" id="price" name="price"
-                                            placeholder="Masukkan lokasi projek..." value="">
+                                            placeholder="Masukkan subscribe..." value="">
                                         <div class="text-danger" id="error-price"></div>
                                     </div>
                                     <div class="mb-3">
@@ -213,6 +213,11 @@
                 }, {
                     data: 'lang',
                     name: 'lang',
+                }, {
+                    data: 'image',
+                    name: 'image',
+                    render: function ( data) {
+              return `<img src="{{asset('storage/project')}}/${data}" width="40px">`;},
                 }, {
                     data: 'id',
                     name: 'id',

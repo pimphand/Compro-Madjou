@@ -103,7 +103,7 @@ class ProjectController extends Controller
             'body'              => $request->body,
             'url'               => $request->url,
             'location'          => $request->location,
-            // 'image'             => $fileNameSave,
+            'image'             => $fileNameSave,
             'lang'              => $request->lang,
         ]);
 
@@ -176,12 +176,14 @@ class ProjectController extends Controller
             ]);
         }
 
-        if ($image = $request->file('image')) {
-            $fileNameWithExt    = $request->file('image')->getClientOriginalName();
-            $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            $ext                = $request->file('image')->getClientOriginalExtension();
-            $fileNameSave       = Str::uuid();
-            $path               = $request->file('image')->storeAs('public/project', $fileNameSave);
+        if($image = $request->file('image'))
+        {
+            $fileNameWithExt   = $image->getClientOriginalName();
+            $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $ext               = $image->getClientOriginalExtension();
+            $fileNameSave      = Str::uuid();
+            $path              = $image->storeAs('public/project', $fileNameSave);
+
         }
         $project = Project::findOrFail($id);
         $project->update([
