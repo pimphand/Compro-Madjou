@@ -64,6 +64,7 @@ class ProjectController extends Controller
             'body'              => 'required',
             'url'               => 'required',
             'location'          => 'required',
+            'image'             => 'required|mimes|images|max:2048',
             'lang'              => 'required',
         ], [
             'title.required'    => 'Judul tidak boleh kosong!',
@@ -71,7 +72,8 @@ class ProjectController extends Controller
             'body.required'         => 'Konten tidak boleh kosong!',
             'url.required'          => 'Alamat url tidak boleh kosong!',
             'location.requried'     => 'Alamat lokasi tidak boleh kosong!',
-            'lang.required'         => 'Bahasa tidak boleh kosong',
+            'image.required'        => 'Gambar tidak boleh kosong!',
+            'lang.required'         => 'Bahasa tidak boleh kosong!',
         ]);
 
         if ($data->fails()) {
@@ -82,8 +84,11 @@ class ProjectController extends Controller
         }
 
         if ($image = $request->file('image')) {
-            $fileNameSave      = Str::uuid();
-            $image->storeAs('public/project', $fileNameSave);
+            $fileNameWithExt    = $request->file('image')->getClientOriginalName();
+            $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $ext                = $request->file('image')->getClientOriginalExtension();
+            $fileNameSave       = Str::uuid();
+            $path               = $request->file('image')->storeAs('public/project', $fileNameSave);
         }
 
         $project = Project::create([
@@ -149,12 +154,14 @@ class ProjectController extends Controller
             'body'              => 'required',
             'url'               => 'required',
             'location'          => 'required',
+            'image'             => 'required|mimes|images|max:2048',
         ], [
-            'title.required'    => 'Judul tidak boleh kosong',
-            'programing.required'  => 'Programming tidak boleh kosong',
-            'body.required'         => 'Konten tidak boleh kosong',
-            'url.required'          => 'Alamat url tidak boleh kosong',
-            'location.requried'              => 'Alamat lokasi tidak boleh kosong',
+            'title.required'    => 'Judul tidak boleh kosong!',
+            'programing.required'  => 'Programming tidak boleh kosong!',
+            'body.required'         => 'Konten tidak boleh kosong!',
+            'url.required'          => 'Alamat url tidak boleh kosong!',
+            'image.requrired'       => 'Gambar tidak boleh kosong!',
+            'location.requried'              => 'Alamat lokasi tidak boleh kosong!',
         ]);
 
         if ($data->fails()) {
@@ -165,8 +172,11 @@ class ProjectController extends Controller
         }
 
         if ($image = $request->file('image')) {
-            $fileNameSave      = Str::uuid();
-            $image->storeAs('public/project', $fileNameSave);
+            $fileNameWithExt    = $request->file('image')->getClientOriginalName();
+            $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $ext                = $request->file('image')->getClientOriginalExtension();
+            $fileNameSave       = Str::uuid();
+            $path               = $request->file('image')->storeAs('public/project', $fileNameSave);
         }
         $project = Project::findOrFail($id);
         $project->update([
