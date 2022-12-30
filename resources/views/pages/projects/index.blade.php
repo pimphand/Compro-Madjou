@@ -51,7 +51,7 @@
 
                 <div class="modal fade modal-form" id="tagEditorModal" tabindex="-1" aria-labelledby="varyingModalLabel"
                     aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="varyingModalLabel">
@@ -102,32 +102,77 @@
                                         <div class="text-danger" id="error-body"></div>
                                     </div>
                                     <div class="mb-3">
+                                        <label for="client" class="form-label">Tentang Client </label>
+                                        <textarea type="text" class="form-control" id="client"
+                                            placeholder="Masukkan tentang client..."></textarea>
+                                        <input type="hidden" name="client" class="client">
+                                        <div class="text-danger" id="error-client"></div>
+                                    </div>
+                                    <div class="mb-3">
                                         <label for="url" class="form-label">Alamat url </label>
                                         <input type="text" class="form-control" id="url" name="url"
                                             placeholder="Masukkan alamat projek ..." value="">
                                         <div class="text-danger" id="error-url"></div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="location" class="form-label">Lokasi </label>
-                                        <input type="text" class="form-control" id="location" name="location"
-                                            placeholder="Masukkan lokasi projek..." value="">
-                                        <div class="text-danger" id="error-location"></div>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div class="mb-3">
+                                                <label for="location" class="form-label">Lokasi </label>
+                                                <input type="text" class="form-control" id="location" name="location"
+                                                    placeholder="Masukkan lokasi projek..." value="">
+                                                <div class="text-danger" id="error-location"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="mb-3">
+                                                <label for="location" class="form-label">Tahun </label>
+                                                <input type="text" class="form-control" id="year" name="year"
+                                                    placeholder="Masukkan tahun projek..." value="">
+                                                <div class="text-danger" id="error-location"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="mb-3">
+                                                <label for="lang" class="form-label">Bahasa </label>
+                                                <select name="lang" id="lang" class="form-control">
+                                                    <option value="" disabled selected>Pilih bahasa</option>
+                                                    <option value="id">Indonesia</option>
+                                                    <option value="en">English</option>
+                                                </select>
+                                                <div class="text-danger" id="error-lang"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label for="location" class="form-label">Logo </label>
+                                                <input type="file" class="form-control" id="location" name="logo"
+                                                    placeholder="Masukkan lokasi projek..." value="">
+                                                <div class="text-danger" id="error-location"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label for="image" class="form-label">Gambar </label>
+                                                <input type="file" class="form-control" id="image" name="image"
+                                                    placeholder="Masukkan gambar..." value="">
+                                                <div class="text-danger" id="error-image"></div>
+                                            </div>
+                                        </div>
                                     </div>
+
                                     <div class="mb-3">
-                                        <label for="lang" class="form-label">Bahasa </label>
-                                        <select name="lang" id="lang" class="form-control">
-                                            <option value="" disabled selected>Pilih bahasa</option>
-                                            <option value="id">Indonesia</option>
-                                            <option value="en">English</option>
-                                        </select>
-                                        <div class="text-danger" id="error-lang"></div>
+                                        <label class="form-label">Galery </label>
                                     </div>
+                                    <div class="mb-3 input-gallery" id="input-gallery"></div>
+                                    <button class="btn btn-info btn-xs mb-3" type="button" id="add-gallery">
+                                        <i class="fa fa-plus"></i> Gallery</button>
                                     <div class="mb-3">
-                                        <label for="image" class="form-label">Gambar </label>
-                                        <input type="file" class="form-control" id="image" name="image"
-                                            placeholder="Masukkan gambar..." value="">
-                                        <div class="text-danger" id="error-image"></div>
+                                        <label class="form-label">Pengembangan <i
+                                                class="fa fa-question-circle"></i></label>
                                     </div>
+                                    <div class="mb-3 input-dev" id="input-dev"></div>
+                                    <button class="btn btn-info btn-xs mb-3" type="button" id="add-dev">
+                                        <i class="fa fa-plus"></i> Pengembangan</button>
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -150,15 +195,6 @@
 <script>
     let showData;
         $(() => {
-            $('#btn-add').click(function (e) { 
-                e.preventDefault();
-                $("#title").html("Tambah data projek");
-                $("#btn-save").val("add");
-                $("#put").html("");
-                $("#modalFormData").trigger("reset");
-                $("#tagEditorModal").modal("show");
-                $("#modalFormData").attr('action', "{{ route('project.store') }}");
-            });
             // datatable
             showData = $('.table-data').DataTable({
                 processing: true,
@@ -314,8 +350,9 @@
             })
         })
 
-         // text editor
-         tinymce.init({
+        // text editor
+    
+        tinymce.init({
             selector: 'textarea',
             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace tablevisualblockswordcount',toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | linkimage media table | alignlineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
             init_instance_callback: function(editor) {
@@ -324,6 +361,49 @@
                 });
             }
         });
+
+    $('#btn-add').click(function (e) { 
+        e.preventDefault();
+        $("#title").html("Tambah data projek");
+        $("#btn-save").val("add");
+        $("#put").html("");
+        $("#modalFormData").trigger("reset");
+        $("#tagEditorModal").modal("show");
+        $("#modalFormData").attr('action', "{{ route('project.store') }}");
+    });
+
+    $('.input-gallery').on('click', '.delete-gallery', function() {
+        var id = $(this).data('toggle');
+        $('.input-gallery').find("#input-"+id).remove()
+    })
+
+    var gallery = 0;
+    $('#add-gallery').click(function(){
+        let input = `<div class="input-group flatpickr" id="input-${gallery}">
+                        <input type="file" class="form-control flatpickr-input mb-3" placeholder="${gallery}" name="gallery[]"
+                            readonly="readonly">
+                        <span class="input-group-text input-group-addon text-danger btn mb-3 delete-gallery" data-toggle="${gallery}"><i
+                                class="fa fa-trash"></i></span>
+                    </div>`
+        $('.input-gallery').append(input);
+        gallery++;
+    })
+    $('.input-dev').on('click', '.delete-dev', function() {
+        var id = $(this).data('toggle');
+        $('.input-dev').find("#input-"+id).remove()
+    })
+
+    var develop = 0;
+    $('#add-dev').click(function(){
+        let input = `<div class="input-group flatinput" id="input-${develop}">
+                        <input type="text" class="form-control  mb-3" placeholder="Pengembangan" name="development[]">
+                        <span class="input-group-text input-group-addon text-danger btn mb-3 delete-dev" data-toggle="${develop}"><i
+                                class="fa fa-trash"></i></span>
+                        <div class="text-danger" id="error-development.${develop}"></div>
+                    </div>`
+        $('.input-dev').append(input);
+        develop++;
+    })
 
 </script>
 @endpush

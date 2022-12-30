@@ -16,24 +16,218 @@ class ServiceSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create('id_ID');
-        for ($i = 0; $i < 10; $i++) {
-            $service = Service::create([
-                'user_id'   => $faker->randomElement([1, 2]),
-                'title'     => $faker->unique()->word,
-                'slug'      => $faker->unique()->slug,
-                'tags'      => $faker->words($nb = 4, $asText = false),
-                'body'      => $faker->text(500),
-                'image'     => $faker->randomElement(['madjou.png', 'madjou2.png']),
-            ]);
+        $data = [
+            0 => [
+                "title" => "IT Consultant",
+                "user_id" => 1,
+                "slug" => "it-consultant",
+                "body" => "Kami siap membantu Jasa Pembuatan Website. Konsultasi seputar custom website development untuk perusahaan Anda!",
+                "image" => " ",
+            ],
+            1 => [
+                "title" => "Mobile App Development ",
+                "user_id" => 1,
+                "slug" => "mobile-development",
+                "body" => "Kami siap membantu Jasa Pembuatan Website. Konsultasi seputar custom website development untuk perusahaan Anda!",
+                "image" => " ",
+            ],
+            2 => [
+                "title" => "Web App Development",
+                "user_id" => 1,
+                "slug" => "WebApp-development",
+                "body" => "Kami siap membantu Jasa Pembuatan Website. Konsultasi seputar custom website development untuk perusahaan Anda!",
+                "image" => " ",
+
+            ],
+            3 => [
+                "title" => "Website Development ",
+                "user_id" => 1,
+                "slug" => "website-development",
+                "body" => "Kami siap membantu Jasa Pembuatan Website. Konsultasi seputar custom website development untuk perusahaan Anda!",
+                "image" => " ",
+            ],
+        ];
+
+        $detail = [
+            [
+                "service_id" => 1,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 1,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 1,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 1,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 1,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 1,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 1,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            // 2
+            [
+                "service_id" => 2,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 2,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 2,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 2,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 2,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 2,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 2,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            // 3
+            [
+                "service_id" => 3,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 3,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 3,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 3,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 3,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 3,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 3,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            // 4
+            [
+                "service_id" => 4,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 4,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 4,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 4,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 4,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 4,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+            [
+                "service_id" => 4,
+                "title" => "IT Consultant",
+                "body" => "Ceritakan makna dibalik brand Anda, kebutuhan, serta tantangan yang sedang dihadapi. Proses pengembangan website akan kami mulai dari situ",
+                "image" => " "
+            ],
+        ];
+
+        foreach ($data as $key => $value) {
+            Service::create($value);
         }
-        for ($i = 0; $i < 50; $i++) {
-            ServiceDetail::create([
-                'service_id'        => $faker->randomElement([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-                'title'             => $faker->unique()->word,
-                'body'              => $faker->text(500),
-                'image'             => $faker->randomElement(['madjou.png', 'madjou2.png']),
-            ]);
+
+        foreach ($detail as $d) {
+            ServiceDetail::create($d);
         }
     }
 }

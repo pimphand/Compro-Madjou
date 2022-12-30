@@ -8,6 +8,7 @@ use App\Models\Madjou\Product;
 use App\Models\Project;
 use App\Models\ProjectType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -66,7 +67,7 @@ class ProjectController extends Controller
             'location'          => 'required',
             'image'             => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'lang'              => 'required',
-            'price'             => 'required|integer|'
+            'price'             => 'required|integer|',
         ], [
             'title.required'    => 'Judul tidak boleh kosong!',
             'programing.required'  => 'Programming tidak boleh kosong!',
@@ -85,41 +86,71 @@ class ProjectController extends Controller
             ]);
         }
 
-        if($image = $request->file('image'))
-        {
-            $fileNameWithExt   = $image->getClientOriginalName();
-            $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            $ext               = $image->getClientOriginalExtension();
+        if ($image = $request->file('image')) {
             $fileNameSave      = Str::uuid();
-            $path              = $image->storeAs('public/project', $fileNameSave);
-
+            $image->storeAs('public/project', $fileNameSave);
+        }
+        if ($logo = $request->file('logo')) {
+            $logoName      = Str::uuid();
+            $logo->storeAs('public/project-logo', $logoName);
         }
 
-        $project = Project::create([
-            'project_type_id'   => $request->project_type_id,
-            'title'             => $request->title,
-            'slug'              => Str::slug($request->title),
-            'programing'        => $request->programing,
-            'body'              => $request->body,
-            'url'               => $request->url,
-            'location'          => $request->location,
-            'image'             => $fileNameSave,
-            'lang'              => $request->lang,
-        ]);
+        try {
+            DB::beginTransaction();
+            $project = Project::create([
+                'project_type_id'   => $request->project_type_id,
+                'title'             => $request->title,
+                'slug'              => Str::slug($request->title),
+                'programing'        => $request->programing,
+                'body'              => $request->body,
+                'url'               => $request->url,
+                'location'          => $request->location,
+                'image'             => $fileNameSave,
+                'logo'              => $logoName ?? null,
+                'lang'              => $request->lang,
+                'years'             => $request->years,
+                'client_about'      => $request->client ?? " ",
+            ]);
 
-        Product::create([
-            "name" => $request->title,
-            "image" => $fileNameSave,
-            "price" => $request->price,
-            "url" => "",
-            "key" => Hash::make($request->title),
-        ]);
+            if ($request->gallery) {
+                foreach ($request->gallery as $key => $value) {
+                    $fileNameSave      = Str::uuid();
+                    $value->storeAs('public/project-gallery', $fileNameSave);
+                    $project->gallery()->create([
+                        'image' => $fileNameSave
+                    ]);
+                }
+            }
 
-        return [
-            'success'   => true,
-            'message'   => 'Data projek berhasil disimpan',
-            'data'      => new ProjectResource($project),
-        ];
+            if ($request->development) {
+                foreach ($request->development as $key => $dev) {
+                    $project->development()->create([
+                        'title' => $dev
+                    ]);
+                }
+            }
+
+            Product::create([
+                "name" => $request->title,
+                "image" => $fileNameSave,
+                "price" => $request->price,
+                "url" => "",
+                "key" => Hash::make($request->title),
+            ]);
+            DB::commit();
+
+            return [
+                'success'   => true,
+                'message'   => 'Data projek berhasil disimpan',
+                'data'      => new ProjectResource($project),
+            ];
+        } catch (\Throwable $th) {
+            return [
+                'success'   => false,
+                'message'   => 'Data projek gagal disimpan',
+                'error'   => $th->getMessage(),
+            ];
+        }
     }
 
     /**
@@ -176,14 +207,12 @@ class ProjectController extends Controller
             ]);
         }
 
-        if($image = $request->file('image'))
-        {
+        if ($image = $request->file('image')) {
             $fileNameWithExt   = $image->getClientOriginalName();
             $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext               = $image->getClientOriginalExtension();
             $fileNameSave      = Str::uuid();
             $path              = $image->storeAs('public/project', $fileNameSave);
-
         }
         $project = Project::findOrFail($id);
         $project->update([

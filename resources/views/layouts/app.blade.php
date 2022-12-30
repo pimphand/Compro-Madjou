@@ -115,9 +115,9 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/ckeditor.js"></script>
     {{-- <script src="https://cdnjs.com/libraries/Chart.js"></script> --}}
     <script src="{{asset('template/assets/vendors/chartjs/Chart.min.js')}}"></script>
-    
 
-    
+
+
 
     @stack('js')
 
@@ -155,12 +155,15 @@
                             //   show errors
                             console.log(key);
                             $('#' + key).addClass('is-invalid');
-                            $('#' +'error-' + key ).html(value);
-                            // hide error
+                            $('#error-' + key ).html(value);
                             $('#' + key).on('keyup', function () {
                                 $('#' + key).removeClass('is-invalid');
-                                $('#' +'error-' + key ).html('');
+                                $('#error-' + key ).html('');
                             });
+                            $('.input-dev').on('find', '.input-dev', function() {
+                               $('#error-'+key).html(value);
+                            })
+                           
                         });
                     }
                 }
