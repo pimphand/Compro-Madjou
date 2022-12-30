@@ -64,8 +64,9 @@ class ProjectController extends Controller
             'body'              => 'required',
             'url'               => 'required',
             'location'          => 'required',
-            'image'             => 'required|mimes|images|max:2048',
+            'image'             => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'lang'              => 'required',
+            'price'             => 'required|integer|'
         ], [
             'title.required'    => 'Judul tidak boleh kosong!',
             'programing.required'  => 'Programming tidak boleh kosong!',
@@ -74,6 +75,7 @@ class ProjectController extends Controller
             'location.requried'     => 'Alamat lokasi tidak boleh kosong!',
             'image.required'        => 'Gambar tidak boleh kosong!',
             'lang.required'         => 'Bahasa tidak boleh kosong!',
+            'price.required'        => 'Harga tidak boleh kosong!',
         ]);
 
         if ($data->fails()) {
@@ -83,12 +85,14 @@ class ProjectController extends Controller
             ]);
         }
 
-        if ($image = $request->file('image')) {
-            $fileNameWithExt    = $request->file('image')->getClientOriginalName();
-            $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            $ext                = $request->file('image')->getClientOriginalExtension();
-            $fileNameSave       = Str::uuid();
-            $path               = $request->file('image')->storeAs('public/project', $fileNameSave);
+        if($image = $request->file('image'))
+        {
+            $fileNameWithExt   = $image->getClientOriginalName();
+            $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $ext               = $image->getClientOriginalExtension();
+            $fileNameSave      = Str::uuid();
+            $path              = $image->storeAs('public/project', $fileNameSave);
+
         }
 
         $project = Project::create([
@@ -106,6 +110,7 @@ class ProjectController extends Controller
         Product::create([
             "name" => $request->title,
             "image" => $fileNameSave,
+            "price" => $request->price,
             "url" => "",
             "key" => Hash::make($request->title),
         ]);
@@ -154,7 +159,7 @@ class ProjectController extends Controller
             'body'              => 'required',
             'url'               => 'required',
             'location'          => 'required',
-            'image'             => 'required|mimes|images|max:2048',
+            'image'             => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ], [
             'title.required'    => 'Judul tidak boleh kosong!',
             'programing.required'  => 'Programming tidak boleh kosong!',
@@ -171,12 +176,14 @@ class ProjectController extends Controller
             ]);
         }
 
-        if ($image = $request->file('image')) {
-            $fileNameWithExt    = $request->file('image')->getClientOriginalName();
-            $fileName           = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            $ext                = $request->file('image')->getClientOriginalExtension();
-            $fileNameSave       = Str::uuid();
-            $path               = $request->file('image')->storeAs('public/project', $fileNameSave);
+        if($image = $request->file('image'))
+        {
+            $fileNameWithExt   = $image->getClientOriginalName();
+            $fileName          = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $ext               = $image->getClientOriginalExtension();
+            $fileNameSave      = Str::uuid();
+            $path              = $image->storeAs('public/project', $fileNameSave);
+
         }
         $project = Project::findOrFail($id);
         $project->update([

@@ -83,6 +83,12 @@
                                         <div class="text-danger" id="error-title"></div>
                                     </div>
                                     <div class="mb-3">
+                                        <label for="price" class="form-label">Harga subscribe </label>
+                                        <input type="text" class="form-control" id="price" name="price"
+                                            placeholder="Masukkan subscribe..." value="">
+                                        <div class="text-danger" id="error-price"></div>
+                                    </div>
+                                    <div class="mb-3">
                                         <label for="programing" class="form-label">Pemrograman </label>
                                         <input type="text" class="form-control" id="programings" name="programing"
                                             placeholder="Masukkan jenis pemrograman projek..." value="">
@@ -165,7 +171,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 9],
+                        targets: [0, 8],
                         className: 'text-center'
                     },
                     {
@@ -195,6 +201,9 @@
                 }, {
                     data: 'body',
                     name: 'body',
+                    render: function ( data) {
+                        return htmlDecode(data);
+                    }
                 }, {
                     data: 'url',
                     name: 'url',
@@ -207,7 +216,7 @@
                 }, {
                     data: 'image',
                     name: 'image',
-                    render: function ( data ) {
+                    render: function ( data) {
               return `<img src="{{asset('storage/project')}}/${data}" width="40px">`;},
                 }, {
                     data: 'id',
