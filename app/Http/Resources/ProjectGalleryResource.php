@@ -15,7 +15,7 @@ class ProjectGalleryResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "image" => asset('storage/project-logo/' . $this->image)
+            "image" => asset('storage/project-gallery/' . $this->image)
         ];
     }
 }

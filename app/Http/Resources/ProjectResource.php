@@ -25,6 +25,7 @@ class ProjectResource extends JsonResource
             'image'             => $this->image,
             'location'          => $this->location,
             'lang'              => $this->lang,
+            'year'              => $this->years,
             'logo'              => asset('storage/project-logo/' . $this->logo),
             'gallery'           => ProjectGalleryResource::collection($this->gallery),
             'development'       => ProjectDevelopmentResource::collection($this->development),
