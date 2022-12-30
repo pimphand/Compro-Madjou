@@ -367,6 +367,7 @@
         $("#title").html("Tambah data projek");
         $("#btn-save").val("add");
         $("#put").html("");
+        $(".flatpickr").remove();
         $("#modalFormData").trigger("reset");
         $("#tagEditorModal").modal("show");
         $("#modalFormData").attr('action', "{{ route('project.store') }}");
@@ -379,7 +380,7 @@
 
     var gallery = 0;
     $('#add-gallery').click(function(){
-        let input = `<div class="input-group flatpickr" id="input-${gallery}">
+        let input = `<div class="input-group flatpickr " id="input-${gallery}">
                         <input type="file" class="form-control flatpickr-input mb-3" placeholder="${gallery}" name="gallery[]"
                             readonly="readonly">
                         <span class="input-group-text input-group-addon text-danger btn mb-3 delete-gallery" data-toggle="${gallery}"><i
@@ -388,6 +389,7 @@
         $('.input-gallery').append(input);
         gallery++;
     })
+
     $('.input-dev').on('click', '.delete-dev', function() {
         var id = $(this).data('toggle');
         $('.input-dev').find("#input-"+id).remove()
@@ -395,7 +397,7 @@
 
     var develop = 0;
     $('#add-dev').click(function(){
-        let input = `<div class="input-group flatinput" id="input-${develop}">
+        let input = `<div class="input-group flatpickr " id="input-${develop}">
                         <input type="text" class="form-control  mb-3" placeholder="Pengembangan" name="development[]">
                         <span class="input-group-text input-group-addon text-danger btn mb-3 delete-dev" data-toggle="${develop}"><i
                                 class="fa fa-trash"></i></span>
