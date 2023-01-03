@@ -13,7 +13,8 @@ class Project extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'project_type_id', 'title', 'programing', 'body', 'slug', 'image', 'url', 'location', 'lang', 'years', 'logo', 'client_about'
+        'project_type_id', 'title', 'programing', 'body', 'slug', 'image', 
+        'url', 'location', 'lang', 'years', 'logo', 'client_about', 'price'
     ];
 
     public function getType(): BelongsTo
@@ -29,4 +30,23 @@ class Project extends Model
     {
         return $this->hasMany(ProjectDevelop::class);
     }
+
+    public function setProgramingAttribute($value)
+    {
+        $this->attributes['programing'] = json_encode($value);
+    }
+
+    // public function getProgramingAttribute($value)
+    // {
+    //     return $this->attributes['programing']    = json_decode($value);
+    // }
+
+    public function programing(): BelongsTo
+    {
+        return $this->belongsTo(ProgramingLanguage::class, 'programing', 'name');
+    }
+
+    protected $casts = [
+        'programing' => 'array',
+    ];
 }

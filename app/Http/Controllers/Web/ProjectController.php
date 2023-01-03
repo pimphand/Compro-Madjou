@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProjectResource;
 use App\Models\Madjou\Product;
+use App\Models\ProgramingLanguage;
 use App\Models\Project;
 use App\Models\ProjectType;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class ProjectController extends Controller
     public function index()
     {
         $projectType = ProjectType::all();
+        $programming = ProgramingLanguage::all();
 
         if (request()->ajax()) {
             $dataProject    = Project::latest()->get();
@@ -37,7 +39,8 @@ class ProjectController extends Controller
         }
 
         return view('pages.projects.index', [
-            'projectType' => $projectType,
+            'projectType'   => $projectType,
+            'programming'   => $programming, 
         ])->with('projects');
     }
 
@@ -61,22 +64,25 @@ class ProjectController extends Controller
     {
         $data   = Validator::make($request->all(), [
             'title'             => 'required',
-            'programing'       => 'required',
+            // 'programing'       => 'required',
             'body'              => 'required',
             'url'               => 'required',
             'location'          => 'required',
             'image'             => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'lang'              => 'required',
-            'price'             => 'required|integer|',
+            'logo'              => 'nullable',
+            'years'             => 'required',
+            'client_about'      => 'required',
         ], [
             'title.required'    => 'Judul tidak boleh kosong!',
-            'programing.required'  => 'Programming tidak boleh kosong!',
+            // 'programing.required'  => 'Programming tidak boleh kosong!',
             'body.required'         => 'Konten tidak boleh kosong!',
             'url.required'          => 'Alamat url tidak boleh kosong!',
             'location.requried'     => 'Alamat lokasi tidak boleh kosong!',
             'image.required'        => 'Gambar tidak boleh kosong!',
             'lang.required'         => 'Bahasa tidak boleh kosong!',
-            'price.required'        => 'Harga tidak boleh kosong!',
+            'years.required'        => 'Tahun tidak boleh kosong!',
+            'client_about.required'        => 'Tentang client tidak boleh kosong!',
         ]);
 
         if ($data->fails()) {
@@ -109,7 +115,7 @@ class ProjectController extends Controller
                 'logo'              => $logoName ?? null,
                 'lang'              => $request->lang,
                 'years'             => $request->years,
-                'client_about'      => $request->client ?? " ",
+                'client_about'      => $request->client_about ?? " ",
             ]);
 
             if ($request->gallery) {
@@ -190,7 +196,11 @@ class ProjectController extends Controller
             'body'              => 'required',
             'url'               => 'required',
             'location'          => 'required',
-            'image'             => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image'             => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'client_about'      => 'required',
+            'logo'              => 'nullable',
+            'lang'              => 'required',
+            'years'             => 'required',
         ], [
             'title.required'    => 'Judul tidak boleh kosong!',
             'programing.required'  => 'Programming tidak boleh kosong!',
@@ -198,6 +208,7 @@ class ProjectController extends Controller
             'url.required'          => 'Alamat url tidak boleh kosong!',
             'image.requrired'       => 'Gambar tidak boleh kosong!',
             'location.requried'              => 'Alamat lokasi tidak boleh kosong!',
+            'years.required'        => 'Tahun tidak boleh kosong!',
         ]);
 
         if ($data->fails()) {
@@ -214,7 +225,14 @@ class ProjectController extends Controller
             $fileNameSave      = Str::uuid();
             $path              = $image->storeAs('public/project', $fileNameSave);
         }
+
+        if ($logo = $request->file('logo')) {
+            $logoName      = Str::uuid();
+            $logo->storeAs('public/project-logo', $logoName);
+        }
+
         $project = Project::findOrFail($id);
+
         $project->update([
             'project_type_id'   => $request->project_type_id,
             'title'         => $request->title,
@@ -225,6 +243,9 @@ class ProjectController extends Controller
             'url'           => $request->url,
             'location'      => $request->location,
             'lang'          => $request->lang,
+            'logo'              => $logoName ?? $project->logo,
+            'years'             => $request->years,
+            'client_about'      => $request->client ?? " ",
         ]);
 
         return [

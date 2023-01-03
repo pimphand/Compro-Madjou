@@ -31,13 +31,16 @@
                             <tr>
                                 <th>No</th>
                                 <th>Jenis projek</th>
-                                <th>Pemrograman</th>
-                                <th>Judul</th>
-                                <th>Konten</th>
+                                <th>Bahasa Pemrograman</th>
+                                <th>Judul portofolio</th>
+                                <th>Tentang aplikasi</th>
+                                <th>Tentang klien</th>
                                 <th>Alamat url</th>
-                                <th>Lokasi</th>
+                                <th>Lokasi klien</th>
                                 <th>Bahasa</th>
-                                <th>Gambar</th>
+                                <th>Gambar header</th>
+                                <th>Tahun pembuatan</th>
+                                <th>Logo</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -77,24 +80,35 @@
                                         <div class="text-danger" id="error-project_type_id"></div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="titles" class="form-label">Judul </label>
+                                        <label for="titles" class="form-label">Judul project</label>
                                         <input type="text" class="form-control" id="titles" name="title"
                                             placeholder="Masukkan judul projek..." value="">
                                         <div class="text-danger" id="error-title"></div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="price" class="form-label">Harga subscribe </label>
+                                        <label for="titles" class="form-label">Harga langganan</label>
                                         <input type="text" class="form-control" id="price" name="price"
-                                            placeholder="Masukkan subscribe..." value="">
-                                        <div class="text-danger" id="error-price"></div>
+                                            placeholder="Masukkan harga langgangan projek..." value="">
+                                        <div class="text-danger" id="error-title"></div>
                                     </div>
-                                    <div class="mb-3">
+                                    <div class="row">
                                         <label for="programing" class="form-label">Pemrograman </label>
-                                        <input type="text" class="form-control" id="programings" name="programing"
-                                            placeholder="Masukkan jenis pemrograman projek..." value="">
+                                        @foreach ($programming as $prog)
+                                        
+                                        <div class="col-sm-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input checkbox" type="checkbox" value="{{$prog->name}}" 
+                                                name="programing[]" id="checkBox">
+                                                <label class="form-check-label" for="checkBox">
+                                                {{$prog->name}}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    
+                                        @endforeach
                                         <div class="text-danger" id="error-programing"></div>
                                     </div>
-                                    <div class="mb-3">
+                                    <div class="mb-3 mt-3">
                                         <label for="body" class="form-label">Konten </label>
                                         <textarea type="text" class="form-control" id="body"
                                             placeholder="Masukkan konten project..."></textarea>
@@ -105,7 +119,7 @@
                                         <label for="client" class="form-label">Tentang Client </label>
                                         <textarea type="text" class="form-control" id="client"
                                             placeholder="Masukkan tentang client..."></textarea>
-                                        <input type="hidden" name="client" class="client">
+                                        <input type="hidden" name="client_about" class="client">
                                         <div class="text-danger" id="error-client"></div>
                                     </div>
                                     <div class="mb-3">
@@ -117,7 +131,7 @@
                                     <div class="row">
                                         <div class="col-4">
                                             <div class="mb-3">
-                                                <label for="location" class="form-label">Lokasi </label>
+                                                <label for="location" class="form-label">Lokasi klien</label>
                                                 <input type="text" class="form-control" id="location" name="location"
                                                     placeholder="Masukkan lokasi projek..." value="">
                                                 <div class="text-danger" id="error-location"></div>
@@ -125,10 +139,10 @@
                                         </div>
                                         <div class="col-4">
                                             <div class="mb-3">
-                                                <label for="location" class="form-label">Tahun </label>
-                                                <input type="text" class="form-control" id="year" name="year"
+                                                <label for="year" class="form-label">Tahun pembuatan</label>
+                                                <input type="text" class="form-control" id="year" name="years"
                                                     placeholder="Masukkan tahun projek..." value="">
-                                                <div class="text-danger" id="error-location"></div>
+                                                <div class="text-danger" id="error-years"></div>
                                             </div>
                                         </div>
                                         <div class="col-4">
@@ -144,10 +158,10 @@
                                         </div>
                                         <div class="col-6">
                                             <div class="mb-3">
-                                                <label for="location" class="form-label">Logo </label>
-                                                <input type="file" class="form-control" id="location" name="logo"
-                                                    placeholder="Masukkan lokasi projek..." value="">
-                                                <div class="text-danger" id="error-location"></div>
+                                                <label for="logo" class="form-label">Logo Perusahaan</label>
+                                                <input type="file" class="form-control" id="logo" name="logo"
+                                                    placeholder="Masukkan logo perusahaan..." value="">
+                                                <div class="text-danger" id="error-logo"></div>
                                             </div>
                                         </div>
                                         <div class="col-6">
@@ -207,7 +221,7 @@
                 columnDefs: [{
                         orderable: false,
                         searchable: false,
-                        targets: [0, 8],
+                        targets: [0, 11],
                         className: 'text-center'
                     },
                     {
@@ -231,6 +245,7 @@
                 }, {
                     data: 'programing',
                     name: 'programing',
+
                 }, {
                     data: 'title',
                     name: 'title',
@@ -241,9 +256,15 @@
                         return htmlDecode(data);
                     }
                 }, {
+                    data: 'client_about',
+                    name: 'client_about',
+                    render: function ( data) {
+                        return htmlDecode(data);
+                    }
+                }, {
                     data: 'url',
                     name: 'url',
-                }, {
+                },{
                     data: 'location',
                     name: 'location',
                 }, {
@@ -254,6 +275,14 @@
                     name: 'image',
                     render: function ( data) {
               return `<img src="{{asset('storage/project')}}/${data}" width="40px">`;},
+                }, {
+                    data: 'years',
+                    name: 'years',
+                }, {
+                    data: 'logo',
+                    name: 'logo',
+                    render: function ( data) {
+              return `<img src="{{asset('storage/project-logo')}}/${data}" width="40px">`;},
                 }, {
                     data: 'id',
                     name: 'id',
@@ -292,6 +321,7 @@
                 e.innerHTML = input;
                 return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
             }
+
             $('.table-data').on('click', '.btn-edit', function() {
                 let row = showData.row($(this).closest('tr')).data();
                 let url = "{{ route('project.update',':id') }}"
@@ -301,10 +331,18 @@
                 $("#put").html('<input type="hidden" name="_method" value="put">');
                 $("#project_type_id").val(row.project_type_id);
                 $("#titles").val(row.title);
-                $("#programings").val(row.programing);
+                $('.checkbox').each(function(){
+                if($(this).val(row.programing))
+                    {
+                        $('#checkBox').is(':checked')
+                    }
+                });
                 var body = htmlDecode(row.body);
-                tinyMCE.activeEditor.setContent(row.body);
+                var client = htmlDecode(row.client_about)
+                tinyMCE.get('body').setContent(body);
+                tinyMCE.get('client').setContent(client);
                 $("#url").val(row.url);
+                $("#year").val(row.years);
                 $("#location").val(row.location);
                 $('#lang').val(row.lang);
                 $('.error').empty();
@@ -353,11 +391,21 @@
         // text editor
     
         tinymce.init({
-            selector: 'textarea',
+            selector: '#body',
             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace tablevisualblockswordcount',toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | linkimage media table | alignlineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
             init_instance_callback: function(editor) {
                 editor.on('keyup', function(e) {
                     $(".body").val(editor.getContent())
+                });
+            }
+        });
+
+        tinymce.init({
+            selector: '#client',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace tablevisualblockswordcount',toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | linkimage media table | alignlineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            init_instance_callback: function(editor) {
+                editor.on('keyup', function(e) {
+                    $(".client").val(editor.getContent())
                 });
             }
         });
